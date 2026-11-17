@@ -295,7 +295,7 @@ window.KedrHome = function(ctx){
     store.set('kedr-last-stage', st);
     const sayBtn = root.querySelector('.say .next'); if (sayBtn) sayBtn.onclick = () => { heard[speech.id] = true; store.set('kedr-heard', heard); root.querySelector('.say').remove(); };
     const svg = document.getElementById('homeSvg'); landscape(svg);
-    if (innerWidth < 760) svg.setAttribute('viewBox', '600 130 560 560');
+    if (innerWidth < 760) { svg.setAttribute('viewBox', '120 470 1200 390'); svg.setAttribute('preserveAspectRatio', 'xMidYMax meet'); }   // phone: whole serpentine, scaled down
     { const spots = innerWidth < 760 ? IRBIS_HOME_PHONE : IRBIS_HOME, sp = spots[Math.floor(Math.random() * spots.length)];
       const ig = document.createElementNS(NS, 'g'); svg.insertBefore(ig, svg.querySelector('.mist').nextSibling); irbisWalk(ig, ...sp, 1, 46); }
     // trail with sections
@@ -304,14 +304,14 @@ window.KedrHome = function(ctx){
     const trail = el('path', { d: TRAIL, fill: 'none', stroke: '#efe3c8', 'stroke-width': 5, 'stroke-dasharray': '2 12', 'stroke-linecap': 'round' }, svg);
     const L = trail.getTotalLength();
     const units = [{ n: 'Kinematics', ready: true, unit: 'Kinematics' }, { n: 'Forces & momentum' }, { n: 'Energy' }, { n: 'Thermodynamics', ready: true, unit: 'Thermodynamics' }, { n: 'Waves' }, { n: 'Fields' }, { n: 'Quantum & nuclear' }];
-    const UNIT_AT = [.10, .25, .40, .55, .68, .80, .92];   // places along the trail, away from the bends
+    const UNIT_AT = [.06, .20, .42, .54, .665, .745, .95];   // places along the trail, away from the bends
     units.forEach((u, i) => {
       const p = trail.getPointAtLength(L * UNIT_AT[i]), s = el('g', { transform: `translate(${p.x} ${p.y})`, opacity: u.ready ? 1 : .55, class: u.ready ? 'hot' : '' }, svg);
-      el('line', { x1: 0, y1: 0, x2: 0, y2: -42, stroke: '#33291f', 'stroke-width': 2 }, s);
-      el('path', { d: 'M0 -42 L24 -35 L0 -28 Z', fill: u.ready ? '#d9a032' : '#cdbf9f' }, s);
+      el('line', { x1: 0, y1: 0, x2: 0, y2: -34, stroke: '#33291f', 'stroke-width': 2 }, s);
+      el('path', { d: 'M0 -34 L22 -28 L0 -22 Z', fill: u.ready ? '#d9a032' : '#cdbf9f' }, s);
       if (u.ready) el('circle', { cx: 0, cy: 0, r: 15, fill: '#f2c94c', opacity: .5, class: 'glow' }, s);
       el('circle', { cx: 0, cy: 0, r: 5, fill: u.ready ? '#33291f' : '#9a8c70' }, s);
-      el('text', { x: 10, y: -50, 'font-family': 'Bricolage Grotesque', 'font-weight': 600, 'font-size': u.ready ? 18 : 14, fill: u.ready ? '#33291f' : '#f4ecdc', stroke: u.ready ? '#f4ecdc' : '#3f5440', 'stroke-width': u.ready ? 4 : 3, 'paint-order': 'stroke' }, s, u.n + (u.ready ? '' : ' · soon'));
+      el('text', { x: 10, y: -40, 'font-family': 'Bricolage Grotesque', 'font-weight': 600, 'font-size': u.ready ? 18 : 14, fill: u.ready ? '#33291f' : '#f4ecdc', stroke: u.ready ? '#f4ecdc' : '#3f5440', 'stroke-width': u.ready ? 4 : 3, 'paint-order': 'stroke' }, s, u.n + (u.ready ? '' : ' · soon'));
       if (u.ready) s.addEventListener('click', () => { window._kedrUnit = u.unit; try { localStorage.setItem('kedr-unit', u.unit); } catch(e) {} location.hash = '#map'; });
     });
     // the student's cedar on the hilltop
