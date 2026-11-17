@@ -242,6 +242,41 @@ const IRBIS_HOME = [[150, 440, 300, 500], [300, 500, 430, 430], [430, 430, 600, 
 const IRBIS_HOME_PHONE = [[760, 450, 900, 510], [900, 510, 1050, 440], [600, 520, 760, 450]];
 
 /* ---------- landscape ---------- */
+/* the student with a watering can, at the start of the trail (18.11.2026) */
+function student(g, x, y, s){
+  const st = el('g', { transform: `translate(${x} ${y}) scale(${s})` }, g);
+  el('ellipse', { cx: 2, cy: 2, rx: 34, ry: 5, fill: '#33291f', opacity: .18 }, st);                       // shadow
+  el('rect', { x: -33, y: -112, width: 14, height: 40, rx: 5, fill: '#6a4c38' }, st);                     // backpack
+  el('path', { d: 'M-8 -60 L-11 -6 M8 -60 L11 -6', stroke: '#3f5a7a', 'stroke-width': 12, 'stroke-linecap': 'round' }, st);   // jeans
+  el('ellipse', { cx: -9, cy: -2, rx: 10, ry: 4.5, fill: '#3b2e24' }, st); el('ellipse', { cx: 14, cy: -2, rx: 10, ry: 4.5, fill: '#3b2e24' }, st);
+  el('path', { d: 'M-21 -112 Q0 -124 21 -112 L25 -58 Q0 -51 -25 -58 Z', fill: '#c0712e' }, st);         // hoodie
+  el('path', { d: 'M-12 -118 Q0 -110 12 -118', stroke: '#9c5a24', 'stroke-width': 3, fill: 'none' }, st);  // hood edge
+  el('path', { d: 'M-6 -112 L-6 -96 M6 -112 L6 -96', stroke: '#f4ecdc', 'stroke-width': 1.6, 'stroke-linecap': 'round' }, st);  // strings
+  el('path', { d: 'M-19 -108 Q-26 -90 -25 -72', stroke: '#c0712e', 'stroke-width': 10, fill: 'none', 'stroke-linecap': 'round' }, st);  // left arm
+  el('circle', { cx: -25, cy: -67, r: 5, fill: '#e8c39e' }, st);
+  // watering can
+  const can = el('g', {}, st);
+  el('path', { d: 'M44 -100 Q55 -116 66 -100', stroke: '#5f7480', 'stroke-width': 4, fill: 'none' }, can);           // handle
+  el('rect', { x: 40, y: -100, width: 30, height: 26, rx: 4, fill: '#7f97a3' }, can);                                // body
+  el('rect', { x: 40, y: -92, width: 30, height: 4, fill: '#6a838f' }, can);
+  el('path', { d: 'M70 -84 L92 -100', stroke: '#7f97a3', 'stroke-width': 5, 'stroke-linecap': 'round' }, can);      // spout
+  el('ellipse', { cx: 94, cy: -101, rx: 3, ry: 6, fill: '#5f7480', transform: 'rotate(-35 94 -101)' }, can);         // rose
+  [0, .5, 1].forEach((d, i) => {                                                                                       // drops
+    const c = el('circle', { cx: 97 + i * 3, cy: -98, r: 2.2, fill: '#9cc3d5' }, can);
+    el('animate', { attributeName: 'cy', from: -98, to: -62, dur: '1.4s', begin: d + 's', repeatCount: 'indefinite' }, c);
+    el('animate', { attributeName: 'opacity', values: '0;1;0', dur: '1.4s', begin: d + 's', repeatCount: 'indefinite' }, c);
+  });
+  el('path', { d: 'M19 -108 Q36 -112 52 -110', stroke: '#c0712e', 'stroke-width': 10, fill: 'none', 'stroke-linecap': 'round' }, st);  // right arm to the handle
+  el('circle', { cx: 54, cy: -110, r: 5, fill: '#e8c39e' }, st);                                                         // hand on the handle
+  el('rect', { x: -4, y: -128, width: 8, height: 9, fill: '#e8c39e' }, st);                                              // neck
+  el('circle', { cx: 0, cy: -140, r: 15, fill: '#edc9a0' }, st);                                                        // head
+  el('path', { d: 'M-15 -141 Q-15 -160 2 -158 Q17 -157 15 -140 Q10 -150 0 -148 Q-9 -148 -15 -141 Z', fill: '#4a3424' }, st);  // hair
+  el('circle', { cx: 5, cy: -140, r: 1.7, fill: '#33291f' }, st); el('circle', { cx: 11, cy: -140, r: 1.7, fill: '#33291f' }, st);
+  el('path', { d: 'M5 -133 Q8.5 -130 12 -133', stroke: '#8a5a3e', 'stroke-width': 1.6, fill: 'none', 'stroke-linecap': 'round' }, st);  // smile
+  el('circle', { cx: 13, cy: -136, r: 2.6, fill: '#e9a98b', opacity: .6 }, st);                                         // cheek
+  return st;
+}
+
 function landscape(svg){
   svg.innerHTML = `<defs>
     <linearGradient id="h-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e9e1cf"/><stop offset=".6" stop-color="#f4ead6"/><stop offset="1" stop-color="#efe3c8"/></linearGradient>
@@ -325,6 +360,8 @@ window.KedrHome = function(ctx){
       el('path', { d: `M${CX-18} ${CY+2} Q${CX} ${CY-8} ${CX+18} ${CY+2}`, stroke: '#6a4c38', 'stroke-width': 4, fill: 'none' }, svg);
       el('text', { x: CX, y: CY + 34, 'text-anchor': 'middle', 'font-family': 'Caveat', 'font-size': 24, fill: '#f9f4e9' }, svg, 'a spot for your cedar');
     }
+    // the student with a watering can, in front of Kinematics (desktop serpentine only)
+    if (!PHONE) student(svg, 312, 848, .56);
     // forester at the start of the trail
     const fg = el('g', { class: 'hot' }, svg);
     forester(fg, 90, 735, planted ? 'wave' : 'offer', .72); archik(fg, 175, 770, .62);
