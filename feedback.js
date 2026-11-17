@@ -52,9 +52,11 @@
       var li = el.closest && el.closest('li'); if (li) { var b = li.querySelector('b'); if (b && /^\(/.test(b.textContent)) info.part = b.textContent.trim(); }
       var fig = el.closest && el.closest('figure,svg,img'); if (fig) info.figure = (fig.querySelector && fig.querySelector('img') ? fig.querySelector('img').getAttribute('src') : (fig.getAttribute('src') || 'picture'));
       // nearest heading above (theory sections)
-      var hs = doc.querySelectorAll('h1,h2,h3'), best = null, ey = el.getBoundingClientRect().top;
-      for (var i = 0; i < hs.length; i++) { if (hs[i].getBoundingClientRect().top <= ey + 2) best = hs[i]; }
-      if (best) info.section = txt(best.textContent, 80);
+      if (inFrame) {   // theory card: nearest visible section heading above the pin
+        var hs = doc.querySelectorAll('h1,h2,h3'), best = null, ey = el.getBoundingClientRect().top;
+        for (var i = 0; i < hs.length; i++) { var r2 = hs[i].getBoundingClientRect(); if (r2.height && r2.top <= ey + 2) best = hs[i]; }
+        if (best) info.section = txt(best.textContent, 80);
+      }
       var t = el; while (t && txt(t.innerText || t.textContent, 400).length < 25 && t.parentElement) t = t.parentElement;
       info.text = txt(t && (t.innerText || t.textContent), 220);
     }
