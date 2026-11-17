@@ -361,7 +361,7 @@ window.KedrHome = function(ctx){
       el('text', { x: CX, y: CY + 34, 'text-anchor': 'middle', 'font-family': 'Caveat', 'font-size': 24, fill: '#f9f4e9' }, svg, 'a spot for your cedar');
     }
     // the student with a watering can, in front of Kinematics (desktop serpentine only)
-    if (!PHONE) student(svg, 318, 846, .82);
+    if (!PHONE) student(svg, 312, 848, .56);
     // forester at the start of the trail
     const fg = el('g', { class: 'hot' }, svg);
     forester(fg, 90, 735, planted ? 'wave' : 'offer', .72); archik(fg, 175, 770, .62);
