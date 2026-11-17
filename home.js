@@ -296,16 +296,16 @@ window.KedrHome = function(ctx){
     const sayBtn = root.querySelector('.say .next'); if (sayBtn) sayBtn.onclick = () => { heard[speech.id] = true; store.set('kedr-heard', heard); root.querySelector('.say').remove(); };
     const svg = document.getElementById('homeSvg'); landscape(svg);
     const PHONE = innerWidth < 760;
-    if (PHONE) svg.setAttribute('viewBox', '600 130 560 560');   // phone: old diagonal trail for now (serpentine is desktop only)
+    if (PHONE) svg.setAttribute('viewBox', '600 130 560 560'); else svg.setAttribute('preserveAspectRatio', 'xMidYMax slice');   // desktop: never crop the bottom (the trail)   // phone: old diagonal trail for now (serpentine is desktop only)
     { const spots = innerWidth < 760 ? IRBIS_HOME_PHONE : IRBIS_HOME, sp = spots[Math.floor(Math.random() * spots.length)];
       const ig = document.createElementNS(NS, 'g'); svg.insertBefore(ig, svg.querySelector('.mist').nextSibling); irbisWalk(ig, ...sp, 1, 46); }
     // trail with sections
     // serpentine trail (18.11.2026): right → left → right → left, up the hill to the cedar
-    const TRAIL = PHONE ? 'M150 840 C 300 820, 360 790, 470 770 S 600 730, 650 700 S 760 630, 800 605 S 830 585, 845 578' : 'M160 840 C 500 834, 900 826, 1180 816 C 1290 812, 1300 762, 1190 758 C 900 752, 600 746, 360 738 C 260 735, 250 690, 350 686 C 650 670, 950 650, 1150 634 C 1260 625, 1250 596, 1150 596 C 1050 594, 960 586, 900 578';
+    const TRAIL = PHONE ? 'M150 840 C 300 820, 360 790, 470 770 S 600 730, 650 700 S 760 630, 800 605 S 830 585, 845 578' : 'M170 842 C 450 838, 750 830, 1000 820 C 1085 816, 1090 762, 1000 760 C 780 756, 560 750, 340 742 C 255 739, 250 692, 340 690 C 560 683, 790 672, 1000 660 C 1080 656, 1085 614, 1000 612 C 880 610, 760 612, 650 614';
     const trail = el('path', { d: TRAIL, fill: 'none', stroke: '#efe3c8', 'stroke-width': 5, 'stroke-dasharray': '2 12', 'stroke-linecap': 'round' }, svg);
     const L = trail.getTotalLength();
     const units = [{ n: 'Kinematics', ready: true, unit: 'Kinematics' }, { n: 'Forces & momentum' }, { n: 'Energy' }, { n: 'Thermodynamics', ready: true, unit: 'Thermodynamics' }, { n: 'Waves' }, { n: 'Fields' }, { n: 'Quantum & nuclear' }];
-    const UNIT_AT = PHONE ? [.15, .27, .39, .51, .63, .75, .87] : [.06, .20, .42, .54, .665, .745, .95];   // places along the trail, away from the bends
+    const UNIT_AT = PHONE ? [.15, .27, .39, .51, .63, .75, .87] : [.08, .24, .40, .55, .635, .78, .94];   // places along the trail, away from the bends
     units.forEach((u, i) => {
       const p = trail.getPointAtLength(L * UNIT_AT[i]), s = el('g', { transform: `translate(${p.x} ${p.y})`, opacity: u.ready ? 1 : .55, class: u.ready ? 'hot' : '' }, svg);
       el('line', { x1: 0, y1: 0, x2: 0, y2: -34, stroke: '#33291f', 'stroke-width': 2 }, s);
@@ -315,14 +315,15 @@ window.KedrHome = function(ctx){
       el('text', { x: 10, y: -40, 'font-family': 'Bricolage Grotesque', 'font-weight': 600, 'font-size': u.ready ? 18 : 14, fill: u.ready ? '#33291f' : '#f4ecdc', stroke: u.ready ? '#f4ecdc' : '#3f5440', 'stroke-width': u.ready ? 4 : 3, 'paint-order': 'stroke' }, s, u.n + (u.ready ? '' : ' · soon'));
       if (u.ready) s.addEventListener('click', () => { window._kedrUnit = u.unit; try { localStorage.setItem('kedr-unit', u.unit); } catch(e) {} location.hash = '#map'; });
     });
-    // the student's cedar on the hilltop
+    // the student's cedar at the end of the trail
+    const CX = PHONE ? 880 : 640, CY = PHONE ? 572 : 614;
     if (planted){
-      const tree = cedar(svg, 880, 572, st, n);
-      if (animatePlant){ tree.style.transformOrigin = '880px 572px'; tree.style.transform = 'scale(.05)'; requestAnimationFrame(() => requestAnimationFrame(() => { tree.style.transition = 'transform 1.6s cubic-bezier(.2,1.4,.4,1)'; tree.style.transform = 'scale(1)'; })); setTimeout(() => render(false), 1900); }
-      el('text', { x: 880, y: 608, 'text-anchor': 'middle', 'font-family': 'Caveat', 'font-size': 24, fill: '#f9f4e9' }, svg, 'your cedar');
+      const tree = cedar(svg, CX, CY, st, n);
+      if (animatePlant){ tree.style.transformOrigin = CX + 'px ' + CY + 'px'; tree.style.transform = 'scale(.05)'; requestAnimationFrame(() => requestAnimationFrame(() => { tree.style.transition = 'transform 1.6s cubic-bezier(.2,1.4,.4,1)'; tree.style.transform = 'scale(1)'; })); setTimeout(() => render(false), 1900); }
+      el('text', { x: CX, y: CY + 36, 'text-anchor': 'middle', 'font-family': 'Caveat', 'font-size': 24, fill: '#f9f4e9' }, svg, 'your cedar');
     } else {
-      el('path', { d: 'M862 574 Q880 564 898 574', stroke: '#6a4c38', 'stroke-width': 4, fill: 'none' }, svg);
-      el('text', { x: 880, y: 606, 'text-anchor': 'middle', 'font-family': 'Caveat', 'font-size': 24, fill: '#f9f4e9' }, svg, 'a spot for your cedar');
+      el('path', { d: `M${CX-18} ${CY+2} Q${CX} ${CY-8} ${CX+18} ${CY+2}`, stroke: '#6a4c38', 'stroke-width': 4, fill: 'none' }, svg);
+      el('text', { x: CX, y: CY + 34, 'text-anchor': 'middle', 'font-family': 'Caveat', 'font-size': 24, fill: '#f9f4e9' }, svg, 'a spot for your cedar');
     }
     // forester at the start of the trail
     const fg = el('g', { class: 'hot' }, svg);
