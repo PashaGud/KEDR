@@ -1,0 +1,23 @@
+/* Physics Course — spacing, radii, structure tokens (exact values from Scene 9 — Variant C) */
+:root {
+  --radius-card: 6px;         /* main lesson card */
+  --radius-panel: 10px;       /* nested panels, diagram bg, watch-out block, formula pill */
+  --radius-bubble: 16px 16px 16px 3px; /* teacher speech bubble (tail corner) */
+
+  --pad-card: 56px 72px 60px; /* main lesson card */
+  --pad-panel: 20px 22px;     /* way-cards */
+  --pad-diagram: 28px 32px 22px;
+  --pad-watchout: 18px 22px;
+  --pad-bubble: 8px 18px;
+  --pad-formula-pill: 9px 22px;
+
+  --page-max-width: 960px;
+  --pad-page: 56px 24px 100px;
+
+  --space-beat: 56px;         /* between teaching beats/sections */
+  --space-block: 24px;        /* between blocks within a beat */
+  --space-inner: 12px;        /* inside panels */
+
+  --tilt-bubble: rotate(-0.5deg); /* @kind other */ /* handwritten elements sit slightly off-axis */
+  --tilt-aside: rotate(-0.4deg); /* @kind other */
+}

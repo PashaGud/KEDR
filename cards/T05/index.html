@@ -1,0 +1,928 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>T05 Circular Motion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light;
+  --page:#efe8d8; --card:#f9f4e9; --card-inner:#fbf8f0;
+  --border:#e3d9c2; --border-inner:#ddd2b8;
+  --shadow-card:0 2px 24px rgba(90,70,40,.10);
+  --ink:#33291f; --ink-muted:#6b5d43;
+  --qty-time:#4a7c59; --qty-position:#3d6bb3; --qty-velocity:#c15b38;
+  --qty-acceleration:#7a5aa8;
+  --qty-angle:#8f6210;           /* PROPOSED: angle θ + angular speed ω (needs approval) */
+  --diagram-bg:#eaf1ea;
+  --scene-bg:#f3ead6;
+  --misconception:#6e2a48; --misconception-bg:#e9dbe3;
+  --teacher:#5a6f9e; --teacher-bubble-border:#b9c5dd;
+  --font-structure:'Bricolage Grotesque',sans-serif;
+  --font-body:'Source Serif 4',Georgia,serif;
+  --font-hand:'Caveat',cursive;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--ink);font:400 18px/1.62 var(--font-body);-webkit-font-smoothing:antialiased}
+.page{max-width:860px;margin:0 auto;padding:40px 16px 80px}
+.kickerbar{display:flex;justify-content:space-between;align-items:flex-end;margin:0 6px 14px;gap:16px}
+.kicker{font:600 12.5px/1.3 var(--font-structure);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted)}
+.hand{font-family:var(--font-hand);font-weight:500;color:var(--teacher)}
+.kickerbar .hand{font-size:19px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:18px;box-shadow:var(--shadow-card);padding:46px 52px 56px}
+h1{font:600 38px/1.2 var(--font-structure);margin:0 0 38px;letter-spacing:-.01em}
+h1 .sub{display:block;font:400 21px/1.3 var(--font-structure);color:var(--ink-muted);margin-top:8px;letter-spacing:0}
+h2{font:600 24px/1.25 var(--font-structure);margin:0}
+h3{font:600 17.5px/1.3 var(--font-structure);margin:30px 0 8px;letter-spacing:.005em}
+p{margin:0 0 16px}
+.lead{font-size:18px}
+section{margin-top:52px}
+.sechead{display:flex;align-items:center;gap:14px;margin-bottom:22px}
+.num{flex:none;width:34px;height:34px;border:1.5px solid var(--ink);border-radius:50%;display:grid;place-items:center;font:600 16px/1 var(--font-structure)}
+.honey{background-image:linear-gradient(101deg,rgba(224,188,120,0) 1.5%,rgba(224,188,120,.5) 4%,rgba(228,192,122,.4) 52%,rgba(224,188,120,.5) 96%,rgba(224,188,120,0) 98.5%);background-size:100% 66%;background-position:0 82%;background-repeat:no-repeat;border-radius:.7em .4em .6em .5em;-webkit-box-decoration-break:clone;box-decoration-break:clone;padding:0 .15em}
+.aside{font:500 23px/1.3 var(--font-hand);color:var(--teacher);transform:rotate(-.4deg);margin:6px 0 18px 2px}
+.aside u{text-decoration-thickness:1.5px;text-underline-offset:3px}
+.bubble{display:inline-block;font:500 21px/1.3 var(--font-hand);color:var(--teacher);background:var(--card-inner);border:1.5px solid var(--teacher-bubble-border);border-radius:16px 16px 16px 3px;padding:8px 18px;transform:rotate(-.5deg);margin:4px 0 18px}
+.note{font-size:15.5px;line-height:1.5;color:var(--ink-muted)}
+.withmargin{display:grid;grid-template-columns:1fr 180px;gap:28px;align-items:start}
+.margin{font:500 19px/1.25 var(--font-hand);color:var(--teacher);transform:rotate(-1deg);border-left:1.5px dashed var(--teacher-bubble-border);padding-left:14px;margin-top:4px}
+ul.examples{margin:6px 0 20px;padding-left:22px}
+ul.examples li{margin:4px 0}
+.panel{background:var(--card-inner);border:1px solid var(--border-inner);border-radius:10px;padding:20px 22px}
+.label{font:600 13px/1.3 var(--font-structure);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:10px}
+.watch{background:var(--misconception-bg);color:var(--misconception);border-radius:10px;padding:18px 22px;margin:22px 0}
+.watch .label{color:var(--misconception)}
+.watch p{margin:0 0 8px;font-size:16.5px;line-height:1.55}
+.watch p:last-child{margin:0}
+figure{margin:22px 0}
+.diagram{background:var(--diagram-bg);border-radius:10px;padding:20px 22px 14px}
+.scene{background:var(--scene-bg);border-radius:10px;padding:0;overflow:hidden}
+figure svg{display:block;width:100%;height:auto}
+figcaption{font:500 18px/1.3 var(--font-hand);color:var(--teacher);margin-top:8px;padding-left:4px}
+svg .h{font-family:'Caveat',cursive;font-weight:500}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.hammer{display:grid;grid-template-columns:.55fr 1fr;gap:16px;align-items:start}
+.hammer figure{margin:0}
+/* formulas */
+.f{font:italic 400 22px/1.3 var(--font-body);white-space:nowrap}
+.f .u{font-style:normal;font-size:16px;color:var(--ink-muted)}
+.f .op{font-style:normal;margin:0 .25em}
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 .15em;line-height:1.15}
+.frac>span:first-child{border-bottom:1.5px solid var(--ink);padding:0 .25em .1em}
+.frac>span:last-child{padding:.1em .25em 0}
+.q-t{color:var(--qty-time)} .q-x{color:var(--qty-position)} .q-v{color:var(--qty-velocity)}
+.q-a{color:var(--qty-acceleration)} .q-w{color:var(--qty-angle)}
+.formula-row{display:flex;flex-wrap:wrap;align-items:center;gap:14px 28px;margin:14px 0 18px}
+.pill{display:inline-flex;align-items:center;border:1.5px solid var(--ink);border-radius:10px;padding:9px 22px}
+.pill sub{align-self:center;font-size:.68em;line-height:1;transform:translateY(.4em)}
+.pill.key{border-width:2px;box-shadow:3px 3px 0 rgba(51,41,31,.12)}
+.tag{font:500 20px/1 var(--font-hand);color:var(--teacher);margin-left:6px}
+dl.defs{display:grid;grid-template-columns:130px 1fr;gap:8px 18px;margin:14px 0 18px}
+dl.defs dt{font:italic 400 20px/1.4 var(--font-body)}
+dl.defs dd{margin:0;font-size:16.5px;line-height:1.55;padding-top:2px}
+.calc{font-size:16.5px}
+.recap{margin-top:64px}
+.recap .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.recap .cell{background:var(--card-inner);border:1px solid var(--border-inner);border-radius:10px;padding:14px 16px}
+.recap .cell .label{margin-bottom:6px}
+@media (max-width:760px){
+  .page{padding:28px 16px 64px}
+  .card{padding:30px 22px 40px}
+  h1{font-size:29px}
+  h1 .sub{font-size:18px}
+  h2{font-size:21px}
+  body{font-size:17px}
+  .withmargin{grid-template-columns:1fr}
+  .margin{border-left:none;padding-left:0}
+  .two,.recap .grid,.hammer{grid-template-columns:1fr}
+  dl.defs{grid-template-columns:90px 1fr}
+  .f{white-space:normal}
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="kickerbar">
+    <div class="kicker">Physics Course · Theory · T05</div>
+    <div class="hand">round and round we go</div>
+  </div>
+
+  <main class="card">
+    <h1>Circular motion<span class="sub">with constant speed</span></h1>
+
+    <!-- INTRO -->
+    <p class="lead">In the previous topics we learnt how to deal with bodies that move along a straight line. Now it is time to study bodies whose trajectory is a <strong>circle</strong>.</p>
+    <p>To make this first meeting easier, we will only look at bodies that go around the circle <span class="honey">with the same speed all the time</span>: not speeding up, not slowing down.</p>
+
+    <div class="withmargin">
+      <div>
+        <p>Let's try to list some examples:</p>
+        <ul class="examples">
+          <li>the hands of a clock;</li>
+          <li>everything standing still on our planet — it still rotates together with the Earth;</li>
+          <li>every point on a bicycle tyre while the bike rides at constant speed;</li>
+          <li>a child whom a parent spins around by the hands;</li>
+          <li>a carousel</li>
+        </ul>
+        <p>…and so on.</p>
+      </div>
+      <div class="margin">The tyre point circles around the <u>axle</u>. Seen from the road, its path is a very different curve!</div>
+    </div>
+
+    <!-- 1 -->
+    <section id="tangent-and-centre">
+      <div class="sechead"><div class="num">1</div><h2>Something is always pulling to the centre</h2></div>
+
+      <p>Let me use my dog to show you the first property. His name is Archik — a lovely Jack Russell terrier who goes completely crazy and uncontrollable when he sees another animal.</p>
+      <p>When he is super happy — so, all the time — he likes to run around me. And I honestly do not know how he does it while keeping <span class="honey">the same distance between us</span>. In maths this distance is called the <strong>radius</strong>.</p>
+
+      <figure class="scene">
+        <svg viewBox="0 0 680 330" role="img" aria-label="A man stands in a park while his small terrier runs a circle around him">
+          <!-- trees -->
+          <g>
+            <rect x="70" y="92" width="10" height="70" rx="3" fill="#8a6a4e"/>
+            <circle cx="75" cy="78" r="40" fill="#a9b98a"/><circle cx="52" cy="98" r="26" fill="#9bae7e"/><circle cx="100" cy="96" r="28" fill="#b3c294"/>
+            <rect x="590" y="102" width="9" height="58" rx="3" fill="#8a6a4e"/>
+            <circle cx="594" cy="92" r="32" fill="#b3c294"/><circle cx="616" cy="108" r="22" fill="#a9b98a"/>
+          </g>
+          <!-- lawn -->
+          <ellipse cx="340" cy="232" rx="320" ry="88" fill="#dfe5c9"/>
+          <!-- running path -->
+          <ellipse cx="340" cy="232" rx="210" ry="62" fill="none" stroke="#a8946c" stroke-width="2" stroke-dasharray="7 7"/>
+          <!-- shadow of man -->
+          <ellipse cx="340" cy="234" rx="30" ry="7" fill="#c9cfae"/>
+          <!-- man -->
+          <g>
+            <rect x="326" y="180" width="11" height="52" rx="4" fill="#4f4a46"/>
+            <rect x="343" y="180" width="11" height="52" rx="4" fill="#4f4a46"/>
+            <path d="M318 112 Q340 100 362 112 L366 190 Q340 198 314 190 Z" fill="#9a6f52"/>
+            <path d="M318 118 Q306 150 312 176" stroke="#9a6f52" stroke-width="10" fill="none" stroke-linecap="round"/>
+            <path d="M362 118 Q376 150 368 176" stroke="#9a6f52" stroke-width="10" fill="none" stroke-linecap="round"/>
+            <rect x="334" y="96" width="12" height="12" fill="#e7c6a2"/>
+            <circle cx="340" cy="84" r="17" fill="#ecccaa"/>
+            <path d="M323 80 Q326 64 340 64 Q356 64 357 80 Q350 72 340 73 Q330 72 323 80Z" fill="#5c4636"/>
+            <path d="M333 90 Q340 95 347 90" stroke="#8a5a40" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+            <rect x="322" y="228" width="17" height="7" rx="3" fill="#3b3330"/><rect x="341" y="228" width="17" height="7" rx="3" fill="#3b3330"/>
+          </g>
+          <!-- unseen string -->
+          <path d="M352 150 Q440 190 515 262" fill="none" stroke="#b07a8a" stroke-width="1.6" stroke-dasharray="2 6" stroke-linecap="round"/>
+          <path d="M438 189 c-4 -7 -14 -3 -9 5 l9 8 l9 -8 c5 -8 -5 -12 -9 -5z" fill="#d79aa4"/>
+          <!-- dog (running toward lower-left along the front of the path) -->
+          <g transform="translate(528 278)">
+            <ellipse cx="0" cy="14" rx="30" ry="5" fill="#c9cfae"/>
+            <path d="M18 -14 Q40 -36 34 -40" stroke="#f4efe6" stroke-width="5" fill="none" stroke-linecap="round"/>
+            <ellipse cx="0" cy="-8" rx="26" ry="13" fill="#f4efe6"/>
+            <ellipse cx="8" cy="-12" rx="11" ry="8" fill="#c98f55"/>
+            <path d="M-18 -2 L-34 10" stroke="#f4efe6" stroke-width="6" stroke-linecap="round"/>
+            <path d="M-12 0 L-6 14" stroke="#f4efe6" stroke-width="6" stroke-linecap="round"/>
+            <path d="M14 0 L30 8" stroke="#f4efe6" stroke-width="6" stroke-linecap="round"/>
+            <path d="M18 -2 L12 14" stroke="#f4efe6" stroke-width="6" stroke-linecap="round"/>
+            <ellipse cx="-27" cy="-18" rx="13" ry="11" fill="#f4efe6"/>
+            <ellipse cx="-24" cy="-22" rx="8" ry="7" fill="#c98f55"/>
+            <path d="M-20 -28 L-12 -34 L-14 -22Z" fill="#a87244"/>
+            <ellipse cx="-39" cy="-14" rx="6" ry="4.5" fill="#f4efe6"/>
+            <circle cx="-44" cy="-15" r="2.4" fill="#33291f"/>
+            <circle cx="-30" cy="-21" r="1.8" fill="#33291f"/>
+            <path d="M-40 -10 Q-42 -4 -38 -5" stroke="#d26b6b" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          </g>
+          <!-- motion lines -->
+          <g stroke="#a8946c" stroke-width="2" stroke-linecap="round">
+            <path d="M580 262 L604 258"/><path d="M584 274 L612 272"/><path d="M578 286 L598 287"/>
+          </g>
+          <text x="566" y="234" class="h" font-size="22" fill="#5a6f9e">Archik</text>
+          <text x="384" y="96" class="h" font-size="22" fill="#5a6f9e">me</text>
+          <text x="392" y="226" class="h" font-size="20" fill="#5a6f9e" transform="rotate(33 392 226)">the unseen string</text>
+        </svg>
+      </figure>
+
+      <p>What I want you to think about is this: <strong>what makes him run around me?</strong> What forces him to? He is not attached to me by anything physical — no chain, no string. Between us there is nothing at all.</p>
+      <p class="aside">I can think of only one thing — <u>love</u>. The unseen string between every dog and its owner.</p>
+
+      <p>The point of this example: <span class="honey">if a body moves along a circle, something must keep pulling it towards the centre</span> of that circle. That pull is the reason the body keeps turning instead of running off straight.</p>
+
+      <div class="panel">
+        <div class="label">The pull always points to the centre</div>
+        <dl class="defs">
+          <dt>Earth</dt><dd>circles the Sun. We picture the Sun at the centre, pulling the Earth towards itself.</dd>
+          <dt>Archik</dt><dd>runs around me, and love is what makes him turn.</dd>
+          <dt>A child</dt><dd>is spun around by a parent who keeps the child's hands in a firm grip.</dd>
+        </dl>
+      </div>
+
+      <div class="watch">
+        <div class="label">Watch out!</div>
+        <p>The pull has to <strong>point</strong> to the centre, but nothing has to <strong>sit</strong> at the centre. Love may be why Archik wants to turn, but what physically pushes him sideways is his paws gripping the grass.</p>
+        <p>Same with a car on a roundabout: nothing stands in the middle. The tyres pushing against the road do the job.</p>
+      </div>
+    </section>
+
+    <!-- 2 -->
+    <section id="velocity-along-tangent-sec">
+      <div class="sechead"><div class="num">2</div><h2>Velocity points along the tangent</h2></div>
+
+      <p>For the second property I want you to think: <strong>what happens when this attachment breaks?</strong> Imagine that I, the owner, suddenly disappear. Or the Sun disappears. Or, scarier — the father suddenly opens his grip and lets go of his child.</p>
+      <p>But I personally like another example — the Summer Olympic Games. In the <strong>hammer throw</strong>, athletes must throw a metal ball on a chain as far as possible. So the athlete spins the ball as hard as he can to give it speed, and at some point lets it go. While he holds the grip, the ball circles around him. <span class="honey">The whole question is: at what moment to let go?</span></p>
+
+      <div class="hammer">
+      <figure class="scene">
+        <svg viewBox="0 0 300 400" role="img" aria-label="A hammer thrower in the cage spinning the ball on its wire just before release">
+          <defs>
+            <pattern id="net" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0 V14 M0 0 H14" stroke="#b8ad98" stroke-width=".8"/></pattern>
+            <radialGradient id="ball" cx=".35" cy=".35" r=".7"><stop offset="0" stop-color="#e9e6e0"/><stop offset=".6" stop-color="#8b8780"/><stop offset="1" stop-color="#4c4944"/></radialGradient>
+            <linearGradient id="skinH" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c8936a"/><stop offset="1" stop-color="#e3b48c"/></linearGradient>
+          </defs>
+          <rect width="300" height="400" fill="#e9eef0"/>
+          <rect y="300" width="300" height="100" fill="#cdd6b6"/>
+          <rect x="18" y="30" width="264" height="290" fill="url(#net)" opacity=".8"/>
+          <path d="M18 26 V322 M282 26 V322" stroke="#8a8172" stroke-width="4"/>
+          <ellipse cx="150" cy="340" rx="92" ry="20" fill="#c9c2b2"/>
+          <ellipse cx="150" cy="340" rx="80" ry="16" fill="#d8d2c4" stroke="#fbf8f0" stroke-width="2"/>
+          <!-- ball orbit trail -->
+          <ellipse cx="150" cy="236" rx="128" ry="44" transform="rotate(-14 150 236)" fill="none" stroke="#8a8172" stroke-width="1.5" stroke-dasharray="3 7" opacity=".7"/>
+          <path d="M150 284 Q214 282 268 236" fill="none" stroke="#a69c8a" stroke-width="5" stroke-linecap="round" opacity=".35"/>
+          <!-- legs -->
+          <path d="M146 252 L132 290 L126 330" stroke="#1f1d1c" stroke-width="15" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M162 252 L182 288 L174 330" stroke="#1f1d1c" stroke-width="15" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M136 280 L132 290 L127 328 M178 281 L182 288 L175 328" stroke="url(#skinH)" stroke-width="11" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M116 334 Q126 326 136 333 Z M166 334 Q176 326 188 333 Z" fill="#33291f" stroke="#33291f" stroke-width="5" stroke-linejoin="round"/>
+          <!-- torso leaning back -->
+          <path d="M134 186 Q150 178 168 186 L170 254 Q154 260 140 254 Z" fill="#5f7a6a"/>
+          <path d="M140 200 Q152 196 164 200" stroke="#4d6658" stroke-width="2" fill="none"/>
+          <!-- head -->
+          <rect x="143" y="168" width="10" height="14" fill="#d3a079"/>
+          <ellipse cx="146" cy="158" rx="12" ry="14" fill="url(#skinH)"/>
+          <path d="M134 154 Q135 140 147 140 Q159 141 158 153 Q151 148 144 149 Q138 150 134 154 Z" fill="#3b2f27"/>
+          <circle cx="153" cy="157" r="1.3" fill="#2b2421"/>
+          <!-- arms straight to the handle -->
+          <path d="M160 194 L206 224" stroke="url(#skinH)" stroke-width="10" stroke-linecap="round"/>
+          <path d="M150 198 L204 228" stroke="#d3a079" stroke-width="10" stroke-linecap="round"/>
+          <path d="M206 222 L216 230 L204 234 Z" fill="none" stroke="#33291f" stroke-width="2.4" stroke-linejoin="round"/>
+          <!-- wire and ball -->
+          <path d="M214 231 L258 236" stroke="#5c5852" stroke-width="1.8"/>
+          <circle cx="266" cy="237" r="11" fill="url(#ball)"/>
+          <g stroke="#8a8172" stroke-width="2" stroke-linecap="round" opacity=".7"><path d="M262 214 Q276 220 282 232"/><path d="M256 220 Q266 224 270 230"/></g>
+        </svg>
+      </figure>
+      <figure class="diagram">
+        <svg viewBox="104 6 476 380" role="img" aria-label="Top view of a hammer throw: three release moments and the three paths the ball takes">
+          <!-- sector (origin at the release line) -->
+          <path d="M351 282.3 L278.8 53.4 M381 282.3 L453.2 53.4" stroke="#33291f" stroke-width="1.5"/>
+          <g fill="none" stroke="#6b5d43" stroke-width="1.2" stroke-dasharray="4 5">
+            <path d="M329.9 215.6 A120 120 0 0 1 402.1 215.6"/>
+            <path d="M308.9 148.8 A190 190 0 0 1 423.1 148.8"/>
+            <path d="M287.8 82 A260 260 0 0 1 444.2 82"/>
+          </g>
+          <g class="h" font-size="18" fill="#6b5d43">
+            <text x="408" y="214">30 m</text><text x="429" y="147">50 m</text><text x="450" y="80">70 m</text>
+          </g>
+          <!-- throwing circle -->
+          <circle cx="320" cy="330" r="22" fill="#fbf8f0" stroke="#33291f" stroke-width="1.5"/>
+          <circle cx="320" cy="330" r="46" fill="none" stroke="#6b5d43" stroke-width="1.2" stroke-dasharray="3 5"/>
+          <!-- thrower top view -->
+          <ellipse cx="320" cy="330" rx="13" ry="8" fill="#9a6f52"/>
+          <circle cx="320" cy="330" r="6" fill="#5c4636"/>
+          <!-- late release (overgrip) -->
+          <line x1="320" y1="330" x2="359.8" y2="307" stroke="#6b5d43" stroke-width="1.5" stroke-dasharray="2 3"/>
+          <circle cx="359.8" cy="307" r="7" fill="#fbf8f0" stroke="#33291f" stroke-width="1.5"/>
+          <path d="M359.8 307 L239.8 99.2" stroke="#33291f" stroke-width="1.5" stroke-dasharray="2 5" fill="none"/>
+          <!-- early release -->
+          <line x1="320" y1="330" x2="359.8" y2="353" stroke="#6b5d43" stroke-width="1.5" stroke-dasharray="2 3"/>
+          <circle cx="359.8" cy="353" r="7" fill="#fbf8f0" stroke="#33291f" stroke-width="1.5"/>
+          <path d="M359.8 353 L469.8 162.5" stroke="#33291f" stroke-width="1.5" stroke-dasharray="2 5" fill="none"/>
+          <!-- right release -->
+          <line x1="320" y1="330" x2="366" y2="330" stroke="#33291f" stroke-width="2"/>
+          <path d="M366 330 L366 40" stroke="#33291f" stroke-width="1.6" stroke-dasharray="9 6" fill="none"/>
+          <path d="M366 322 L374 322 L374 330" fill="none" stroke="#33291f" stroke-width="1.3"/>
+          <circle cx="366" cy="330" r="8" fill="#33291f"/>
+          <!-- velocity at right release -->
+          <path d="M378 318 L378 266" stroke="#c15b38" stroke-width="2.6"/>
+          <path d="M378 258 L372 272 L384 272Z" fill="#c15b38"/>
+          <text x="386" y="284" class="h" font-size="22" fill="#c15b38">v</text>
+          <!-- rotation sense -->
+          <path d="M290 362 A46 46 0 0 0 351 365" fill="none" stroke="#6b5d43" stroke-width="1.3"/>
+          <path d="M351 365 l-9 -1 l5 -7z" fill="#6b5d43"/>
+          <!-- labels -->
+          <g class="h" fill="#5a6f9e" font-size="20">
+            <text x="232" y="96" text-anchor="end">let go too late</text>
+            <text x="232" y="116" text-anchor="end" font-size="17">(over-gripped)</text>
+            <text x="452" y="250">let go too early</text>
+            <text x="376" y="34">just right</text>
+            <text x="388" y="350" font-size="17">chain ⟂ throw</text>
+          </g>
+        </svg>
+        <figcaption>View from above. The chain is drawn at the moment of release.</figcaption>
+      </figure>
+      </div>
+
+      <p>Watching on TV, we notice that athletes release the hammer <strong>when the chain is perpendicular to the direction of the throw</strong>. Let it go too late and the ball flies off to the left. Let it go too early and it flies off to the right. In both cases it lands outside the sector.</p>
+
+      <h3>What do we conclude from this?</h3>
+      <p>Once released, the ball keeps flying <span class="honey">in the direction of its velocity at the moment of release</span>. That is the only thing it "remembers".</p>
+      <p>Also look at the angle between the chain (the radius) and the flight path: it is 90°. Always. So for any body moving in a circle, the velocity is directed <strong>along the tangent</strong>, perpendicular to the radius.</p>
+
+      <figure class="diagram">
+        <svg viewBox="0 0 640 300" role="img" aria-label="Circle with two positions of the dog and tangent velocity arrows, each perpendicular to the radius">
+          <circle cx="260" cy="160" r="110" fill="none" stroke="#33291f" stroke-width="1.5"/>
+          <circle cx="260" cy="160" r="4.5" fill="#33291f"/>
+          <line x1="260" y1="160" x2="260" y2="50" stroke="#3d6bb3" stroke-width="1.4" stroke-dasharray="5 5"/>
+          <line x1="260" y1="160" x2="150" y2="160" stroke="#3d6bb3" stroke-width="1.4" stroke-dasharray="5 5"/>
+          <path d="M260 62 L248 62 L248 50" fill="none" stroke="#33291f" stroke-width="1.2"/>
+          <path d="M162 160 L162 172 L150 172" fill="none" stroke="#33291f" stroke-width="1.2"/>
+          <path d="M260 50 L196 50" stroke="#c15b38" stroke-width="2.6"/><path d="M184 50 L198 44 L198 56Z" fill="#c15b38"/>
+          <path d="M150 160 L150 224" stroke="#c15b38" stroke-width="2.6"/><path d="M150 236 L144 222 L156 222Z" fill="#c15b38"/>
+          <circle cx="260" cy="50" r="7" fill="#33291f"/>
+          <circle cx="150" cy="160" r="7" fill="#33291f"/>
+          <g class="h" font-size="22">
+            <text x="186" y="38" fill="#c15b38">v₁</text>
+            <text x="124" y="232" fill="#c15b38">v₂</text>
+            <text x="267" y="110" fill="#3d6bb3">r</text>
+            <text x="198" y="152" fill="#3d6bb3">r</text>
+          </g>
+          <g class="h" fill="#5a6f9e" font-size="20">
+            <text x="272" y="40">Archik</text>
+            <text x="270" y="182">me</text>
+          </g>
+          <g class="h" fill="#5a6f9e" font-size="21">
+            <text x="420" y="140">velocity ⟂ radius,</text>
+            <text x="420" y="164">at every point</text>
+          </g>
+        </svg>
+      </figure>
+    </section>
+
+    <!-- 3 -->
+    <section id="speed-and-period">
+      <div class="sechead"><div class="num">3</div><h2>Linear speed and period</h2></div>
+
+      <p>I will leave my dog for a moment and show you a traditional Caucasian dance you may not know. It is called <strong>lezginka</strong>. I came across it while cycling in the centre of Moscow. I was riding slowly up a narrow street when I heard drums and music coming from inside a building. Curiosity made me stop and look through the window. It was a dance club called <strong>Adat</strong>.</p>
+      <p>A woman in a long dress was circling around a man, gliding like a swan. She moved so smoothly that she did not bob up and down at all, as if she were on roller skates.</p>
+
+      <figure class="scene">
+        <svg viewBox="0 0 680 360" role="img" aria-label="Through the window of the Adat club: a woman in a long white dress glides in a circle around a man in a dark cherkeska and fur hat">
+          <defs>
+            <linearGradient id="lzWall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6e9cc"/><stop offset="1" stop-color="#e9d4ab"/></linearGradient>
+            <linearGradient id="lzFloor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#cfa877"/><stop offset="1" stop-color="#b98c58"/></linearGradient>
+            <radialGradient id="lzGlow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff4d6" stop-opacity=".9"/><stop offset="1" stop-color="#fff4d6" stop-opacity="0"/></radialGradient>
+            <linearGradient id="lzCoat" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2b2421"/><stop offset=".55" stop-color="#3f3530"/><stop offset="1" stop-color="#241e1b"/></linearGradient>
+            <linearGradient id="lzHat" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#4d4640"/><stop offset=".5" stop-color="#6c645c"/><stop offset="1" stop-color="#3f3934"/></linearGradient>
+            <linearGradient id="lzDress" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#e6dac0"/><stop offset=".45" stop-color="#fdf9f0"/><stop offset="1" stop-color="#e2d4b6"/></linearGradient>
+            <linearGradient id="lzSkin" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#d9ac84"/><stop offset=".5" stop-color="#ebc6a0"/><stop offset="1" stop-color="#d6a77e"/></linearGradient>
+            <clipPath id="lzRoom"><rect x="40" y="48" width="600" height="292"/></clipPath>
+          </defs>
+          <!-- outside wall -->
+          <rect width="680" height="360" fill="#cdb48e"/>
+          <g stroke="#bfa47c" stroke-width="1"><path d="M0 12 H680 M0 352 H680"/></g>
+          <!-- sign -->
+          <rect x="250" y="6" width="180" height="32" rx="3" fill="#3f3128"/>
+          <rect x="254" y="10" width="172" height="24" rx="2" fill="none" stroke="#c9a24f" stroke-width="1"/>
+          <text x="340" y="29" text-anchor="middle" font-family="Bricolage Grotesque, sans-serif" font-weight="700" font-size="15" letter-spacing="4" fill="#e2c27a">ADAT CLUB</text>
+          <g clip-path="url(#lzRoom)">
+            <rect x="40" y="48" width="600" height="292" fill="url(#lzWall)"/>
+            <rect x="40" y="240" width="600" height="100" fill="url(#lzFloor)"/>
+            <g stroke="#b78955" stroke-width="1.2">
+              <path d="M180 240 L36 340 M260 240 L188 340 M340 240 L340 340 M420 240 L492 340 M500 240 L644 340"/>
+              <path d="M40 262 H640 M40 290 H640 M40 322 H640"/>
+            </g>
+            <rect x="40" y="236" width="600" height="6" fill="#a9825a"/>
+            <!-- lamps -->
+            <circle cx="170" cy="96" r="70" fill="url(#lzGlow)"/><circle cx="520" cy="96" r="70" fill="url(#lzGlow)"/>
+            <path d="M170 48 V78 M520 48 V78" stroke="#5a4a3c" stroke-width="1.5"/>
+            <path d="M156 78 H184 L192 96 H148 Z M506 78 H534 L542 96 H498 Z" fill="#b4874f"/>
+            <!-- musician with doli -->
+            <g>
+              <rect x="88" y="214" width="40" height="8" rx="2" fill="#7a5a44"/>
+              <path d="M92 222 V262 M124 222 V262" stroke="#6a4c38" stroke-width="4"/>
+              <path d="M100 156 Q110 148 122 156 L126 214 Q110 220 96 214 Z" fill="#6d5a4c"/>
+              <circle cx="111" cy="142" r="11" fill="#d9b08a"/>
+              <path d="M100 138 Q101 128 111 128 Q122 128 122 138 Q116 133 110 134 Q104 134 100 138Z" fill="#3b2f27"/>
+              <path d="M120 224 Q146 226 148 236" stroke="#d9b08a" stroke-width="6" fill="none" stroke-linecap="round"/>
+              <ellipse cx="150" cy="226" rx="9" ry="22" fill="#a8783f"/><ellipse cx="146" cy="226" rx="8" ry="21" fill="#e9d7b3" stroke="#8a6a4e"/>
+              <path d="M104 214 L98 262 M118 214 L122 262" stroke="#4f4038" stroke-width="9" stroke-linecap="round"/>
+              <path d="M126 168 Q140 196 146 210" stroke="#6d5a4c" stroke-width="8" fill="none" stroke-linecap="round"/>
+              <circle cx="146" cy="212" r="4" fill="#d9b08a"/>
+            </g>
+            <!-- dance circle -->
+            <ellipse cx="340" cy="296" rx="200" ry="34" fill="none" stroke="#8f6a3e" stroke-width="2" stroke-dasharray="7 7" opacity=".8"/>
+            <!-- MAN -->
+            <g transform="translate(20,-2)">
+              <ellipse cx="320" cy="303" rx="38" ry="6" fill="#9c7448" opacity=".55"/>
+              <path d="M303 236 L317 236 L316 294 L323 299 Q323 304 316 304 L301 304 Q297 304 299 299 Z" fill="#1d1917"/>
+              <path d="M325 236 L339 236 L338 294 L346 299 Q346 304 339 304 L323 304 Q320 304 321 299 Z" fill="#151210"/>
+              <path d="M298 128 Q320 119 342 128 L350 180 L363 248 Q342 256 320 253 Q298 256 277 248 L290 180 Z" fill="url(#lzCoat)"/>
+              <path d="M320 168 L318 252 M305 186 L296 246 M336 186 L346 246" stroke="#4a403a" stroke-width="1.2" fill="none"/>
+              <path d="M311 128 L320 170 L329 128 Z" fill="#7c6a5c"/>
+              <g fill="#d8cfbf" stroke="#2b2421" stroke-width=".6">
+                <rect x="297" y="136" width="2.6" height="12"/><rect x="300.6" y="136" width="2.6" height="12"/><rect x="304.2" y="136" width="2.6" height="12"/><rect x="307.8" y="136" width="2.6" height="12"/>
+                <rect x="330.6" y="136" width="2.6" height="12"/><rect x="334.2" y="136" width="2.6" height="12"/><rect x="337.8" y="136" width="2.6" height="12"/><rect x="341.4" y="136" width="2.6" height="12"/>
+              </g>
+              <rect x="290" y="174" width="60" height="6" fill="#141110"/>
+              <rect x="316" y="172.5" width="8" height="9" rx="1" fill="#cfc8ba"/>
+              <!-- raised arm -->
+              <path d="M300 134 Q284 120 279 100 Q276 86 283 66" stroke="url(#lzCoat)" stroke-width="13" fill="none" stroke-linecap="round"/>
+              <ellipse cx="284" cy="56" rx="5" ry="8" fill="#e2b994"/>
+              <!-- side arm -->
+              <path d="M340 134 Q362 136 380 132 Q398 128 410 124" stroke="url(#lzCoat)" stroke-width="13" fill="none" stroke-linecap="round"/>
+              <path d="M396 127 L412 122" stroke="#2b2421" stroke-width="17"/>
+              <path d="M414 120 Q424 118 428 122 Q422 128 413 128 Z" fill="#e2b994"/>
+              <!-- neck & head -->
+              <rect x="314" y="110" width="12" height="14" fill="#d6a77e"/>
+              <ellipse cx="321" cy="100" rx="13" ry="15" fill="url(#lzSkin)"/>
+              <ellipse cx="308" cy="102" rx="3" ry="5" fill="#d6a77e"/>
+              <path d="M316 95 h5 M325 95 h5" stroke="#3b2f27" stroke-width="1.6" stroke-linecap="round"/>
+              <circle cx="318.5" cy="99" r="1.3" fill="#2b2421"/><circle cx="327.5" cy="99" r="1.3" fill="#2b2421"/>
+              <path d="M324 100 Q327 104 324 106" stroke="#b9875f" stroke-width="1.2" fill="none"/>
+              <path d="M316 109 Q322 106 330 109 Q323 112 316 109Z" fill="#2f2621"/>
+              <path d="M318 113 Q322 115 326 113" stroke="#a7684e" stroke-width="1.2" fill="none"/>
+              <!-- papakha -->
+              <path d="M306 91 L307 64 Q321 57 335 64 L336 91 Q321 96 306 91 Z" fill="url(#lzHat)"/>
+              <g stroke="#837a70" stroke-width="1.2" stroke-linecap="round"><path d="M310 70 l2 4 M316 66 l1 4 M323 65 l0 4 M330 67 l-1 4 M312 79 l2 4 M320 76 l1 4 M328 78 l-1 4 M314 87 l1 3 M324 86 l0 3 M332 85 l-1 3"/></g>
+            </g>
+            <!-- WOMAN -->
+            <g transform="translate(20,-1)">
+              <ellipse cx="500" cy="308" rx="58" ry="8" fill="#9c7448" opacity=".55"/>
+              <!-- veil flowing back -->
+              <path d="M494 90 Q474 118 466 168 Q458 214 426 248 Q458 236 478 196 Q494 150 506 96 Z" fill="#ffffff" opacity=".7" stroke="#e3d7bd" stroke-width="1"/>
+              <!-- skirt -->
+              <path d="M488 168 Q478 228 434 300 Q468 316 520 312 Q546 308 554 298 Q530 234 512 168 Z" fill="url(#lzDress)"/>
+              <path d="M495 176 Q486 240 458 304 M502 178 Q500 246 494 312 M508 176 Q518 240 534 308" stroke="#d9cba9" stroke-width="1.3" fill="none"/>
+              <path d="M434 300 Q468 316 520 312 Q546 308 554 298" fill="none" stroke="#c9a24f" stroke-width="4"/>
+              <!-- bodice -->
+              <path d="M489 170 L486 128 Q500 120 514 128 L511 170 Z" fill="#f8f2e4"/>
+              <path d="M500 128 V168" stroke="#c9a24f" stroke-width="1.5"/>
+              <g fill="#c9a24f"><circle cx="500" cy="136" r="1.4"/><circle cx="500" cy="146" r="1.4"/><circle cx="500" cy="156" r="1.4"/></g>
+              <rect x="487" y="164" width="26" height="6" rx="2" fill="#c9a24f"/>
+              <!-- arm back, long hanging sleeve -->
+              <path d="M490 134 Q470 128 452 118" stroke="#f8f2e4" stroke-width="9" fill="none" stroke-linecap="round"/>
+              <path d="M462 122 Q446 150 440 196 Q452 176 470 132 Z" fill="#fbf7ec" stroke="#e3d7bd" stroke-width="1"/>
+              <path d="M450 116 Q442 112 440 116 Q444 122 452 121 Z" fill="#e8c29e"/>
+              <!-- arm forward/up -->
+              <path d="M511 132 Q530 118 546 98" stroke="#f8f2e4" stroke-width="9" fill="none" stroke-linecap="round"/>
+              <path d="M534 112 Q536 150 528 186 Q522 156 524 120 Z" fill="#fbf7ec" stroke="#e3d7bd" stroke-width="1"/>
+              <path d="M548 96 Q552 88 556 90 Q554 98 548 100 Z" fill="#e8c29e"/>
+              <!-- neck & head -->
+              <rect x="496" y="112" width="9" height="14" fill="#e2b994"/>
+              <ellipse cx="502" cy="103" rx="11" ry="13" fill="url(#lzSkin)"/>
+              <path d="M499 98 h4 M506 98 h4" stroke="#3b2f27" stroke-width="1.3" stroke-linecap="round"/>
+              <circle cx="501" cy="101" r="1.1" fill="#2b2421"/><circle cx="508" cy="101" r="1.1" fill="#2b2421"/>
+              <path d="M503 109 Q506 111 509 109" stroke="#b25a52" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+              <path d="M491 98 Q490 86 502 85 Q514 85 514 96 Q508 90 502 91 Q494 92 491 98 Z" fill="#3b2a22"/>
+              <path d="M490 92 Q502 80 515 91" stroke="#c9a24f" stroke-width="3" fill="none"/>
+            </g>
+            <!-- glide lines -->
+            <g stroke="#8f6a3e" stroke-width="2" stroke-linecap="round" opacity=".7"><path d="M440 292 L414 289 M432 306 L400 305"/></g>
+          </g>
+          <!-- window frame -->
+          <rect x="40" y="48" width="600" height="292" fill="none" stroke="#6e4f3b" stroke-width="14"/>
+          <rect x="40" y="48" width="600" height="292" fill="none" stroke="#8a6a52" stroke-width="2"/>
+        </svg>
+      </figure>
+
+      <p>So let's study her movement.</p>
+
+      <div class="two">
+        <figure class="diagram" style="margin:0">
+          <svg viewBox="0 0 320 300" role="img" aria-label="Circle with centre O, start point A at top and end point B at right; arc AB highlighted">
+            <circle cx="150" cy="160" r="110" fill="none" stroke="#33291f" stroke-width="1.5"/>
+            <path d="M150 50 A110 110 0 0 1 260 160" fill="none" stroke="#3d6bb3" stroke-width="6" stroke-linecap="round" opacity=".85"/>
+            <line x1="150" y1="160" x2="150" y2="50" stroke="#3d6bb3" stroke-width="1.3" stroke-dasharray="5 5"/>
+            <line x1="150" y1="160" x2="260" y2="160" stroke="#3d6bb3" stroke-width="1.3" stroke-dasharray="5 5"/>
+            <circle cx="150" cy="160" r="4.5" fill="#33291f"/>
+            <circle cx="150" cy="50" r="6.5" fill="#33291f"/><circle cx="260" cy="160" r="6.5" fill="#33291f"/>
+            <path d="M156 50 L196 50" stroke="#c15b38" stroke-width="2.4"/><path d="M206 50 L192 44 L192 56Z" fill="#c15b38"/>
+            <path d="M260 166 L260 206" stroke="#c15b38" stroke-width="2.4"/><path d="M260 216 L254 202 L266 202Z" fill="#c15b38"/>
+            <g class="h" font-size="22">
+              <text x="132" y="44" fill="#33291f">A</text><text x="270" y="152" fill="#33291f">B</text>
+              <text x="130" y="182" fill="#33291f">O</text>
+              <text x="134" y="112" fill="#3d6bb3">r</text><text x="200" y="178" fill="#3d6bb3">r</text>
+              <text x="222" y="78" fill="#3d6bb3">s<tspan font-size="15" dy="4">AB</tspan></text>
+              <text x="206" y="40" fill="#c15b38">v</text><text x="270" y="214" fill="#c15b38">v</text>
+            </g>
+          </svg>
+        </figure>
+        <div class="panel">
+          <div class="label">Who is where</div>
+          <dl class="defs" style="grid-template-columns:44px 1fr;margin:0">
+            <dt>O</dt><dd>where the man stands</dd>
+            <dt>A</dt><dd>where she was when I first saw her</dd>
+            <dt>B</dt><dd>where she was when I stopped looking</dd>
+            <dt class="q-x" style="font-style:normal">▬</dt><dd>her path between A and B — the arc <i>s</i><sub>AB</sub></dd>
+          </dl>
+        </div>
+      </div>
+
+      <p style="margin-top:22px">She danced so smoothly that I can claim her speed was constant. So, just as in straight-line motion:</p>
+      <div class="formula-row">
+        <span class="f pill"><span class="q-v">v</span><span class="op">=</span><span class="frac"><span class="q-x">s<sub>AB</sub></span><span class="q-t">t<sub>AB</sub></span></span></span>
+        <span class="note">her speed = length of arc AB ÷ time from A to B</span>
+      </div>
+
+      <div class="withmargin">
+        <div>
+          <p>But this formula is a bit awkward: it is not convenient to measure a <em>piece</em> of a circle. Let's simplify. Picture that I watched her longer — until she came back to point A. Distance and time both change, but her speed is the same. Now the distance is the whole circumference, and the time is the time of <strong>one full revolution</strong>.</p>
+        </div>
+        <div class="margin">Circumference of a circle = 2πr. Remember it from maths!</div>
+      </div>
+
+      <div class="formula-row">
+        <span class="f pill key"><span class="q-v">v</span><span class="op">=</span><span class="frac"><span>2π<span class="q-x">r</span></span><span class="q-t">T</span></span></span><span class="tag">(1)</span>
+      </div>
+
+      <p>The time of one full revolution has its own name — the <strong>period</strong>, <i class="q-t">T</i>.</p>
+      <p>And <i class="q-v">v</i> here is an old quantity with a new name: <strong>linear speed</strong>. "Speed" is the old part — it still tells us <span class="honey">how many metres she covers along the circle every second</span>. "Linear" is the new part: it reminds us we are measuring along the line of the path, not counting turns.</p>
+
+      <dl class="defs">
+        <dt class="q-t">T</dt><dd><strong>Period</strong> — the time of one full revolution. Unit: second, [<i>T</i>] = s.</dd>
+        <dt class="q-v">v</dt><dd><strong>Linear speed</strong> — distance along the circle per unit time. Unit: m/s.</dd>
+      </dl>
+
+      <p>We use the period for anything that repeats itself. The second hand of a clock: <i class="q-t">T</i> = 60 s. The Earth going around the Sun: <i class="q-t">T</i> ≈ 365 days.</p>
+      <p class="aside">A period is always a <u>time</u>!</p>
+    </section>
+
+    <!-- 4 -->
+    <section id="angular-speed">
+      <div class="sechead"><div class="num">4</div><h2>Angular speed</h2></div>
+
+      <p>Watching the dance, I noticed another detail. While she was flying around, the man in the centre was always looking at her. His gaze always pointed exactly where she was, which means <span class="honey">his head was rotating too</span> to follow her.</p>
+      <p>So we can ask a new question: <strong>how fast was he turning his head?</strong></p>
+
+      <div class="two">
+        <div class="panel"><div class="label">She</div><p style="margin:0">moves by <strong>metres</strong> along the circle.</p></div>
+        <div class="panel"><div class="label">He</div><p style="margin:0">turns by <strong>degrees</strong>, or better, by <strong>radians</strong>.</p></div>
+      </div>
+
+      <p style="margin-top:20px">Now this formula starts to make sense:</p>
+      <div class="formula-row">
+        <span class="f pill"><span class="q-w">ω</span><span class="op">=</span><span class="frac"><span class="q-w">θ<sub>AB</sub></span><span class="q-t">t<sub>AB</sub></span></span></span>
+        <span class="note">angular speed = angle turned ÷ time taken</span>
+      </div>
+      <p><strong>Angular speed</strong> <i class="q-w">ω</i> (omega) shows how fast something is turning — how many radians it turns through every second.</p>
+
+      <div class="withmargin">
+        <figure class="diagram" style="margin:0">
+          <svg viewBox="0 0 400 290" role="img" aria-label="Circle with the angle theta between radius OA and radius OB">
+            <circle cx="170" cy="155" r="110" fill="none" stroke="#33291f" stroke-width="1.5"/>
+            <path d="M170 45 A110 110 0 0 1 280 155" fill="none" stroke="#3d6bb3" stroke-width="5" stroke-linecap="round" opacity=".55"/>
+            <line x1="170" y1="155" x2="170" y2="45" stroke="#3d6bb3" stroke-width="1.3" stroke-dasharray="5 5"/>
+            <line x1="170" y1="155" x2="280" y2="155" stroke="#3d6bb3" stroke-width="1.3" stroke-dasharray="5 5"/>
+            <path d="M170 105 A50 50 0 0 1 220 155" fill="none" stroke="#8f6210" stroke-width="2.4"/>
+            <circle cx="170" cy="155" r="4.5" fill="#33291f"/>
+            <circle cx="170" cy="45" r="6.5" fill="#33291f"/><circle cx="280" cy="155" r="6.5" fill="#33291f"/>
+            <g class="h" font-size="22">
+              <text x="152" y="38" fill="#33291f">A</text><text x="290" y="150" fill="#33291f">B</text><text x="150" y="178" fill="#33291f">O</text>
+              <text x="216" y="104" fill="#8f6210">θ<tspan font-size="15" dy="4">AB</tspan></text>
+              <text x="152" y="88" fill="#3d6bb3">r</text><text x="244" y="175" fill="#3d6bb3">r</text>
+            </g>
+            <text x="300" y="60" class="h" font-size="19" fill="#5a6f9e">the angle</text>
+            <text x="300" y="80" class="h" font-size="19" fill="#5a6f9e">he turned</text>
+            <text x="300" y="100" class="h" font-size="19" fill="#5a6f9e">his head by</text>
+          </svg>
+        </figure>
+        <div class="margin">A full turn: 360° = 2π rad. Physics loves radians, so get used to them.</div>
+      </div>
+
+      <p style="margin-top:22px">Measuring angles is also not that comfortable — we do not always carry a protractor. So we do the same trick as with linear speed and watch her for one full revolution: the angle becomes a full turn, 2π, and the time becomes the period <i class="q-t">T</i>.</p>
+
+      <div class="formula-row">
+        <span class="f pill key"><span class="q-w">ω</span><span class="op">=</span><span class="frac"><span>2π</span><span class="q-t">T</span></span></span><span class="tag">(2)</span>
+        <span class="f"><span class="u">[</span><span class="q-w">ω</span><span class="u">] = rad/s = 1/s</span></span>
+      </div>
+    </section>
+
+    <!-- 5 -->
+    <section id="v-omega-r-sec">
+      <div class="sechead"><div class="num">5</div><h2>How <i>v</i> and <i>ω</i> are related</h2></div>
+      <p>Put formulas (1) and (2) side by side:</p>
+      <div class="formula-row">
+        <span class="f"><span class="q-v">v</span><span class="op">=</span><span class="frac"><span>2π<span class="q-x">r</span></span><span class="q-t">T</span></span><span class="op">=</span><span class="frac"><span>2π</span><span class="q-t">T</span></span><span class="op">·</span><span class="q-x">r</span></span>
+        <span class="f"><span class="q-w">ω</span><span class="op">=</span><span class="frac"><span>2π</span><span class="q-t">T</span></span></span>
+      </div>
+      <p>The piece 2π / <i class="q-t">T</i> sits inside the first formula — and it is exactly <i class="q-w">ω</i>. So:</p>
+      <div class="formula-row">
+        <span class="f pill key"><span class="q-v">v</span><span class="op">=</span><span class="q-w">ω</span><span class="q-x">r</span></span><span class="tag">(3)</span>
+      </div>
+      <p>Linear speed = how fast you turn × how far you are from the centre. <span class="honey">Turn at the same rate further out, and you move faster.</span> Keep this thought, it comes back in section 9.</p>
+    </section>
+
+    <!-- 6 -->
+    <section id="period-frequency-sec">
+      <div class="sechead"><div class="num">6</div><h2>Period and frequency</h2></div>
+      <p>Let's picture this situation: some body moves around a circle and makes <i>N</i> = 10 revolutions in <i class="q-t">t</i> = 5 s.</p>
+      <dl class="defs">
+        <dt>N</dt><dd>number of revolutions</dd>
+        <dt class="q-t">t</dt><dd>time of all these revolutions</dd>
+      </dl>
+      <p><strong>How do we find the period?</strong> The period is the time of <em>one</em> revolution, so: time of one = time of all ÷ number of all.</p>
+      <div class="formula-row">
+        <span class="f pill key"><span class="q-t">T</span><span class="op">=</span><span class="frac"><span class="q-t">t</span><span>N</span></span></span>
+        <span class="f calc"><span style="font-style:normal">In our case:</span> <span class="q-t">T</span><span class="op">=</span><span class="frac"><span class="q-t">5 <span class="u">s</span></span><span>10</span></span><span class="op">=</span><span class="q-t">0.5 <span class="u">s</span></span></span>
+      </div>
+
+      <p>But what if a body rotates very fast — an enormous number of revolutions in a short time? For instance, <i>N</i> = 1000 in <i class="q-t">t</i> = 1 min:</p>
+      <div class="formula-row">
+        <span class="f calc"><span class="q-t">T</span><span class="op">=</span><span class="frac"><span class="q-t">t</span><span>N</span></span><span class="op">=</span><span class="frac"><span class="q-t">60 <span class="u">s</span></span><span>1000</span></span><span class="op">=</span><span class="q-t">0.06 <span class="u">s</span></span></span>
+      </div>
+      <p>The faster a body rotates, the harder it is to feel what the period means. 0.06 s says very little to us: we are not used to working with such tiny numbers, so we don't really feel them. But there is a solution! Instead of the time of one revolution, let's find <span class="honey">how many revolutions fit into one second</span>.</p>
+      <div class="formula-row">
+        <span class="f pill key"><span class="q-t">f</span><span class="op">=</span><span class="frac"><span>N</span><span class="q-t">t</span></span></span>
+        <span class="f calc"><span class="q-t">f</span><span class="op">=</span><span class="frac"><span>1000</span><span class="q-t">60 <span class="u">s</span></span></span><span class="op">≈</span><span class="q-t">16.7 <span class="u">s⁻¹ = 16.7 Hz</span></span></span>
+      </div>
+      <p>This is the <strong>frequency</strong>: about 17 revolutions every second. Much easier to imagine. Its unit, s⁻¹, has its own name — the hertz (Hz).</p>
+
+      <p>Look at the two formulas once more. <i class="q-t">T</i> = <i class="q-t">t</i>/<i>N</i> and <i class="q-t">f</i> = <i>N</i>/<i class="q-t">t</i> are the same fraction turned upside down — period and frequency are <strong>reciprocals</strong>:</p>
+      <div class="formula-row">
+        <span class="f pill"><span class="q-t">T</span><span class="op">=</span><span class="frac"><span>1</span><span class="q-t">f</span></span></span>
+        <span class="f pill"><span class="q-t">f</span><span class="op">=</span><span class="frac"><span>1</span><span class="q-t">T</span></span></span>
+      </div>
+      <p>Thus, every formula with a period can be written with a frequency:</p>
+      <div class="formula-row">
+        <span class="f pill"><span class="q-v">v</span><span class="op">=</span><span class="frac"><span>2π<span class="q-x">r</span></span><span class="q-t">T</span></span><span class="op">=</span>2π<span class="q-x">r</span><span class="q-t">f</span></span>
+        <span class="f pill"><span class="q-w">ω</span><span class="op">=</span><span class="frac"><span>2π</span><span class="q-t">T</span></span><span class="op">=</span>2π<span class="q-t">f</span></span>
+      </div>
+    </section>
+
+    <!-- 7 -->
+    <section id="centripetal-acceleration">
+      <div class="sechead"><div class="num">7</div><h2>Centripetal acceleration</h2></div>
+      <p><strong>Centripetal</strong> means "towards the centre".</p>
+      <p>Please excuse me — I am going to borrow a little theory from a future topic, because it will make this one much clearer: <span class="honey">acceleration is always the result of some force acting on a body.</span></p>
+
+      <div class="withmargin">
+        <figure class="scene" style="margin:0">
+          <svg viewBox="0 0 440 230" role="img" aria-label="A person pushes an office chair to the right; the chair accelerates to the right">
+            <rect width="440" height="230" fill="#f3ead6"/>
+            <rect y="196" width="440" height="34" fill="#e2d3b4"/>
+            <!-- person -->
+            <rect x="106" y="140" width="10" height="56" rx="4" fill="#4f4a46" transform="rotate(14 111 140)"/>
+            <rect x="90" y="140" width="10" height="56" rx="4" fill="#4f4a46" transform="rotate(-6 95 140)"/>
+            <path d="M88 82 Q104 72 122 84 L120 146 Q102 152 86 146 Z" fill="#7d9a8a" transform="rotate(10 104 110)"/>
+            <path d="M120 96 Q150 104 178 112" stroke="#7d9a8a" stroke-width="10" fill="none" stroke-linecap="round"/>
+            <circle cx="182" cy="113" r="5" fill="#e3bf98"/>
+            <circle cx="112" cy="62" r="15" fill="#ecccaa"/>
+            <path d="M97 60 Q98 44 112 44 Q126 44 127 58 Q118 52 108 54 Q100 56 97 60Z" fill="#5c4636"/>
+            <!-- chair -->
+            <path d="M188 70 Q186 120 194 130 L202 130 Q196 110 200 72 Z" fill="#5a6f7e"/>
+            <rect x="196" y="122" width="72" height="14" rx="6" fill="#5a6f7e"/>
+            <rect x="228" y="136" width="7" height="34" fill="#8a8f94"/>
+            <path d="M200 182 L231 170 L262 182 M231 170 L231 186" stroke="#8a8f94" stroke-width="5" stroke-linecap="round" fill="none"/>
+            <circle cx="200" cy="188" r="6" fill="#3b3330"/><circle cx="262" cy="188" r="6" fill="#3b3330"/><circle cx="231" cy="190" r="6" fill="#3b3330"/>
+            <!-- arrows -->
+            <path d="M278 120 L330 120" stroke="#7a5aa8" stroke-width="2.6"/><path d="M340 120 L326 114 L326 126Z" fill="#7a5aa8"/>
+            <text x="300" y="108" font-family="Source Serif 4" font-style="italic" font-size="22" fill="#7a5aa8">a</text>
+            <text x="128" y="84" class="h" font-size="21" fill="#5a6f9e">push</text>
+          </svg>
+        </figure>
+        <div class="margin">Push the chair to the right, and it starts to speed up to the right. The push and the acceleration point the same way.</div>
+      </div>
+
+      <p style="margin-top:22px">Now apply this to circular motion. We said that a body moving in a circle is always <strong>pulled towards the centre</strong>. In other words, there is a <strong>centripetal force</strong>. "Centripetal force" is just the name for that pull.</p>
+      <p>And if the force points to the centre, then it causes an acceleration that also points to the centre: the <strong>centripetal acceleration</strong> <i class="q-a">a</i><sub>c</sub>.</p>
+
+      <div class="two">
+        <figure class="diagram" style="margin:0">
+          <svg viewBox="0 0 320 270" role="img" aria-label="Circle with velocity tangent and centripetal acceleration towards the centre at three points">
+            <circle cx="160" cy="145" r="100" fill="none" stroke="#33291f" stroke-width="1.5"/>
+            <circle cx="160" cy="145" r="4.5" fill="#33291f"/>
+            <!-- top -->
+            <circle cx="160" cy="45" r="6" fill="#33291f"/>
+            <path d="M166 45 L212 45" stroke="#c15b38" stroke-width="2.4"/><path d="M222 45 L208 39 L208 51Z" fill="#c15b38"/>
+            <path d="M160 51 L160 92" stroke="#7a5aa8" stroke-width="2.4"/><path d="M160 102 L154 88 L166 88Z" fill="#7a5aa8"/>
+            <path d="M160 57 L170 57 L170 45" fill="none" stroke="#33291f" stroke-width="1.1"/>
+            <!-- right point at angle -30deg (lower right) -->
+            <circle cx="246.6" cy="195" r="6" fill="#33291f"/>
+            <path d="M243.6 200.2 L220.6 240" stroke="#c15b38" stroke-width="2.4"/><path d="M215.6 248.7 L217.2 233.5 L227.6 239.5Z" fill="#c15b38"/>
+            <path d="M241.4 192 L205.9 171.5" stroke="#7a5aa8" stroke-width="2.4"/><path d="M197.2 166.5 L212.4 168 L206.4 178.4Z" fill="#7a5aa8"/>
+            <!-- left point -->
+            <circle cx="60" cy="145" r="6" fill="#33291f"/>
+            <path d="M60 139 L60 98" stroke="#c15b38" stroke-width="2.4"/><path d="M60 88 L54 102 L66 102Z" fill="#c15b38"/>
+            <path d="M66 145 L106 145" stroke="#7a5aa8" stroke-width="2.4"/><path d="M116 145 L102 139 L102 151Z" fill="#7a5aa8"/>
+            <g class="h" font-size="21">
+              <text x="214" y="36" fill="#c15b38">v</text><text x="166" y="90" fill="#7a5aa8">a<tspan font-size="15" dy="4">c</tspan></text>
+              <text x="38" y="96" fill="#c15b38">v</text><text x="76" y="138" fill="#7a5aa8">a<tspan font-size="15" dy="4">c</tspan></text>
+              <text x="196" y="252" fill="#c15b38">v</text><text x="214" y="166" fill="#7a5aa8">a<tspan font-size="15" dy="4">c</tspan></text>
+            </g>
+          </svg>
+        </figure>
+        <div>
+          <p>Here I see that <i class="q-a">a</i><sub>c</sub> ⟂ <i class="q-v">v</i>, always. That means it is <strong>not</strong> going to change the size of the velocity.</p>
+          <p class="note">Remember projectile motion: <i>g</i> pointed straight down, so it never changed <i>v</i><sub>x</sub>. A push can only change velocity along its own direction.</p>
+          <p>But then what does it do? We know for sure that where there is acceleration, velocity changes. And here is the point: it changes, but <span class="honey">not its magnitude — its direction</span>.</p>
+        </div>
+      </div>
+
+      <h3>Picture it with wind</h3>
+      <figure class="diagram">
+        <svg viewBox="0 0 640 260" role="img" aria-label="Wind blowing towards the centre slightly turns the velocity without changing its length">
+          <circle cx="170" cy="160" r="90" fill="none" stroke="#33291f" stroke-width="1.5"/>
+          <circle cx="170" cy="160" r="4" fill="#33291f"/>
+          <circle cx="170" cy="70" r="6" fill="#33291f"/>
+          <g stroke="#6b5d43" stroke-width="1.6" fill="none">
+            <path d="M146 6 q4 6 0 12 q-4 6 0 12 q4 6 0 12"/><path d="M170 6 q4 6 0 12 q-4 6 0 12 q4 6 0 12"/><path d="M194 6 q4 6 0 12 q-4 6 0 12 q4 6 0 12"/>
+          </g>
+          <g fill="#6b5d43"><path d="M141 44 h10 l-5 8z"/><path d="M165 44 h10 l-5 8z"/><path d="M189 44 h10 l-5 8z"/></g>
+          <path d="M176 70 L232 70" stroke="#c15b38" stroke-width="2.4"/><path d="M242 70 L228 64 L228 76Z" fill="#c15b38"/>
+          <path d="M170 76 L170 112" stroke="#7a5aa8" stroke-width="2.4"/><path d="M170 122 L164 108 L176 108Z" fill="#7a5aa8"/>
+          <g class="h" font-size="21"><text x="238" y="62" fill="#c15b38">v</text><text x="178" y="112" fill="#7a5aa8">a<tspan font-size="15" dy="4">c</tspan></text></g>
+          <text x="210" y="26" class="h" font-size="20" fill="#5a6f9e">wind blowing to the centre</text>
+          <!-- zoom: before / after -->
+          <rect x="340" y="40" width="270" height="180" rx="10" fill="#fbf8f0" stroke="#ddd2b8"/>
+          <circle cx="390" cy="150" r="5" fill="#33291f"/>
+          <path d="M390 150 L530 150" stroke="#c15b38" stroke-width="2" stroke-dasharray="6 5" opacity=".7"/><path d="M540 150 L526 144 L526 156Z" fill="#c15b38" opacity=".7"/>
+          <path d="M390 150 L527 176" stroke="#c15b38" stroke-width="2.4"/><path d="M537 178 L522 169 L520 181Z" fill="#c15b38"/>
+          <path d="M520 150 A130 130 0 0 1 518 172" fill="none" stroke="#6b5d43" stroke-width="1.2"/>
+          <g class="h" font-size="19" fill="#5a6f9e">
+            <text x="356" y="68">zoom in, a moment later:</text>
+            <text x="440" y="140">before</text><text x="400" y="200">after: same length,</text><text x="400" y="218">slightly turned</text>
+          </g>
+        </svg>
+      </figure>
+      <p>Think about what this wind does to our velocity at this particular moment. Exactly — a sideways push just <strong>slightly turns the velocity</strong> without changing its magnitude. Keep the push always aimed at the centre, and the body keeps turning: that is a circle.</p>
+
+      <div class="formula-row">
+        <span class="f pill key"><span class="q-a">a</span><sub class="q-a">c</sub><span class="op">=</span><span class="frac"><span><span class="q-v">v</span>²</span><span class="q-x">r</span></span></span>
+        <span class="f"><span class="op">=</span><span class="frac"><span>(<span class="q-w">ω</span><span class="q-x">r</span>)²</span><span class="q-x">r</span></span><span class="op">=</span></span>
+        <span class="f pill key"><span class="q-a">a</span><sub class="q-a">c</sub><span class="op">=</span><span class="q-w">ω</span>²<span class="q-x">r</span></span>
+        <span class="f pill"><span class="q-a">a</span><sub class="q-a">c</sub><span class="op">=</span><span class="frac"><span>4π²<span class="q-x">r</span></span><span><span class="q-t">T</span>²</span></span></span></span>
+      </div>
+      <p class="note">The first one uses v = ωr from section 5. The third one is the same thing with ω = 2π/T put in — it's handy when a problem gives you the period.</p>
+
+      <p class="bubble"><i>a</i><sub>c</sub> is sometimes called "normal acceleration". Do you know why?</p>
+      <p class="note">Hint: in geometry, "normal" means perpendicular.</p>
+    </section>
+
+    <!-- 8 -->
+    <section id="tangential-acceleration">
+      <div class="sechead"><div class="num">8</div><h2>Tangential acceleration</h2></div>
+      <p>In school physics you will not meet this very often, but you have to understand what it means. Let me show you with the wind again — now with a second gust blowing <strong>along</strong> the path.</p>
+
+      <figure class="diagram">
+        <svg viewBox="0 0 640 260" role="img" aria-label="Two cases: wind against the motion slows the body down, wind along the motion speeds it up">
+          <!-- left: slows down -->
+          <g>
+            <path d="M40 220 A120 120 0 0 1 280 220" fill="none" stroke="#33291f" stroke-width="1.5"/>
+            <circle cx="160" cy="220" r="4" fill="#33291f"/>
+            <circle cx="160" cy="100" r="6" fill="#33291f"/>
+            <path d="M166 100 L214 100" stroke="#c15b38" stroke-width="2.4"/><path d="M224 100 L210 94 L210 106Z" fill="#c15b38"/>
+            <path d="M160 106 L160 146" stroke="#7a5aa8" stroke-width="2.4"/><path d="M160 156 L154 142 L166 142Z" fill="#7a5aa8"/>
+            <path d="M154 100 L112 100" stroke="#7a5aa8" stroke-width="2.4"/><path d="M102 100 L116 94 L116 106Z" fill="#7a5aa8"/>
+            <g stroke="#6b5d43" stroke-width="1.6" fill="none"><path d="M276 126 q-6 4 -12 0 q-6 -4 -12 0 q-6 4 -12 0"/><path d="M276 140 q-6 4 -12 0 q-6 -4 -12 0 q-6 4 -12 0"/></g>
+            <g fill="#6b5d43"><path d="M234 122 v8 l-8 -4z"/><path d="M234 136 v8 l-8 -4z"/></g>
+            <g class="h" font-size="21"><text x="220" y="92" fill="#c15b38">v</text><text x="168" y="148" fill="#7a5aa8">a<tspan font-size="15" dy="4">c</tspan></text><text x="96" y="90" fill="#7a5aa8">a<tspan font-size="15" dy="4">τ</tspan></text></g>
+            <text x="40" y="34" class="h" font-size="21" fill="#5a6f9e">wind against the motion:</text>
+            <text x="40" y="56" class="h" font-size="21" fill="#5a6f9e">slows the body down</text>
+          </g>
+          <!-- right: speeds up -->
+          <g transform="translate(320 0)">
+            <path d="M40 220 A120 120 0 0 1 280 220" fill="none" stroke="#33291f" stroke-width="1.5"/>
+            <circle cx="160" cy="220" r="4" fill="#33291f"/>
+            <circle cx="160" cy="100" r="6" fill="#33291f"/>
+            <path d="M166 100 L214 100" stroke="#c15b38" stroke-width="2.4"/><path d="M224 100 L210 94 L210 106Z" fill="#c15b38"/>
+            <path d="M160 106 L160 146" stroke="#7a5aa8" stroke-width="2.4"/><path d="M160 156 L154 142 L166 142Z" fill="#7a5aa8"/>
+            <path d="M166 112 L214 112" stroke="#7a5aa8" stroke-width="2.4"/><path d="M224 112 L210 106 L210 118Z" fill="#7a5aa8"/>
+            <g stroke="#6b5d43" stroke-width="1.6" fill="none"><path d="M56 126 q6 4 12 0 q6 -4 12 0 q6 4 12 0"/><path d="M56 140 q6 4 12 0 q6 -4 12 0 q6 4 12 0"/></g>
+            <g fill="#6b5d43"><path d="M94 122 v8 l8 -4z"/><path d="M94 136 v8 l8 -4z"/></g>
+            <g class="h" font-size="21"><text x="220" y="92" fill="#c15b38">v</text><text x="168" y="148" fill="#7a5aa8">a<tspan font-size="15" dy="4">c</tspan></text><text x="196" y="136" fill="#7a5aa8">a<tspan font-size="15" dy="4">τ</tspan></text></g>
+            <text x="40" y="34" class="h" font-size="21" fill="#5a6f9e">wind along the motion:</text>
+            <text x="40" y="56" class="h" font-size="21" fill="#5a6f9e">speeds the body up</text>
+          </g>
+        </svg>
+      </figure>
+      <dl class="defs">
+        <dt class="q-a">a<sub>c</sub></dt><dd>the wind towards the centre <strong>turns</strong> the body.</dd>
+        <dt class="q-a">a<sub>τ</sub></dt><dd>the wind along the path <strong>changes the speed</strong>: against the motion it slows the body down, with the motion it speeds it up. This is the <strong>tangential acceleration</strong>.</dd>
+      </dl>
+      <p>So <span class="honey"><i>a</i><sub>τ</sub> exists only when the speed is changing</span> during circular motion — when the body starts to rotate faster or slower. In this card the speed is constant, so <i>a</i><sub>τ</sub> = 0 and only <i>a</i><sub>c</sub> is left.</p>
+    </section>
+
+    <!-- 9 -->
+    <section id="shared-omega-vs-shared-v">
+      <div class="sechead"><div class="num">9</div><h2>Same ω or same <i>v</i>? A disc and two gears</h2></div>
+
+      <h3>A spinning disc: everybody shares ω</h3>
+      <p>Take a spinning disc — a vinyl record, a carousel, a potter's wheel. Put two points on the same radius: point A close to the centre and point B at the edge, twice as far out. They lie on one line from the centre, and they stay on that line forever, because the disc is solid.</p>
+
+      <div class="withmargin">
+        <figure class="diagram" style="margin:0">
+          <svg viewBox="0 0 420 300" role="img" aria-label="Spinning disc: point A at radius r and point B at radius 2r turn through the same angle; B's velocity arrow is twice as long">
+            <circle cx="170" cy="160" r="120" fill="#f2e6cc" stroke="#33291f" stroke-width="1.5"/>
+            <circle cx="170" cy="160" r="60" fill="none" stroke="#6b5d43" stroke-width="1" stroke-dasharray="3 5"/>
+            <circle cx="170" cy="160" r="4.5" fill="#33291f"/>
+            <!-- start line (faded) -->
+            <line x1="170" y1="160" x2="170" y2="40" stroke="#6b5d43" stroke-width="1.2" stroke-dasharray="4 5"/>
+            <!-- current line at 45deg -->
+            <line x1="170" y1="160" x2="254.9" y2="75.1" stroke="#3d6bb3" stroke-width="1.5"/>
+            <path d="M170 120 A40 40 0 0 1 198.3 131.7" fill="none" stroke="#8f6210" stroke-width="2.4"/>
+            <!-- arcs travelled -->
+            <path d="M170 100 A60 60 0 0 1 212.4 117.6" fill="none" stroke="#3d6bb3" stroke-width="4.5" stroke-linecap="round" opacity=".55"/>
+            <path d="M170 40 A120 120 0 0 1 254.9 75.1" fill="none" stroke="#3d6bb3" stroke-width="4.5" stroke-linecap="round" opacity=".55"/>
+            <circle cx="212.4" cy="117.6" r="6" fill="#33291f"/>
+            <circle cx="254.9" cy="75.1" r="6" fill="#33291f"/>
+            <!-- velocities: perpendicular to radius, CW direction (down-right) -->
+            <path d="M216.6 121.8 L231.7 136.9" stroke="#c15b38" stroke-width="2.4"/><path d="M237.4 142.6 L224.8 138.4 L233.2 130Z" fill="#c15b38"/>
+            <path d="M259.1 79.3 L299.2 119.4" stroke="#c15b38" stroke-width="2.4"/><path d="M304.9 125.1 L292.2 120.8 L300.6 112.4Z" fill="#c15b38"/>
+            <g class="h" font-size="21">
+              <text x="196" y="108" fill="#33291f">A</text><text x="238" y="66" fill="#33291f">B</text>
+              <text x="180" y="138" fill="#8f6210">θ</text>
+              <text x="236" y="164" fill="#c15b38">v<tspan font-size="15" dy="4">A</tspan></text>
+              <text x="306" y="146" fill="#c15b38">v<tspan font-size="15" dy="4">B</tspan></text>
+            </g>
+            <text x="284" y="250" class="h" font-size="18" fill="#5a6f9e">B is twice as far</text>
+            <text x="284" y="270" class="h" font-size="18" fill="#5a6f9e">from the centre</text>
+          </svg>
+        </figure>
+        <div class="margin">On a carousel the horse on the outer ring moves faster than the one near the middle, even though they go around together.</div>
+      </div>
+
+      <p style="margin-top:22px">In the same time both points turn through <strong>the same angle</strong> θ, so they have <strong>the same angular speed ω</strong>. But B runs along a circle twice as big, so it covers twice the distance. From v = ωr:</p>
+      <div class="formula-row">
+        <span class="f pill"><span class="q-w">ω</span><sub>A</sub><span class="op">=</span><span class="q-w">ω</span><sub>B</sub></span>
+        <span class="f"><span class="q-v">v</span><sub>B</sub><span class="op">=</span><span class="q-w">ω</span>·2<span class="q-x">r</span><span class="op">=</span>2<span class="q-v">v</span><sub>A</sub></span>
+      </div>
+
+      <h3>Two gears: the touching point shares <i>v</i></h3>
+      <p>Now the opposite situation. A small gear drives a big one. Their teeth are locked together where they touch, so at that point both gears must move <strong>with the same linear speed</strong>. If one rim moved faster than the other, the teeth would grind and break.</p>
+
+      <figure class="diagram">
+        <svg id="gears" viewBox="0 0 640 300" role="img" aria-label="A small gear meshing with a big gear: equal linear speed at the contact point, different angular speeds, opposite directions of rotation">
+          <g id="gearSmall"></g><g id="gearBig"></g>
+          <circle cx="210" cy="160" r="5" fill="#33291f"/><circle cx="378" cy="160" r="5" fill="#33291f"/>
+          <line x1="210" y1="160" x2="210" y2="96" stroke="#3d6bb3" stroke-width="1.4" stroke-dasharray="5 5"/>
+          <line x1="378" y1="160" x2="378" y2="56" stroke="#3d6bb3" stroke-width="1.4" stroke-dasharray="5 5"/>
+          <!-- contact point -->
+          <circle cx="274" cy="160" r="6" fill="#33291f"/>
+          <path d="M274 166 L274 220" stroke="#c15b38" stroke-width="2.6"/><path d="M274 230 L268 216 L280 216Z" fill="#c15b38"/>
+          <!-- rotation arrows -->
+          <path d="M147.2 107.3 A82 82 0 0 1 272.8 107.3" fill="none" stroke="#8f6210" stroke-width="2.2"/>
+          <path d="M278 113.5 L265.7 108.2 L274.9 100.4Z" fill="#8f6210"/>
+          <path d="M456.4 66.5 A122 122 0 0 0 299.6 66.5" fill="none" stroke="#8f6210" stroke-width="2.2"/>
+          <path d="M295 70.4 L300.3 58.1 L308.1 67.3Z" fill="#8f6210"/>
+          <g class="h" font-size="22">
+            <text x="186" y="130" fill="#3d6bb3">r<tspan font-size="15" dy="4">1</tspan></text>
+            <text x="384" y="112" fill="#3d6bb3">r<tspan font-size="15" dy="4">2</tspan></text>
+            <text x="120" y="288" fill="#c15b38">v — the same for both gears</text>
+            <text x="84" y="112" fill="#8f6210">ω<tspan font-size="15" dy="4">1</tspan> fast</text>
+            <text x="466" y="56" fill="#8f6210">ω<tspan font-size="15" dy="4">2</tspan> slow</text>
+          </g>
+        </svg>
+        <figcaption>They also turn in opposite directions — look at the arrows.</figcaption>
+      </figure>
+
+      <div class="formula-row">
+        <span class="f pill key"><span class="q-v">v</span><span class="op">=</span><span class="q-w">ω</span><sub>1</sub><span class="q-x">r</span><sub>1</sub><span class="op">=</span><span class="q-w">ω</span><sub>2</sub><span class="q-x">r</span><sub>2</sub></span>
+      </div>
+      <p>Same <i class="q-v">v</i>, different radii — so the small gear must spin faster: <span class="honey">the smaller the gear, the bigger its ω</span>. If the big gear is three times bigger, the small one makes three turns for every one turn of the big one. A bicycle chain works the same way: every link of the chain moves at one speed, over the big front sprocket and the small back one.</p>
+
+      <div class="watch">
+        <div class="label">Watch out!</div>
+        <p>Before you write any equation, ask <strong>how the two things are connected</strong>.</p>
+        <p>Parts of one solid body (points on a disc, a wheel, a carousel) share <strong>ω</strong>. Things touching at a rim, or joined by a belt or chain (gears, sprockets), share <strong>v</strong>.</p>
+      </div>
+    </section>
+
+    <!-- RECAP -->
+    <section class="recap">
+      <div class="label">Everything from this card</div>
+      <div class="grid">
+        <div class="cell"><div class="label">Linear speed</div><span class="f"><span class="q-v">v</span> = 2π<span class="q-x">r</span>/<span class="q-t">T</span> = 2π<span class="q-x">r</span><span class="q-t">f</span></span></div>
+        <div class="cell"><div class="label">Angular speed</div><span class="f"><span class="q-w">ω</span> = 2π/<span class="q-t">T</span> = 2π<span class="q-t">f</span></span></div>
+        <div class="cell"><div class="label">Link</div><span class="f"><span class="q-v">v</span> = <span class="q-w">ω</span><span class="q-x">r</span></span></div>
+        <div class="cell"><div class="label">Period · frequency</div><span class="f"><span class="q-t">T</span> = <span class="q-t">t</span>/N = 1/<span class="q-t">f</span></span></div>
+        <div class="cell"><div class="label">Centripetal</div><span class="f"><span class="q-a">a</span><sub>c</sub> = <span class="q-v">v</span>²/<span class="q-x">r</span> = <span class="q-w">ω</span>²<span class="q-x">r</span></span></div>
+        <div class="cell"><div class="label">Directions</div><span class="note" style="color:var(--ink)"><i class="q-v">v</i> along the tangent, <i class="q-a">a</i><sub>c</sub> to the centre</span></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+(function(){
+  function gear(cx, cy, r, teeth, depth, phase){
+    var pts=[], n=teeth*4;
+    for(var i=0;i<n;i++){
+      var k=i%4, a=phase+(i/n)*2*Math.PI;
+      var rr=(k===1||k===2)? r+depth/2 : r-depth/2;
+      pts.push((cx+rr*Math.cos(a)).toFixed(1)+','+(cy+rr*Math.sin(a)).toFixed(1));
+    }
+    return 'M'+pts.join(' L')+' Z';
+  }
+  function draw(id,cx,cy,r,teeth,phase){
+    var g=document.getElementById(id); if(!g) return;
+    var ns='http://www.w3.org/2000/svg';
+    var p=document.createElementNS(ns,'path');
+    p.setAttribute('d',gear(cx,cy,r,teeth,12,phase));
+    p.setAttribute('fill','#f2e6cc'); p.setAttribute('stroke','#33291f'); p.setAttribute('stroke-width','1.5');
+    g.appendChild(p);
+    var c=document.createElementNS(ns,'circle');
+    c.setAttribute('cx',cx); c.setAttribute('cy',cy); c.setAttribute('r',r*0.35);
+    c.setAttribute('fill','none'); c.setAttribute('stroke','#6b5d43'); c.setAttribute('stroke-width','1.2');
+    g.appendChild(c);
+  }
+  // pitch radii 64 and 128 meet at x=274; teeth count proportional (8 : 16)
+  draw('gearSmall',210,160,64,8,Math.PI/16);
+  draw('gearBig',378,160,104,13,Math.PI);
+})();
+</script>
+</body>
+</html>

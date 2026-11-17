@@ -1,0 +1,47 @@
+/* Physics Course — color tokens.
+   FIVE STRICT LANES. A color outside its lane is an error.
+   1. Quantity colors  — ONLY inside diagrams, formulas, worked calculations. Never in prose.
+   2. Misconception plum — ONLY in the "Watch out!" block.
+   3. Honey highlight  — ONLY as a marker wash behind key phrases in prose. Never near a formula/diagram.
+   4. Teacher slate    — ONLY in Caveat handwritten text (bubbles, asides, diagram annotations).
+   5. Everything else is ink. */
+:root {
+  /* Base surfaces */
+  --page: #efe8d8;            /* page background */
+  --card: #f9f4e9;            /* main lesson card */
+  --card-inner: #fbf8f0;      /* nested panels: way-cards, teacher bubble fill */
+  --border: #e3d9c2;          /* card border */
+  --border-inner: #ddd2b8;    /* nested panel border */
+  --shadow-card: 0 2px 24px rgba(90, 70, 40, 0.10);
+
+  /* Ink — the default for ALL text */
+  --ink: #33291f;
+  --ink-muted: #6b5d43;       /* units, small clarifying notes */
+
+  /* Lane 1 — quantity colors (diagrams / formulas / calculations ONLY) */
+  --qty-time: #4a7c59;        /* time  t — green */
+  --qty-position: #3d6bb3;    /* position / distance S — blue */
+  --qty-velocity: #c15b38;    /* velocity / speed v — orange */
+  --diagram-bg: #eaf1ea;      /* soft panel behind number-line diagrams */
+
+  /* Lane 2 — misconception plum ("Watch out!" block ONLY) */
+  --misconception: #6e2a48;   /* text + label */
+  --misconception-bg: #e9dbe3;/* block background */
+
+  /* Lane 3 — honey highlight (prose marker wash ONLY; ration: one phrase per teaching beat) */
+  --honey: 224, 188, 120; /* @kind color */ /* rgb triplet; use at 0.4–0.5 alpha in an uneven gradient */
+  --honey-wash: linear-gradient(101deg,
+      rgba(224,188,120,0)   1.5%, rgba(224,188,120,0.5) 4%,
+      rgba(228,192,122,0.4) 52%,  rgba(224,188,120,0.5) 96%,
+      rgba(224,188,120,0)   98.5%); /* @kind color */
+
+  /* Lane 4 — teacher's voice (Caveat text ONLY) */
+  --teacher: #5a6f9e;
+  --teacher-bubble-border: #b9c5dd;
+
+  /* Semantic aliases */
+  --text-body: var(--ink);
+  --surface-page: var(--page);
+  --surface-card: var(--card);
+  --surface-panel: var(--card-inner);
+}

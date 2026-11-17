@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cycles and heat engines</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --page:#efe8d8; --card:#f9f4e9; --card-inner:#fbf8f0;
+  --border:#e3d9c2; --border-inner:#ddd2b8;
+  --shadow-card:0 2px 24px rgba(90,70,40,0.10);
+  --ink:#33291f; --ink-muted:#6b5d43;
+  --qty-time:#4a7c59; --qty-position:#3d6bb3; --qty-velocity:#c15b38;
+  --qty-acceleration:#7a5aa8;
+  --diagram-bg:#eaf1ea;
+  --misconception:#6e2a48; --misconception-bg:#e9dbe3;
+  --honey-wash:linear-gradient(101deg,rgba(224,188,120,0) 1.5%,rgba(224,188,120,.5) 4%,rgba(228,192,122,.4) 52%,rgba(224,188,120,.5) 96%,rgba(224,188,120,0) 98.5%);
+  --teacher:#5a6f9e; --teacher-bubble-border:#b9c5dd;
+  --font-structure:'Bricolage Grotesque',sans-serif;
+  --font-body:'Source Serif 4',Georgia,serif;
+  --font-hand:'Caveat',cursive;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--page);color:var(--ink);font-family:var(--font-body);
+  font-size:18px;line-height:1.62;-webkit-font-smoothing:antialiased}
+.wrap{max-width:860px;margin:0 auto;padding:40px 16px 80px}
+.topline{display:flex;justify-content:space-between;align-items:baseline;
+  gap:16px;flex-wrap:wrap;margin:0 4px 14px}
+.kicker{font-family:var(--font-structure);font-size:12.5px;font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted)}
+.topnote{font-family:var(--font-hand);font-size:19px;color:var(--teacher)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:18px;
+  box-shadow:var(--shadow-card);padding:46px 52px 56px}
+h1{font-family:var(--font-structure);font-size:38px;font-weight:600;line-height:1.2;
+  letter-spacing:-0.01em;margin:0 0 8px}
+.h1sub{font-family:var(--font-structure);font-size:21px;font-weight:400;
+  color:var(--ink-muted);margin:0 0 38px}
+.hl{background:var(--honey-wash);padding:0 2px}
+h2{font-family:var(--font-structure);font-size:24px;font-weight:600;
+  margin:52px 0 14px;line-height:1.25;display:flex;gap:12px;align-items:baseline}
+h2 .num{display:inline-flex;align-items:center;justify-content:center;
+  min-width:30px;height:30px;border-radius:50%;border:1.6px solid var(--ink);
+  font-size:15px;font-weight:600;flex:none;transform:translateY(2px)}
+h3{font-family:var(--font-structure);font-size:17.5px;font-weight:600;
+  margin:30px 0 8px;letter-spacing:.005em}
+p{margin:0 0 16px}
+em{font-style:italic}
+.fig{background:var(--diagram-bg);border:1px solid var(--border-inner);
+  border-radius:12px;padding:20px 18px;margin:24px 0}
+.fig svg{display:block;width:100%;height:auto}
+.figcap{font-family:var(--font-structure);font-size:13px;color:var(--ink-muted);
+  margin-top:12px;text-align:center}
+.formula{background:var(--card-inner);border:1px solid var(--border-inner);
+  border-radius:10px;padding:16px 20px;margin:20px 0;text-align:center;
+  font-family:var(--font-body);font-size:21px}
+.formula .lbl{font-family:var(--font-structure);font-size:12px;
+  color:var(--ink-muted);letter-spacing:.1em;text-transform:uppercase;
+  display:block;margin-bottom:8px}
+.formula-row{display:flex;gap:16px;flex-wrap:wrap;margin:20px 0}
+.formula-row>div{flex:1 1 240px;background:var(--card-inner);
+  border:1px solid var(--border-inner);border-radius:10px;padding:16px 20px}
+.formula-row h4{font-family:var(--font-structure);font-size:14px;margin:0 0 10px;
+  letter-spacing:.06em;text-transform:uppercase}
+.formula-row p{margin:0 0 8px;font-size:19px}
+.formula-row p:last-child{margin:0}
+var{font-style:italic;font-family:var(--font-body)}
+.t{color:var(--qty-time)} .x{color:var(--qty-position)}
+.v{color:var(--qty-velocity)} .a{color:var(--qty-acceleration)}
+.teacher{display:flex;gap:14px;align-items:flex-start;margin:26px 0}
+.teacher .mark{font-family:var(--font-hand);font-size:30px;color:var(--teacher);
+  line-height:1;flex:none;margin-top:2px}
+.teacher .bubble{font-family:var(--font-hand);font-size:21px;color:var(--teacher);
+  line-height:1.45;border-left:2px solid var(--teacher-bubble-border);
+  padding-left:16px}
+.watch{background:var(--misconception-bg);border-left:4px solid var(--misconception);
+  border-radius:0 10px 10px 0;padding:16px 20px;margin:26px 0}
+.watch h4{font-family:var(--font-structure);font-size:14px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--misconception);margin:0 0 8px}
+.watch p{margin:0;color:var(--misconception)}
+.notes{display:flex;gap:18px;flex-wrap:wrap;margin:26px 0}
+.note{flex:1 1 300px;background:#f6e6a8;border:1px solid #e3cf86;
+  border-radius:4px;padding:20px 22px;box-shadow:0 2px 10px rgba(90,70,40,.10);
+  transform:rotate(-.5deg)}
+.note:nth-child(2){transform:rotate(.6deg);background:#f3e4b2;border-color:#ded0a0}
+.note h4{font-family:var(--font-hand);font-size:22px;margin:0 0 10px;color:#5c4a1e}
+.note p{font-family:var(--font-hand);font-size:19.5px;line-height:1.4;
+  color:#4a3c18;margin:0 0 10px}
+.note p:last-child{margin:0}
+.note .meta{font-size:16.5px;color:#7a6630;margin:-4px 0 12px;line-height:1.3}
+.note ul{list-style:none;padding:0;margin:0}
+.note li{font-family:var(--font-hand);font-size:19.5px;line-height:1.4;color:#4a3c18;
+  margin:0 0 9px;padding-left:16px;position:relative}
+.note li::before{content:"–";position:absolute;left:0}
+.note s{text-decoration-thickness:1.6px;color:#7a6630}
+.note .sketch{display:block;margin:4px 0 6px}
+.note .sign{text-align:right;font-family:var(--font-hand);font-size:20px;color:#5c4a1e;margin-top:6px}
+ul{margin:0 0 16px;padding-left:22px}
+li{margin:0 0 8px}
+table{width:100%;border-collapse:collapse;margin:20px 0;font-size:17px}
+th,td{border:1px solid var(--border-inner);padding:9px 12px;text-align:center}
+th{font-family:var(--font-structure);font-size:13px;letter-spacing:.06em;
+  text-transform:uppercase;background:var(--card-inner);font-weight:600}
+.anchors{margin-top:56px;padding-top:22px;border-top:1px solid var(--border)}
+.anchors h4{font-family:var(--font-structure);font-size:12.5px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-muted);margin:0 0 12px}
+.anchors code{font-family:var(--font-structure);font-size:13.5px;
+  background:var(--card-inner);border:1px solid var(--border-inner);
+  border-radius:5px;padding:3px 9px;margin:0 7px 7px 0;display:inline-block;
+  color:var(--ink-muted)}
+@media(max-width:640px){
+  .card{padding:30px 22px 40px}
+  h1{font-size:29px} .h1sub{font-size:18px} h2{font-size:21px}
+  body{font-size:17px}
+}
+.q{color:#c15b38} .w{color:#2e8a86} .u{color:#7a5aa8}
+.frac{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;font-size:.78em;line-height:1.05;margin:0 2px}
+.frac i{font-style:normal;padding:0 3px;white-space:nowrap}
+.frac i:first-child{border-bottom:1.2px solid currentColor}
+td var,th var{font-size:1.05em}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="topline">
+  <span class="kicker">Physics Course · Theory · B4.3</span>
+  <span class="topnote">to push again, the piston first has to come back</span>
+</div>
+
+<div class="card">
+
+<h1>Cycles and heat <span class="hl">engines</span></h1>
+<p class="h1sub">or how much of the heat can be turned into work</p>
+
+<p>Heat a gas under a piston and it expands and does work. Wonderful — once. The piston reaches the end of the cylinder and the show is over. An engine that pushes one time is not an engine.</p>
+
+<p>To push again, the gas has to be brought back to where it started. And here is the catch: if you bring it back along the same road, you must put in exactly the work you got out. Net result — nothing.</p>
+
+<p>So the whole art of engine building is one idea: <span class="hl">come back by a cheaper road than the one you went out on</span>. Expand the gas while it is hot and the pressure is high; compress it back while it is cold and the pressure is low. The difference is yours to keep.</p>
+
+<h2 id="cycles"><span class="num">1</span> A cycle — out and back again</h2>
+
+<p>A <strong>cycle</strong> is a chain of processes that returns the gas to its starting state. On a <var>pV</var> diagram it is a <strong>closed loop</strong>.</p>
+
+<p>One fact about a cycle does half the work in every problem. The gas is back in the same state — the same <var>p</var>, the same <var>V</var>, the same <var>T</var>. Internal energy belongs to the state, so over one full cycle</p>
+
+<div class="formula">
+  <span class="lbl">over one complete cycle</span>
+  Δ<var class="u">U</var> = 0 &nbsp;&nbsp;→&nbsp;&nbsp; <var class="q">Q</var><sub>net</sub> = <var class="w">W</var><sub>net</sub>
+</div>
+
+<p>The second half is just the first law with Δ<var class="u">U</var> = 0. Add up all the heat, with signs — what went in minus what came out. Add up all the work, with signs. The two totals must be equal. The gas keeps nothing for itself.</p>
+
+<h3 id="cycle-check">See it on a real cycle</h3>
+
+<p>Words like "the totals must be equal" are easy to nod at. Let us actually count. A monatomic ideal gas goes round the cycle A → B → C → A.</p>
+
+<div class="fig">
+<svg viewBox="0 0 700 335" xmlns="http://www.w3.org/2000/svg" font-family="Georgia, serif"><defs><marker id="x" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="10" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 z" fill="#9a8c70"/></marker><marker id="k" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="6" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 z" fill="#33291f"/></marker><marker id="q" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="10" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 z" fill="#c15b38"/></marker><marker id="c" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="10" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 z" fill="#3d6bb3"/></marker><marker id="w" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="10" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 z" fill="#2e8a86"/></marker></defs><line x1="90" y1="290" x2="570" y2="290" stroke="#9a8c70" stroke-width="1.1" marker-end="url(#x)"/><line x1="90" y1="290" x2="90" y2="30" stroke="#9a8c70" stroke-width="1.1" marker-end="url(#x)"/><text x="576" y="295" font-size="14" font-style="italic" fill="#33291f">V</text><text x="76" y="38" font-size="14" font-style="italic" fill="#33291f">p</text><line x1="195" y1="290" x2="195" y2="295" stroke="#9a8c70"/><text x="195.0" y="310.0" font-size="12" fill="#33291f" text-anchor="middle">1.0</text><line x1="300" y1="290" x2="300" y2="295" stroke="#9a8c70"/><text x="300.0" y="310.0" font-size="12" fill="#33291f" text-anchor="middle">2.0</text><line x1="405" y1="290" x2="405" y2="295" stroke="#9a8c70"/><text x="405.0" y="310.0" font-size="12" fill="#33291f" text-anchor="middle">3.0</text><line x1="510" y1="290" x2="510" y2="295" stroke="#9a8c70"/><text x="510.0" y="310.0" font-size="12" fill="#33291f" text-anchor="middle">4.0</text><line x1="90" y1="220" x2="85" y2="220" stroke="#9a8c70"/><text x="80.0" y="224.0" font-size="12" fill="#33291f" text-anchor="end">1.0</text><line x1="90" y1="150" x2="85" y2="150" stroke="#9a8c70"/><text x="80.0" y="154.0" font-size="12" fill="#33291f" text-anchor="end">2.0</text><line x1="90" y1="80" x2="85" y2="80" stroke="#9a8c70"/><text x="80.0" y="84.0" font-size="12" fill="#33291f" text-anchor="end">3.0</text><text x="541.5" y="328.0" font-size="12.5" fill="#6b5d43" text-anchor="middle">V / 10⁻³ m³</text><text x="46" y="164.0" font-size="12.5" fill="#6b5d43" text-anchor="middle" transform="rotate(-90 46 164.0)">p / 10⁵ Pa</text><path d="M300,220 V80 H510 Z" fill="none" stroke="#33291f" stroke-width="2"/><line x1="300" y1="157.0" x2="300" y2="143.0" stroke="#33291f" stroke-width="2" marker-end="url(#k)"/><line x1="394.5" y1="80" x2="415.5" y2="80" stroke="#33291f" stroke-width="2" marker-end="url(#k)"/><line x1="415.5" y1="143.0" x2="394.5" y2="157.0" stroke="#33291f" stroke-width="2" marker-end="url(#k)"/><circle cx="300.0" cy="220.0" r="3.2" fill="#33291f"/><text x="286.0" y="236.0" font-size="15" fill="#33291f" text-anchor="middle" font-weight="bold">A</text><circle cx="300.0" cy="80.0" r="3.2" fill="#33291f"/><text x="286.0" y="74.0" font-size="15" fill="#33291f" text-anchor="middle" font-weight="bold">B</text><circle cx="510.0" cy="80.0" r="3.2" fill="#33291f"/><text x="522.0" y="74.0" font-size="15" fill="#33291f" text-anchor="middle" font-weight="bold">C</text></svg>
+<p class="figcap">Heating at constant volume, expansion at constant pressure, and a straight road back</p>
+</div>
+
+<p>For every step we find three things with the tools of the first two cards: the work <var class="w">W</var> (the area under the line), the change Δ<var class="u">U</var> = <span class="frac"><i>3</i><i>2</i></span>Δ(<var>pV</var>), and then the heat from the first law, <var class="q">Q</var> = Δ<var class="u">U</var> + <var class="w">W</var>. The product <var>pV</var> at the corners: A — 200 J, B — 600 J, C — 1200 J.</p>
+
+<p><strong>A → B</strong>, the volume is constant. No area under a vertical line: <var class="w">W</var> = 0. Δ<var class="u">U</var> = <span class="frac"><i>3</i><i>2</i></span>(600 − 200) = +600 J. So <var class="q">Q</var> = 600 + 0 = +600 J.</p>
+
+<p><strong>B → C</strong>, the pressure is constant. <var class="w">W</var> = <var>p</var>Δ<var>V</var> = 3.0 × 10<sup>5</sup> × 2.0 × 10<sup>−3</sup> = +600 J. Δ<var class="u">U</var> = <span class="frac"><i>3</i><i>2</i></span>(1200 − 600) = +900 J. So <var class="q">Q</var> = 900 + 600 = +1500 J.</p>
+
+<p><strong>C → A</strong>, a compression along a straight line. The area under it is a trapezium: average pressure 2.0 × 10<sup>5</sup> Pa times 2.0 × 10<sup>−3</sup> m<sup>3</sup> = 400 J — and the gas is compressed, so <var class="w">W</var> = −400 J. Δ<var class="u">U</var> = <span class="frac"><i>3</i><i>2</i></span>(200 − 1200) = −1500 J. So <var class="q">Q</var> = −1500 − 400 = −1900 J.</p>
+
+<table>
+  <tr><th>step</th><th>Δ<var class="u">U</var>, J</th><th><var class="w">W</var>, J</th><th><var class="q">Q</var>, J</th></tr>
+  <tr><td>A → B</td><td>+600</td><td>0</td><td>+600</td></tr>
+  <tr><td>B → C</td><td>+900</td><td>+600</td><td>+1500</td></tr>
+  <tr><td>C → A</td><td>−1500</td><td>−400</td><td>−1900</td></tr>
+  <tr><td><strong>whole cycle</strong></td><td><strong>0</strong></td><td><strong>+200</strong></td><td><strong>+200</strong></td></tr>
+</table>
+
+<p>Now add each column. The internal energy went up by 600, up by 900, down by 1500 — back to exactly where it was: Δ<var class="u">U</var> = 0. The work adds up to 600 − 400 = 200 J. The heat adds up to 600 + 1500 − 1900 = 200 J. <span class="hl">The same 200 J.</span></p>
+
+<p>That is what <var class="q">Q</var><sub>net</sub> = <var class="w">W</var><sub>net</sub> means: the gas took in 2100 J of heat, gave 1900 J of it back, and the 200 J that did not come back as heat came out as work.</p>
+
+<div class="teacher">
+  <span class="mark">✎</span>
+  <div class="bubble">This is your free check in every cycle problem. Add the Q column, add the W column. If the two sums are not equal — as they are here, 200 and 200 — something was calculated or copied wrong.</div>
+</div>
+
+<h2 id="net-work"><span class="num">2</span> The work of a cycle is the area of the loop</h2>
+
+<p>Work is the area under the line. On the way out — the expansion — the gas does work, and the area under the upper line is positive. On the way back — the compression — work is done on the gas, and the area under the lower line counts as negative.</p>
+
+<div class="fig">
+<svg viewBox="0 0 760 240" xmlns="http://www.w3.org/2000/svg" font-family="Georgia, serif"><defs><marker id="x" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="10" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 z" fill="#9a8c70"/></marker><marker id="k" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="6" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 z" fill="#33291f"/></marker><marker id="q" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="10" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 z" fill="#c15b38"/></marker><marker id="c" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="10" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 z" fill="#3d6bb3"/></marker><marker id="w" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="10" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 z" fill="#2e8a86"/></marker></defs><line x1="40" y1="200" x2="210" y2="200" stroke="#9a8c70" stroke-width="1.1" marker-end="url(#x)"/><line x1="40" y1="200" x2="40" y2="30" stroke="#9a8c70" stroke-width="1.1" marker-end="url(#x)"/><text x="216" y="205" font-size="14" font-style="italic" fill="#33291f">V</text><text x="26" y="38" font-size="14" font-style="italic" fill="#33291f">p</text><path d="M80.0,29.0 L82.6,37.3 L85.2,44.7 L87.8,51.3 L90.4,57.2 L93.0,62.6 L95.6,67.4 L98.2,71.8 L100.8,75.8 L103.4,79.5 L106.0,82.9 L108.6,86.0 L111.2,88.9 L113.8,91.7 L116.4,94.2 L119.0,96.5 L121.6,98.7 L124.2,100.8 L126.8,102.8 L129.4,104.6 L132.0,106.3 L134.6,108.0 L137.2,109.5 L139.8,111.0 L142.4,112.4 L145.0,113.7 L147.6,114.9 L150.2,116.1 L152.8,117.3 L155.4,118.4 L158.0,119.4 L160.6,120.4 L163.2,121.4 L165.8,122.3 L168.4,123.2 L171.0,124.0 L173.6,124.8 L176.2,125.6 L178.8,126.4 L181.4,127.1 L184.0,127.8 L184.0,200 L80.0,200 Z" fill="#2e8a86" opacity=".18"/><path d="M80.0,29.0 L82.6,37.3 L85.2,44.7 L87.8,51.3 L90.4,57.2 L93.0,62.6 L95.6,67.4 L98.2,71.8 L100.8,75.8 L103.4,79.5 L106.0,82.9 L108.6,86.0 L111.2,88.9 L113.8,91.7 L116.4,94.2 L119.0,96.5 L121.6,98.7 L124.2,100.8 L126.8,102.8 L129.4,104.6 L132.0,106.3 L134.6,108.0 L137.2,109.5 L139.8,111.0 L142.4,112.4 L145.0,113.7 L147.6,114.9 L150.2,116.1 L152.8,117.3 L155.4,118.4 L158.0,119.4 L160.6,120.4 L163.2,121.4 L165.8,122.3 L168.4,123.2 L171.0,124.0 L173.6,124.8 L176.2,125.6 L178.8,126.4 L181.4,127.1 L184.0,127.8" fill="none" stroke="#33291f" stroke-width="2" /><path d="M80.0,133.5 L82.6,137.0 L85.2,140.1 L87.8,142.8 L90.4,145.3 L93.0,147.5 L95.6,149.5 L98.2,151.3 L100.8,153.0 L103.4,154.5 L106.0,156.0 L108.6,157.3 L111.2,158.5 L113.8,159.6 L116.4,160.7 L119.0,161.6 L121.6,162.6 L124.2,163.4 L126.8,164.2 L129.4,165.0 L132.0,165.7 L134.6,166.4 L137.2,167.0 L139.8,167.7 L142.4,168.2 L145.0,168.8 L147.6,169.3 L150.2,169.8 L152.8,170.3 L155.4,170.7 L158.0,171.2 L160.6,171.6 L163.2,172.0 L165.8,172.4 L168.4,172.7 L171.0,173.1 L173.6,173.4 L176.2,173.8 L178.8,174.1 L181.4,174.4 L184.0,174.7" fill="none" stroke="#33291f" stroke-width="1" stroke-dasharray="4,3"/><line x1="80.0" y1="29.0" x2="80.0" y2="133.5" stroke="#33291f" stroke-width="1.4"/><line x1="184.0" y1="127.8" x2="184.0" y2="174.7" stroke="#33291f" stroke-width="1.4"/><line x1="124.2" y1="100.8" x2="129.4" y2="104.6" stroke="#33291f" stroke-width="2" marker-end="url(#k)"/><text x="130.0" y="228.0" font-size="13" fill="#6b5d43" text-anchor="middle">expansion: work by the gas</text><line x1="280" y1="200" x2="450" y2="200" stroke="#9a8c70" stroke-width="1.1" marker-end="url(#x)"/><line x1="280" y1="200" x2="280" y2="30" stroke="#9a8c70" stroke-width="1.1" marker-end="url(#x)"/><text x="456" y="205" font-size="14" font-style="italic" fill="#33291f">V</text><text x="266" y="38" font-size="14" font-style="italic" fill="#33291f">p</text><path d="M320.0,133.5 L322.6,137.0 L325.2,140.1 L327.8,142.8 L330.4,145.3 L333.0,147.5 L335.6,149.5 L338.2,151.3 L340.8,153.0 L343.4,154.5 L346.0,156.0 L348.6,157.3 L351.2,158.5 L353.8,159.6 L356.4,160.7 L359.0,161.6 L361.6,162.6 L364.2,163.4 L366.8,164.2 L369.4,165.0 L372.0,165.7 L374.6,166.4 L377.2,167.0 L379.8,167.7 L382.4,168.2 L385.0,168.8 L387.6,169.3 L390.2,169.8 L392.8,170.3 L395.4,170.7 L398.0,171.2 L400.6,171.6 L403.2,172.0 L405.8,172.4 L408.4,172.7 L411.0,173.1 L413.6,173.4 L416.2,173.8 L418.8,174.1 L421.4,174.4 L424.0,174.7 L424.0,200 L320.0,200 Z" fill="#c15b38" opacity=".15"/><path d="M320.0,29.0 L322.6,37.3 L325.2,44.7 L327.8,51.3 L330.4,57.2 L333.0,62.6 L335.6,67.4 L338.2,71.8 L340.8,75.8 L343.4,79.5 L346.0,82.9 L348.6,86.0 L351.2,88.9 L353.8,91.7 L356.4,94.2 L359.0,96.5 L361.6,98.7 L364.2,100.8 L366.8,102.8 L369.4,104.6 L372.0,106.3 L374.6,108.0 L377.2,109.5 L379.8,111.0 L382.4,112.4 L385.0,113.7 L387.6,114.9 L390.2,116.1 L392.8,117.3 L395.4,118.4 L398.0,119.4 L400.6,120.4 L403.2,121.4 L405.8,122.3 L408.4,123.2 L411.0,124.0 L413.6,124.8 L416.2,125.6 L418.8,126.4 L421.4,127.1 L424.0,127.8" fill="none" stroke="#33291f" stroke-width="1" stroke-dasharray="4,3"/><path d="M320.0,133.5 L322.6,137.0 L325.2,140.1 L327.8,142.8 L330.4,145.3 L333.0,147.5 L335.6,149.5 L338.2,151.3 L340.8,153.0 L343.4,154.5 L346.0,156.0 L348.6,157.3 L351.2,158.5 L353.8,159.6 L356.4,160.7 L359.0,161.6 L361.6,162.6 L364.2,163.4 L366.8,164.2 L369.4,165.0 L372.0,165.7 L374.6,166.4 L377.2,167.0 L379.8,167.7 L382.4,168.2 L385.0,168.8 L387.6,169.3 L390.2,169.8 L392.8,170.3 L395.4,170.7 L398.0,171.2 L400.6,171.6 L403.2,172.0 L405.8,172.4 L408.4,172.7 L411.0,173.1 L413.6,173.4 L416.2,173.8 L418.8,174.1 L421.4,174.4 L424.0,174.7" fill="none" stroke="#33291f" stroke-width="2" /><line x1="320.0" y1="29.0" x2="320.0" y2="133.5" stroke="#33291f" stroke-width="1.4"/><line x1="424.0" y1="127.8" x2="424.0" y2="174.7" stroke="#33291f" stroke-width="1.4"/><line x1="374.6" y1="166.4" x2="369.4" y2="165.0" stroke="#33291f" stroke-width="2" marker-end="url(#k)"/><text x="370.0" y="228.0" font-size="13" fill="#6b5d43" text-anchor="middle">compression: work on the gas</text><line x1="520" y1="200" x2="690" y2="200" stroke="#9a8c70" stroke-width="1.1" marker-end="url(#x)"/><line x1="520" y1="200" x2="520" y2="30" stroke="#9a8c70" stroke-width="1.1" marker-end="url(#x)"/><text x="696" y="205" font-size="14" font-style="italic" fill="#33291f">V</text><text x="506" y="38" font-size="14" font-style="italic" fill="#33291f">p</text><path d="M560.0,29.0 L562.6,37.3 L565.2,44.7 L567.8,51.3 L570.4,57.2 L573.0,62.6 L575.6,67.4 L578.2,71.8 L580.8,75.8 L583.4,79.5 L586.0,82.9 L588.6,86.0 L591.2,88.9 L593.8,91.7 L596.4,94.2 L599.0,96.5 L601.6,98.7 L604.2,100.8 L606.8,102.8 L609.4,104.6 L612.0,106.3 L614.6,108.0 L617.2,109.5 L619.8,111.0 L622.4,112.4 L625.0,113.7 L627.6,114.9 L630.2,116.1 L632.8,117.3 L635.4,118.4 L638.0,119.4 L640.6,120.4 L643.2,121.4 L645.8,122.3 L648.4,123.2 L651.0,124.0 L653.6,124.8 L656.2,125.6 L658.8,126.4 L661.4,127.1 L664.0,127.8 L664.0,174.7 L661.4,174.4 L658.8,174.1 L656.2,173.8 L653.6,173.4 L651.0,173.1 L648.4,172.7 L645.8,172.4 L643.2,172.0 L640.6,171.6 L638.0,171.2 L635.4,170.7 L632.8,170.3 L630.2,169.8 L627.6,169.3 L625.0,168.8 L622.4,168.2 L619.8,167.7 L617.2,167.0 L614.6,166.4 L612.0,165.7 L609.4,165.0 L606.8,164.2 L604.2,163.4 L601.6,162.6 L599.0,161.6 L596.4,160.7 L593.8,159.6 L591.2,158.5 L588.6,157.3 L586.0,156.0 L583.4,154.5 L580.8,153.0 L578.2,151.3 L575.6,149.5 L573.0,147.5 L570.4,145.3 L567.8,142.8 L565.2,140.1 L562.6,137.0 L560.0,133.5 Z" fill="#2e8a86" opacity=".3"/><path d="M560.0,29.0 L562.6,37.3 L565.2,44.7 L567.8,51.3 L570.4,57.2 L573.0,62.6 L575.6,67.4 L578.2,71.8 L580.8,75.8 L583.4,79.5 L586.0,82.9 L588.6,86.0 L591.2,88.9 L593.8,91.7 L596.4,94.2 L599.0,96.5 L601.6,98.7 L604.2,100.8 L606.8,102.8 L609.4,104.6 L612.0,106.3 L614.6,108.0 L617.2,109.5 L619.8,111.0 L622.4,112.4 L625.0,113.7 L627.6,114.9 L630.2,116.1 L632.8,117.3 L635.4,118.4 L638.0,119.4 L640.6,120.4 L643.2,121.4 L645.8,122.3 L648.4,123.2 L651.0,124.0 L653.6,124.8 L656.2,125.6 L658.8,126.4 L661.4,127.1 L664.0,127.8" fill="none" stroke="#33291f" stroke-width="2" /><path d="M560.0,133.5 L562.6,137.0 L565.2,140.1 L567.8,142.8 L570.4,145.3 L573.0,147.5 L575.6,149.5 L578.2,151.3 L580.8,153.0 L583.4,154.5 L586.0,156.0 L588.6,157.3 L591.2,158.5 L593.8,159.6 L596.4,160.7 L599.0,161.6 L601.6,162.6 L604.2,163.4 L606.8,164.2 L609.4,165.0 L612.0,165.7 L614.6,166.4 L617.2,167.0 L619.8,167.7 L622.4,168.2 L625.0,168.8 L627.6,169.3 L630.2,169.8 L632.8,170.3 L635.4,170.7 L638.0,171.2 L640.6,171.6 L643.2,172.0 L645.8,172.4 L648.4,172.7 L651.0,173.1 L653.6,173.4 L656.2,173.8 L658.8,174.1 L661.4,174.4 L664.0,174.7" fill="none" stroke="#33291f" stroke-width="2" /><line x1="560.0" y1="29.0" x2="560.0" y2="133.5" stroke="#33291f" stroke-width="1.4"/><line x1="664.0" y1="127.8" x2="664.0" y2="174.7" stroke="#33291f" stroke-width="1.4"/><line x1="604.2" y1="100.8" x2="609.4" y2="104.6" stroke="#33291f" stroke-width="2" marker-end="url(#k)"/><line x1="614.6" y1="166.4" x2="609.4" y2="165.0" stroke="#33291f" stroke-width="2" marker-end="url(#k)"/><text x="610.0" y="228.0" font-size="13" fill="#6b5d43" text-anchor="middle">one full cycle: net work</text><text x="604.0" y="127.8" font-size="14" fill="#2e8a86" text-anchor="middle" font-style="italic">W<tspan font-size="9.5" dy="4">net</tspan><tspan dy="-4">&#8203;</tspan></text></svg>
+<p class="figcap">Big area out, small area back — what is left is the area inside the loop</p>
+</div>
+
+<p>Subtract one from the other and what remains is exactly the area <strong>enclosed by the loop</strong>:</p>
+
+<div class="formula">
+  <span class="lbl">net work of a cycle</span>
+  <var class="w">W</var><sub>net</sub> = area inside the loop
+</div>
+
+<p>The direction of the arrows decides the sign:</p>
+
+<ul>
+  <li><strong>clockwise</strong> — the expansion runs along the upper line. <var class="w">W</var><sub>net</sub> &gt; 0: the gas gives out work. This is an <strong>engine</strong>.</li>
+  <li><strong>anticlockwise</strong> — the compression runs along the upper line. <var class="w">W</var><sub>net</sub> &lt; 0: work has to be put in. This is a refrigerator or a heat pump.</li>
+</ul>
+
+<h2 id="heat-engine"><span class="num">3</span> What every heat engine does</h2>
+
+<p>Forget the details of the loop for a moment and look at an engine from far away. Whatever is inside — steam, petrol vapour, our ideal gas — the same three things happen in every cycle.</p>
+
+<div class="fig">
+<svg viewBox="0 0 740 310" xmlns="http://www.w3.org/2000/svg" font-family="Georgia, serif"><defs><marker id="x" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="10" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 z" fill="#9a8c70"/></marker><marker id="k" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="6" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 z" fill="#33291f"/></marker><marker id="q" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="10" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 z" fill="#c15b38"/></marker><marker id="c" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="10" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 z" fill="#3d6bb3"/></marker><marker id="w" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="10" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 z" fill="#2e8a86"/></marker></defs><rect x="250" y="14" width="240" height="46" rx="8" fill="#c15b38" opacity=".16" stroke="#c15b38"/><text x="370.0" y="43.0" font-size="15" fill="#c15b38" text-anchor="middle">hot reservoir, T<tspan font-size="9.5" dy="4">H</tspan><tspan dy="-4">&#8203;</tspan></text><rect x="250" y="250" width="240" height="46" rx="8" fill="#3d6bb3" opacity=".14" stroke="#3d6bb3"/><text x="370.0" y="279.0" font-size="15" fill="#3d6bb3" text-anchor="middle">cold reservoir, T<tspan font-size="9.5" dy="4">C</tspan><tspan dy="-4">&#8203;</tspan></text><circle cx="370" cy="155" r="42" fill="#7a5aa8" opacity=".12" stroke="#7a5aa8" stroke-width="1.5"/><text x="370.0" y="151.0" font-size="14" fill="#7a5aa8" text-anchor="middle">engine</text><text x="370.0" y="169.0" font-size="12.5" fill="#7a5aa8" text-anchor="middle">ΔU = 0</text><line x1="370" y1="62" x2="370" y2="110" stroke="#c15b38" stroke-width="3.5" marker-end="url(#q)"/><text x="384.0" y="92.0" font-size="16" fill="#c15b38" text-anchor="start" font-style="italic">Q<tspan font-size="9.5" dy="4">H</tspan><tspan dy="-4">&#8203;</tspan></text><line x1="370" y1="199" x2="370" y2="247" stroke="#3d6bb3" stroke-width="3.5" marker-end="url(#c)"/><text x="384.0" y="228.0" font-size="16" fill="#3d6bb3" text-anchor="start" font-style="italic">Q<tspan font-size="9.5" dy="4">C</tspan><tspan dy="-4">&#8203;</tspan></text><line x1="414" y1="155" x2="520" y2="155" stroke="#2e8a86" stroke-width="3.5" marker-end="url(#w)"/><text x="532.0" y="160.0" font-size="16" fill="#2e8a86" text-anchor="start" font-style="italic">W = Q<tspan font-size="9.5" dy="4">H</tspan><tspan dy="-4">&#8203;</tspan> − Q<tspan font-size="9.5" dy="4">C</tspan><tspan dy="-4">&#8203;</tspan></text><text x="232.0" y="92.0" font-size="13" fill="#6b5d43" text-anchor="end">heat taken in</text><text x="232.0" y="228.0" font-size="13" fill="#6b5d43" text-anchor="end">heat thrown away</text><text x="532.0" y="182.0" font-size="13" fill="#6b5d43" text-anchor="start">useful work</text></svg>
+<p class="figcap">Heat flows from hot to cold, and the engine takes its share on the way</p>
+</div>
+
+<ul>
+  <li>The engine takes heat <var class="q">Q</var><sub>H</sub> from something hot — the <strong>hot reservoir</strong> at temperature <var>T</var><sub>H</sub>: burning fuel, a reactor, the Sun.</li>
+  <li>It turns part of that heat into work <var class="w">W</var>.</li>
+  <li>It throws the rest, <var class="q">Q</var><sub>C</sub>, into something cold — the <strong>cold reservoir</strong> at <var>T</var><sub>C</sub>: the air, a river, the sea.</li>
+</ul>
+
+<p>The engine itself runs in a cycle, so its own Δ<var class="u">U</var> is zero and the energy simply has to balance:</p>
+
+<div class="formula">
+  <span class="lbl">energy balance of an engine</span>
+  <var class="w">W</var> = <var class="q">Q</var><sub>H</sub> − <var class="q">Q</var><sub>C</sub>
+</div>
+
+<p>In this picture <var class="q">Q</var><sub>H</sub> and <var class="q">Q</var><sub>C</sub> are both written as positive amounts — "how much" — and the arrows show the direction.</p>
+
+<div class="watch">
+  <h4>Watch out!</h4>
+  <p>The heat thrown away is not a design mistake that a clever engineer could remove. Dumping <var>Q</var><sub>C</sub> is the "cheap road back" — without it the gas cannot return to its start and there is no cycle. Why it can never be zero is the subject of the next card.</p>
+</div>
+
+<h2 id="efficiency"><span class="num">4</span> Efficiency — what you get for what you pay</h2>
+
+<p>You pay for <var class="q">Q</var><sub>H</sub> — that is the fuel. You want <var class="w">W</var>. The <strong>efficiency</strong> is the share of the heat taken in that comes out as work:</p>
+
+<div class="formula">
+  <span class="lbl">efficiency of a heat engine</span>
+  <var>η</var> = <span class="frac"><i>useful work</i><i>heat taken in</i></span> = <span class="frac"><i><var class="w">W</var></i><i><var class="q">Q</var><sub>H</sub></i></span> = <span class="frac"><i><var class="q">Q</var><sub>H</sub> − <var class="q">Q</var><sub>C</sub></i><i><var class="q">Q</var><sub>H</sub></i></span> = 1 − <span class="frac"><i><var class="q">Q</var><sub>C</sub></i><i><var class="q">Q</var><sub>H</sub></i></span>
+</div>
+
+<p>It is a number between 0 and 1, often given in per cent. An efficiency of 0.30 means: of every 100 J of heat taken in, 30 J become work and 70 J go to the cold reservoir.</p>
+
+<p>When the cycle is drawn on a <var>pV</var> diagram, or given as a table of steps, the recipe is always the same:</p>
+
+<ul>
+  <li><var class="w">W</var> is the net work — the area of the loop, or the sum of the work of all steps with signs.</li>
+  <li><var class="q">Q</var><sub>H</sub> is the sum of the heat over the steps where heat goes <strong>into</strong> the gas — the positive <var class="q">Q</var> only.</li>
+  <li>The steps where heat comes out make up <var class="q">Q</var><sub>C</sub>. They are a loss, not a cost — they never go into the denominator.</li>
+</ul>
+
+<h2 id="carnot"><span class="num">5</span> The Carnot cycle — the best any engine can do</h2>
+
+<p>In 1824 a young French engineer, Sadi Carnot, asked a bold question: forget friction, forget leaks, forget every practical trouble — what is the best efficiency an engine could have <em>in principle</em>, working between a hot reservoir at <var>T</var><sub>H</sub> and a cold one at <var>T</var><sub>C</sub>?</p>
+
+<p>His answer is a cycle made of the two "cleanest" processes from the previous card — two isothermal and two adiabatic.</p>
+
+<div class="fig">
+<svg viewBox="0 0 700 335" xmlns="http://www.w3.org/2000/svg" font-family="Georgia, serif"><defs><marker id="x" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="10" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 z" fill="#9a8c70"/></marker><marker id="k" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="6" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 z" fill="#33291f"/></marker><marker id="q" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="10" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 z" fill="#c15b38"/></marker><marker id="c" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="10" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 z" fill="#3d6bb3"/></marker><marker id="w" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="10" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 z" fill="#2e8a86"/></marker></defs><line x1="80" y1="300" x2="600" y2="300" stroke="#9a8c70" stroke-width="1.1" marker-end="url(#x)"/><line x1="80" y1="300" x2="80" y2="20" stroke="#9a8c70" stroke-width="1.1" marker-end="url(#x)"/><text x="606" y="305" font-size="14" font-style="italic" fill="#33291f">V</text><text x="66" y="28" font-size="14" font-style="italic" fill="#33291f">p</text><path d="M164.0,72.0 L165.4,75.7 L166.8,79.4 L168.2,82.9 L169.6,86.2 L171.0,89.5 L172.4,92.7 L173.8,95.8 L175.2,98.8 L176.6,101.7 L178.0,104.6 L179.4,107.3 L180.8,110.0 L182.2,112.6 L183.6,115.1 L185.0,117.6 L186.4,120.0 L187.8,122.3 L189.2,124.6 L190.6,126.8 L192.0,129.0 L193.4,131.1 L194.8,133.2 L196.2,135.2 L197.6,137.1 L199.0,139.1 L200.4,140.9 L201.8,142.8 L203.2,144.5 L204.6,146.3 L206.0,148.0 L207.4,149.7 L208.8,151.3 L210.2,152.9 L211.6,154.5 L213.0,156.0 L214.4,157.5 L215.8,159.0 L217.2,160.4 L218.6,161.8 L220.0,163.2 L221.4,164.6 L222.8,165.9 L224.2,167.2 L225.6,168.5 L227.0,169.7 L228.4,170.9 L229.8,172.1 L231.2,173.3 L232.6,174.5 L234.0,175.6 L235.4,176.8 L236.8,177.9 L238.2,178.9 L239.6,180.0 L241.0,181.0 L242.4,182.1 L243.8,183.1 L245.2,184.1 L246.6,185.0 L248.0,186.0 L248.0,186.0 L253.1,191.6 L258.2,196.7 L263.4,201.5 L268.5,205.9 L273.6,210.0 L278.7,213.8 L283.8,217.4 L289.0,220.8 L294.1,223.9 L299.2,226.8 L304.3,229.6 L309.4,232.2 L314.6,234.6 L319.7,236.9 L324.8,239.1 L329.9,241.2 L335.0,243.1 L340.2,245.0 L345.3,246.8 L350.4,248.4 L355.5,250.0 L360.6,251.5 L365.8,253.0 L370.9,254.3 L376.0,255.6 L381.1,256.9 L386.2,258.1 L391.3,259.2 L396.5,260.3 L401.6,261.4 L406.7,262.4 L411.8,263.3 L416.9,264.3 L422.1,265.1 L427.2,266.0 L432.3,266.8 L437.4,267.6 L442.5,268.4 L447.7,269.1 L452.8,269.8 L457.9,270.5 L463.0,271.1 L468.1,271.8 L473.3,272.4 L478.4,273.0 L483.5,273.5 L488.6,274.1 L493.7,274.6 L498.9,275.1 L504.0,275.6 L509.1,276.1 L514.2,276.6 L519.3,277.0 L524.5,277.5 L529.6,277.9 L534.7,278.3 L539.8,278.7 L544.9,279.1 L550.1,279.5 L555.2,279.8 L555.2,279.8 L551.2,279.7 L547.3,279.5 L543.3,279.3 L539.3,279.2 L535.4,279.0 L531.4,278.8 L527.5,278.6 L523.5,278.4 L519.5,278.2 L515.6,278.0 L511.6,277.8 L507.7,277.6 L503.7,277.4 L499.7,277.2 L495.8,277.0 L491.8,276.7 L487.9,276.5 L483.9,276.3 L479.9,276.1 L476.0,275.8 L472.0,275.6 L468.1,275.3 L464.1,275.1 L460.1,274.8 L456.2,274.5 L452.2,274.3 L448.3,274.0 L444.3,273.7 L440.3,273.4 L436.4,273.1 L432.4,272.8 L428.5,272.5 L424.5,272.2 L420.5,271.9 L416.6,271.5 L412.6,271.2 L408.7,270.9 L404.7,270.5 L400.7,270.1 L396.8,269.8 L392.8,269.4 L388.9,269.0 L384.9,268.6 L380.9,268.2 L377.0,267.8 L373.0,267.3 L369.1,266.9 L365.1,266.4 L361.1,265.9 L357.2,265.5 L353.2,265.0 L349.3,264.4 L345.3,263.9 L341.3,263.4 L337.4,262.8 L333.4,262.2 L329.5,261.6 L325.5,261.0 L321.5,260.4 L317.6,259.7 L317.6,259.7 L315.0,259.0 L312.5,258.2 L309.9,257.4 L307.3,256.6 L304.8,255.8 L302.2,254.9 L299.7,254.1 L297.1,253.2 L294.5,252.2 L292.0,251.3 L289.4,250.3 L286.9,249.2 L284.3,248.2 L281.8,247.1 L279.2,245.9 L276.6,244.8 L274.1,243.5 L271.5,242.3 L269.0,241.0 L266.4,239.6 L263.8,238.2 L261.3,236.7 L258.7,235.2 L256.2,233.6 L253.6,232.0 L251.0,230.3 L248.5,228.5 L245.9,226.7 L243.4,224.7 L240.8,222.7 L238.2,220.6 L235.7,218.5 L233.1,216.2 L230.6,213.8 L228.0,211.3 L225.4,208.7 L222.9,205.9 L220.3,203.0 L217.8,200.0 L215.2,196.9 L212.6,193.5 L210.1,190.0 L207.5,186.3 L205.0,182.4 L202.4,178.3 L199.8,173.9 L197.3,169.3 L194.7,164.4 L192.2,159.2 L189.6,153.6 L187.0,147.8 L184.5,141.5 L181.9,134.8 L179.4,127.7 L176.8,120.0 L174.2,111.8 L171.7,102.9 L169.1,93.4 L166.6,83.1 L164.0,72.0 Z" fill="#2e8a86" opacity=".16"/><path d="M164.0,72.0 L165.4,75.7 L166.8,79.4 L168.2,82.9 L169.6,86.2 L171.0,89.5 L172.4,92.7 L173.8,95.8 L175.2,98.8 L176.6,101.7 L178.0,104.6 L179.4,107.3 L180.8,110.0 L182.2,112.6 L183.6,115.1 L185.0,117.6 L186.4,120.0 L187.8,122.3 L189.2,124.6 L190.6,126.8 L192.0,129.0 L193.4,131.1 L194.8,133.2 L196.2,135.2 L197.6,137.1 L199.0,139.1 L200.4,140.9 L201.8,142.8 L203.2,144.5 L204.6,146.3 L206.0,148.0 L207.4,149.7 L208.8,151.3 L210.2,152.9 L211.6,154.5 L213.0,156.0 L214.4,157.5 L215.8,159.0 L217.2,160.4 L218.6,161.8 L220.0,163.2 L221.4,164.6 L222.8,165.9 L224.2,167.2 L225.6,168.5 L227.0,169.7 L228.4,170.9 L229.8,172.1 L231.2,173.3 L232.6,174.5 L234.0,175.6 L235.4,176.8 L236.8,177.9 L238.2,178.9 L239.6,180.0 L241.0,181.0 L242.4,182.1 L243.8,183.1 L245.2,184.1 L246.6,185.0 L248.0,186.0" fill="none" stroke="#c15b38" stroke-width="2.2"/><path d="M555.2,279.8 L551.2,279.7 L547.3,279.5 L543.3,279.3 L539.3,279.2 L535.4,279.0 L531.4,278.8 L527.5,278.6 L523.5,278.4 L519.5,278.2 L515.6,278.0 L511.6,277.8 L507.7,277.6 L503.7,277.4 L499.7,277.2 L495.8,277.0 L491.8,276.7 L487.9,276.5 L483.9,276.3 L479.9,276.1 L476.0,275.8 L472.0,275.6 L468.1,275.3 L464.1,275.1 L460.1,274.8 L456.2,274.5 L452.2,274.3 L448.3,274.0 L444.3,273.7 L440.3,273.4 L436.4,273.1 L432.4,272.8 L428.5,272.5 L424.5,272.2 L420.5,271.9 L416.6,271.5 L412.6,271.2 L408.7,270.9 L404.7,270.5 L400.7,270.1 L396.8,269.8 L392.8,269.4 L388.9,269.0 L384.9,268.6 L380.9,268.2 L377.0,267.8 L373.0,267.3 L369.1,266.9 L365.1,266.4 L361.1,265.9 L357.2,265.5 L353.2,265.0 L349.3,264.4 L345.3,263.9 L341.3,263.4 L337.4,262.8 L333.4,262.2 L329.5,261.6 L325.5,261.0 L321.5,260.4 L317.6,259.7" fill="none" stroke="#3d6bb3" stroke-width="2.2"/><path d="M248.0,186.0 L253.1,191.6 L258.2,196.7 L263.4,201.5 L268.5,205.9 L273.6,210.0 L278.7,213.8 L283.8,217.4 L289.0,220.8 L294.1,223.9 L299.2,226.8 L304.3,229.6 L309.4,232.2 L314.6,234.6 L319.7,236.9 L324.8,239.1 L329.9,241.2 L335.0,243.1 L340.2,245.0 L345.3,246.8 L350.4,248.4 L355.5,250.0 L360.6,251.5 L365.8,253.0 L370.9,254.3 L376.0,255.6 L381.1,256.9 L386.2,258.1 L391.3,259.2 L396.5,260.3 L401.6,261.4 L406.7,262.4 L411.8,263.3 L416.9,264.3 L422.1,265.1 L427.2,266.0 L432.3,266.8 L437.4,267.6 L442.5,268.4 L447.7,269.1 L452.8,269.8 L457.9,270.5 L463.0,271.1 L468.1,271.8 L473.3,272.4 L478.4,273.0 L483.5,273.5 L488.6,274.1 L493.7,274.6 L498.9,275.1 L504.0,275.6 L509.1,276.1 L514.2,276.6 L519.3,277.0 L524.5,277.5 L529.6,277.9 L534.7,278.3 L539.8,278.7 L544.9,279.1 L550.1,279.5 L555.2,279.8" fill="none" stroke="#33291f" stroke-width="1.6"/><path d="M317.6,259.7 L315.0,259.0 L312.5,258.2 L309.9,257.4 L307.3,256.6 L304.8,255.8 L302.2,254.9 L299.7,254.1 L297.1,253.2 L294.5,252.2 L292.0,251.3 L289.4,250.3 L286.9,249.2 L284.3,248.2 L281.8,247.1 L279.2,245.9 L276.6,244.8 L274.1,243.5 L271.5,242.3 L269.0,241.0 L266.4,239.6 L263.8,238.2 L261.3,236.7 L258.7,235.2 L256.2,233.6 L253.6,232.0 L251.0,230.3 L248.5,228.5 L245.9,226.7 L243.4,224.7 L240.8,222.7 L238.2,220.6 L235.7,218.5 L233.1,216.2 L230.6,213.8 L228.0,211.3 L225.4,208.7 L222.9,205.9 L220.3,203.0 L217.8,200.0 L215.2,196.9 L212.6,193.5 L210.1,190.0 L207.5,186.3 L205.0,182.4 L202.4,178.3 L199.8,173.9 L197.3,169.3 L194.7,164.4 L192.2,159.2 L189.6,153.6 L187.0,147.8 L184.5,141.5 L181.9,134.8 L179.4,127.7 L176.8,120.0 L174.2,111.8 L171.7,102.9 L169.1,93.4 L166.6,83.1 L164.0,72.0" fill="none" stroke="#33291f" stroke-width="1.6"/><line x1="204.6" y1="146.3" x2="207.4" y2="149.7" stroke="#c15b38" stroke-width="2" marker-end="url(#q)"/><line x1="440.3" y1="273.4" x2="432.4" y2="272.8" stroke="#3d6bb3" stroke-width="2" marker-end="url(#c)"/><line x1="396.5" y1="260.3" x2="406.7" y2="262.4" stroke="#33291f" stroke-width="2" marker-end="url(#k)"/><line x1="243.4" y1="224.7" x2="238.2" y2="220.6" stroke="#33291f" stroke-width="2" marker-end="url(#k)"/><circle cx="164.0" cy="72.0" r="3.2" fill="#33291f"/><text x="150.0" y="68.0" font-size="15" fill="#33291f" text-anchor="middle" font-weight="bold">A</text><circle cx="248.0" cy="186.0" r="3.2" fill="#33291f"/><text x="256.0" y="178.0" font-size="15" fill="#33291f" text-anchor="middle" font-weight="bold">B</text><circle cx="555.2" cy="279.8" r="3.2" fill="#33291f"/><text x="565.2" y="275.8" font-size="15" fill="#33291f" text-anchor="middle" font-weight="bold">C</text><circle cx="317.6" cy="259.7" r="3.2" fill="#33291f"/><text x="305.6" y="277.7" font-size="15" fill="#33291f" text-anchor="middle" font-weight="bold">D</text><text x="227.0" y="83.4" font-size="13.5" fill="#c15b38" text-anchor="start">isothermal at T<tspan font-size="9.5" dy="4">H</tspan><tspan dy="-4">&#8203;</tspan>: Q<tspan font-size="9.5" dy="4">H</tspan><tspan dy="-4">&#8203;</tspan> in</text><text x="374.0" y="227.8" font-size="13.5" fill="#33291f" text-anchor="start">adiabatic: Q = 0</text><text x="101.0" y="224.0" font-size="13.5" fill="#33291f" text-anchor="start">adiabatic:</text><text x="101.0" y="241.0" font-size="13.5" fill="#33291f" text-anchor="start">Q = 0</text><text x="323.6" y="292.0" font-size="13.5" fill="#3d6bb3" text-anchor="start">isothermal at T<tspan font-size="9.5" dy="4">C</tspan><tspan dy="-4">&#8203;</tspan>: Q<tspan font-size="9.5" dy="4">C</tspan><tspan dy="-4">&#8203;</tspan> out</text><text x="273.2" y="229.7" font-size="14" fill="#2e8a86" text-anchor="middle" font-style="italic">W<tspan font-size="9.5" dy="4">net</tspan><tspan dy="-4">&#8203;</tspan></text></svg>
+<p class="figcap">The Carnot cycle: heat is exchanged only on the two isotherms</p>
+</div>
+
+<table>
+  <tr><th>step</th><th>process</th><th>what happens</th></tr>
+  <tr><td>A → B</td><td>isothermal expansion at <var>T</var><sub>H</sub></td><td>takes in <var class="q">Q</var><sub>H</sub>, does work</td></tr>
+  <tr><td>B → C</td><td>adiabatic expansion</td><td>no heat; does work and cools to <var>T</var><sub>C</sub></td></tr>
+  <tr><td>C → D</td><td>isothermal compression at <var>T</var><sub>C</sub></td><td>gives out <var class="q">Q</var><sub>C</sub>, work is done on it</td></tr>
+  <tr><td>D → A</td><td>adiabatic compression</td><td>no heat; work is done on it, warms back to <var>T</var><sub>H</sub></td></tr>
+</table>
+
+<p>Why these four? Heat is taken in only at the highest temperature and given out only at the lowest; the two adiabats just carry the gas between the two temperatures with no heat passing at all. Every step can be run backwards — the cycle is <strong>reversible</strong>. For such a cycle the heats are in the same ratio as the temperatures, <var class="q">Q</var><sub>C</sub>/<var class="q">Q</var><sub>H</sub> = <var>T</var><sub>C</sub>/<var>T</var><sub>H</sub> (we will see where this comes from in the next card), and so</p>
+
+<div class="formula">
+  <span class="lbl">Carnot efficiency — temperatures in kelvin</span>
+  <var>η</var><sub>Carnot</sub> = 1 − <span class="frac"><i><var>T</var><sub>C</sub></i><i><var>T</var><sub>H</sub></i></span>
+</div>
+
+<p>Read what this formula says, because it is one of the strongest statements in physics:</p>
+
+<ul>
+  <li><span class="hl">No engine working between the same two temperatures can beat it.</span> A real engine is always below this number.</li>
+  <li>The limit depends <strong>only on the two temperatures</strong> — not on the gas, not on the size, not on the engineer.</li>
+  <li>To raise it, make the hot side hotter or the cold side colder. That is why power stations run their steam as hot as the metal allows.</li>
+  <li>It is never 1. That would need <var>T</var><sub>C</sub> = 0 K — and nothing can be used as a reservoir at absolute zero.</li>
+</ul>
+
+<div class="watch">
+  <h4>Watch out!</h4>
+  <p>There are two efficiency formulas, and they are not the same thing. <var>η</var> = <var>W</var>/<var>Q</var><sub>H</sub> works for <em>any</em> engine. <var>η</var> = 1 − <var>T</var><sub>C</sub>/<var>T</var><sub>H</sub> is only for the Carnot cycle — for a real engine it gives the ceiling, not the actual value. And it needs kelvin: 27 °C and 327 °C are 300 K and 600 K, so <var>η</var> = 0.50, not 0.92.</p>
+</div>
+
+<h2><span class="num">6</span> Try it on a real one</h2>
+
+<p>A monatomic ideal gas is taken round the cycle ABCDA shown on the diagram. Find the net work of one cycle, the heat taken in, and the efficiency. Then compare with the Carnot limit for the same highest and lowest temperatures.</p>
+
+<div class="fig">
+<svg viewBox="0 0 700 335" xmlns="http://www.w3.org/2000/svg" font-family="Georgia, serif"><defs><marker id="x" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="10" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 z" fill="#9a8c70"/></marker><marker id="k" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="6" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 z" fill="#33291f"/></marker><marker id="q" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="10" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 z" fill="#c15b38"/></marker><marker id="c" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="10" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 z" fill="#3d6bb3"/></marker><marker id="w" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="10" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 z" fill="#2e8a86"/></marker></defs><line x1="90" y1="290" x2="560" y2="290" stroke="#9a8c70" stroke-width="1.1" marker-end="url(#x)"/><line x1="90" y1="290" x2="90" y2="30" stroke="#9a8c70" stroke-width="1.1" marker-end="url(#x)"/><text x="566" y="295" font-size="14" font-style="italic" fill="#33291f">V</text><text x="76" y="38" font-size="14" font-style="italic" fill="#33291f">p</text><line x1="220" y1="290" x2="220" y2="295" stroke="#9a8c70"/><text x="220.0" y="310.0" font-size="12" fill="#33291f" text-anchor="middle">1.0</text><line x1="350" y1="290" x2="350" y2="295" stroke="#9a8c70"/><text x="350.0" y="310.0" font-size="12" fill="#33291f" text-anchor="middle">2.0</text><line x1="480" y1="290" x2="480" y2="295" stroke="#9a8c70"/><text x="480.0" y="310.0" font-size="12" fill="#33291f" text-anchor="middle">3.0</text><line x1="90" y1="220" x2="85" y2="220" stroke="#9a8c70"/><text x="80.0" y="224.0" font-size="12" fill="#33291f" text-anchor="end">1.0</text><line x1="90" y1="150" x2="85" y2="150" stroke="#9a8c70"/><text x="80.0" y="154.0" font-size="12" fill="#33291f" text-anchor="end">2.0</text><line x1="90" y1="80" x2="85" y2="80" stroke="#9a8c70"/><text x="80.0" y="84.0" font-size="12" fill="#33291f" text-anchor="end">3.0</text><text x="519.0" y="328.0" font-size="12.5" fill="#6b5d43" text-anchor="middle">V / 10⁻³ m³</text><text x="46" y="164.0" font-size="12.5" fill="#6b5d43" text-anchor="middle" transform="rotate(-90 46 164.0)">p / 10⁵ Pa</text><rect x="220" y="80" width="260" height="140" fill="#2e8a86" opacity=".18" stroke="none"/><path d="M220,220 V80 H480 V220 Z" fill="none" stroke="#33291f" stroke-width="2"/><line x1="220" y1="157.0" x2="220" y2="143.0" stroke="#33291f" stroke-width="2" marker-end="url(#k)"/><line x1="337.0" y1="80" x2="363.0" y2="80" stroke="#33291f" stroke-width="2" marker-end="url(#k)"/><line x1="480" y1="143.0" x2="480" y2="157.0" stroke="#33291f" stroke-width="2" marker-end="url(#k)"/><line x1="363.0" y1="220" x2="337.0" y2="220" stroke="#33291f" stroke-width="2" marker-end="url(#k)"/><circle cx="220.0" cy="220.0" r="3.2" fill="#33291f"/><text x="206.0" y="236.0" font-size="15" fill="#33291f" text-anchor="middle" font-weight="bold">A</text><circle cx="220.0" cy="80.0" r="3.2" fill="#33291f"/><text x="206.0" y="74.0" font-size="15" fill="#33291f" text-anchor="middle" font-weight="bold">B</text><circle cx="480.0" cy="80.0" r="3.2" fill="#33291f"/><text x="492.0" y="74.0" font-size="15" fill="#33291f" text-anchor="middle" font-weight="bold">C</text><circle cx="480.0" cy="220.0" r="3.2" fill="#33291f"/><text x="492.0" y="236.0" font-size="15" fill="#33291f" text-anchor="middle" font-weight="bold">D</text><text x="350.0" y="155.0" font-size="14" fill="#2e8a86" text-anchor="middle" font-style="italic">W<tspan font-size="9.5" dy="4">net</tspan><tspan dy="-4">&#8203;</tspan> = area</text></svg>
+<p class="figcap">Two isovolumetric steps and two isobaric steps, run clockwise</p>
+</div>
+
+<p><strong>Signs first.</strong> The loop is clockwise, so it is an engine: <var class="w">W</var><sub>net</sub> &gt; 0.</p>
+
+<p><strong>Net work.</strong> The loop is a rectangle: <var class="w">W</var><sub>net</sub> = Δ<var>p</var> · Δ<var>V</var> = (3.0 − 1.0) × 10<sup>5</sup> × (3.0 − 1.0) × 10<sup>−3</sup> = 400 J.</p>
+
+<p><strong>Heat, step by step.</strong> For each step we need Δ<var class="u">U</var> = <span class="frac"><i>3</i><i>2</i></span>Δ(<var>pV</var>) and <var class="w">W</var>, then <var class="q">Q</var> = Δ<var class="u">U</var> + <var class="w">W</var>. First the product <var>pV</var> at each corner: A — 100 J, B — 300 J, C — 900 J, D — 300 J.</p>
+
+<table>
+  <tr><th>step</th><th>Δ<var class="u">U</var>, J</th><th><var class="w">W</var>, J</th><th><var class="q">Q</var>, J</th><th>heat goes</th></tr>
+  <tr><td>A → B</td><td>+300</td><td>0</td><td>+300</td><td>in</td></tr>
+  <tr><td>B → C</td><td>+900</td><td>+600</td><td>+1500</td><td>in</td></tr>
+  <tr><td>C → D</td><td>−900</td><td>0</td><td>−900</td><td>out</td></tr>
+  <tr><td>D → A</td><td>−300</td><td>−200</td><td>−500</td><td>out</td></tr>
+  <tr><td><strong>cycle</strong></td><td><strong>0</strong></td><td><strong>+400</strong></td><td><strong>+400</strong></td><td></td></tr>
+</table>
+
+<p>The bottom row is the check from section 1: Δ<var class="u">U</var> adds up to zero, and the net heat equals the net work — and equals the area we found.</p>
+
+<p><strong>Efficiency.</strong> Heat goes in on A → B and B → C: <var class="q">Q</var><sub>H</sub> = 300 + 1500 = 1800 J.</p>
+
+<div class="formula">
+  <var>η</var> = <span class="frac"><i><var class="w">W</var><sub>net</sub></i><i><var class="q">Q</var><sub>H</sub></i></span> = <span class="frac"><i>400</i><i>1800</i></span> ≈ 0.22
+</div>
+
+<p><strong>The Carnot limit.</strong> <var>T</var> = <var>pV</var>/(<var>nR</var>), so the gas is hottest where <var>pV</var> is largest — at C — and coldest at A. Then <var>T</var><sub>C</sub>/<var>T</var><sub>H</sub> = 100/900, and <var>η</var><sub>Carnot</sub> = 1 − <span class="frac"><i>1</i><i>9</i></span> ≈ 0.89.</p>
+
+<p>Our rectangle turns 22 % of its heat into work where a Carnot engine between the same temperatures would turn 89 %. The reason is in the table: the rectangle takes heat in all the way from the coldest corner up to the hottest, and throws heat out all the way down. Carnot's cycle takes heat only at the very top temperature and gives it out only at the very bottom.</p>
+
+<p>In the next card we find out <em>why</em> some heat must always be thrown away — and meet the quantity that keeps the score: entropy.</p>
+
+<div class="anchors">
+  <h4>Connection points</h4>
+  <code>B4.3#cycles</code><code>B4.3#cycle-check</code><code>B4.3#net-work</code><code>B4.3#heat-engine</code><code>B4.3#efficiency</code><code>B4.3#carnot</code>
+</div>
+
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,984 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>M01 Maths for Physics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light;
+  --page:#efe8d8; --card:#f9f4e9; --card-inner:#fbf8f0;
+  --border:#e3d9c2; --border-inner:#ddd2b8;
+  --shadow-card:0 2px 24px rgba(90,70,40,.10);
+  --ink:#33291f; --ink-muted:#6b5d43;
+  --qty-time:#4a7c59; --qty-position:#3d6bb3; --qty-velocity:#c15b38;
+  --qty-acceleration:#7a5aa8;
+  --diagram-bg:#eaf1ea;
+  --scene-bg:#f3ead6;
+  --misconception:#6e2a48; --misconception-bg:#e9dbe3;
+  --teacher:#5a6f9e; --teacher-bubble-border:#b9c5dd;
+  --font-structure:'Bricolage Grotesque',sans-serif;
+  --font-body:'Source Serif 4',Georgia,serif;
+  --font-hand:'Caveat',cursive;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--ink);font:400 18px/1.62 var(--font-body);-webkit-font-smoothing:antialiased}
+.page{max-width:860px;margin:0 auto;padding:40px 16px 80px}
+.kickerbar{display:flex;justify-content:space-between;align-items:flex-end;margin:0 6px 14px;gap:16px}
+.kicker{font:600 12.5px/1.3 var(--font-structure);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted)}
+.hand{font-family:var(--font-hand);font-weight:500;color:var(--teacher)}
+.kickerbar .hand{font-size:19px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:18px;box-shadow:var(--shadow-card);padding:46px 52px 56px}
+h1{font:600 38px/1.2 var(--font-structure);margin:0 0 38px;letter-spacing:-.01em}
+h1 .sub{display:block;font:400 21px/1.3 var(--font-structure);color:var(--ink-muted);margin-top:8px;letter-spacing:0}
+h2{font:600 24px/1.25 var(--font-structure);margin:0}
+h3{font:600 17.5px/1.3 var(--font-structure);margin:30px 0 8px;letter-spacing:.005em}
+p{margin:0 0 16px}
+.lead{font-size:18px}
+section{margin-top:52px}
+.sechead{display:flex;align-items:center;gap:14px;margin-bottom:22px}
+.num{flex:none;width:34px;height:34px;border:1.5px solid var(--ink);border-radius:50%;display:grid;place-items:center;font:600 16px/1 var(--font-structure)}
+.honey{background-image:linear-gradient(101deg,rgba(224,188,120,0) 1.5%,rgba(224,188,120,.5) 4%,rgba(228,192,122,.4) 52%,rgba(224,188,120,.5) 96%,rgba(224,188,120,0) 98.5%);background-size:100% 66%;background-position:0 82%;background-repeat:no-repeat;border-radius:.7em .4em .6em .5em;-webkit-box-decoration-break:clone;box-decoration-break:clone;padding:0 .15em}
+.aside{font:500 23px/1.3 var(--font-hand);color:var(--teacher);transform:rotate(-.4deg);margin:6px 0 18px 2px}
+.aside u{text-decoration-thickness:1.5px;text-underline-offset:3px}
+.bubble{display:inline-block;font:500 21px/1.3 var(--font-hand);color:var(--teacher);background:var(--card-inner);border:1.5px solid var(--teacher-bubble-border);border-radius:16px 16px 16px 3px;padding:8px 18px;transform:rotate(-.5deg);margin:4px 0 18px}
+.note{font-size:15.5px;line-height:1.5;color:var(--ink-muted)}
+.withmargin{display:grid;grid-template-columns:1fr 180px;gap:28px;align-items:start}
+.margin{font:500 19px/1.25 var(--font-hand);color:var(--teacher);transform:rotate(-1deg);border-left:1.5px dashed var(--teacher-bubble-border);padding-left:14px;margin-top:4px}
+ul.examples{margin:6px 0 20px;padding-left:22px}
+ul.examples li{margin:4px 0}
+.panel{background:var(--card-inner);border:1px solid var(--border-inner);border-radius:10px;padding:20px 22px;margin:22px 0}
+.label{font:600 13px/1.3 var(--font-structure);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:10px}
+.watch{background:var(--misconception-bg);color:var(--misconception);border-radius:10px;padding:18px 22px;margin:22px 0}
+.watch .label{color:var(--misconception)}
+.watch p{margin:0 0 8px;font-size:16.5px;line-height:1.55}
+.watch p:last-child{margin:0}
+figure{margin:22px 0}
+.diagram{background:var(--diagram-bg);border-radius:10px;padding:20px 22px 14px}
+.scene{background:var(--scene-bg);border-radius:10px;padding:0;overflow:hidden}
+figure svg{display:block;width:100%;height:auto}
+figcaption{font:500 18px/1.3 var(--font-hand);color:var(--teacher);margin-top:8px;padding-left:4px}
+svg .h{font-family:'Caveat',cursive;font-weight:500}
+svg .s{font-family:'Source Serif 4',Georgia,serif;font-style:italic}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.two>*{min-width:0}
+.two .steps .m{white-space:normal}
+.two .steps .m.ans{white-space:nowrap}
+figure.diagram>svg{max-width:470px;margin:0 auto}
+.two figure.diagram>svg,.panel .two figure.diagram>svg{max-width:none}
+.steps .title.math{text-transform:none;letter-spacing:0;font:italic 400 18px/1.3 var(--font-body);color:var(--ink-muted)}
+sup{font-size:.68em;line-height:0}
+/* system of equations: brace on the left */
+.sys{display:inline-flex;align-items:center;white-space:nowrap}
+.sys::before{content:"{";font:300 2.7em/1 var(--font-body);font-style:normal;transform:scaleX(.6);margin:0 .02em 0 -.12em;color:var(--ink)}
+.sys>span{display:flex;flex-direction:column;line-height:1.35}
+.two figure{margin:0}
+/* formulas */
+.f{font:italic 400 22px/1.3 var(--font-body);white-space:nowrap}
+.f .u{font-style:normal;font-size:16px;color:var(--ink-muted)}
+.f .op{font-style:normal;margin:0 .25em}
+.up{font-size:.62em;vertical-align:.7em;font-style:normal}
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 .15em;line-height:1.15}
+.frac>span:first-child{border-bottom:1.5px solid var(--ink);padding:0 .25em .1em}
+.frac>span:last-child{padding:.1em .25em 0}
+.q-t{color:var(--qty-time)} .q-x{color:var(--qty-position)} .q-v{color:var(--qty-velocity)} .q-a{color:var(--qty-acceleration)}
+.formula-row{display:flex;flex-wrap:wrap;align-items:center;gap:14px 28px;margin:14px 0 18px}
+.pill{display:inline-flex;align-items:center;border:1.5px solid var(--ink);border-radius:10px;padding:9px 22px}
+.pill sub{align-self:center;font-size:.68em;line-height:1;transform:translateY(.4em)}
+.pill.key{border-width:2px;box-shadow:3px 3px 0 rgba(51,41,31,.12)}
+.tag{font:500 20px/1 var(--font-hand);color:var(--teacher);margin-left:6px}
+dl.defs{display:grid;grid-template-columns:130px 1fr;gap:8px 18px;margin:14px 0 18px}
+dl.defs dt{font:italic 400 20px/1.4 var(--font-body)}
+dl.defs dd{margin:0;font-size:16.5px;line-height:1.55;padding-top:2px}
+/* worked steps: line of maths + teacher's handwritten move on the right */
+.steps{display:grid;grid-template-columns:auto 1fr;gap:6px 26px;align-items:center;margin:12px 0 20px;padding:16px 22px;background:var(--card-inner);border:1px solid var(--border-inner);border-radius:10px}
+.steps .m{font:italic 400 21px/1.35 var(--font-body);white-space:nowrap}
+.steps .m.ans{display:inline-block;justify-self:start;border:1.5px solid var(--ink);border-radius:999px;padding:1px 16px}
+.steps .why{font:500 20px/1.2 var(--font-hand);color:var(--teacher)}
+.mv{font:500 .95em/1 var(--font-hand);color:var(--teacher);font-style:normal;margin:0 .1em}
+.steps .title{grid-column:1/-1;font:600 13px/1.3 var(--font-structure);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:4px}
+table.t{border-collapse:collapse;margin:12px 0 20px;font-size:16.5px;width:100%}
+table.t th,table.t td{border-bottom:1px solid var(--border-inner);padding:7px 10px;text-align:center}
+table.t th{font:600 13px/1.3 var(--font-structure);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-muted)}
+table.t td:first-child,table.t th:first-child{text-align:left}
+table.t .i{font-style:italic}
+.recap{margin-top:64px}
+.recap .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.recap .cell{background:var(--card-inner);border:1px solid var(--border-inner);border-radius:10px;padding:14px 16px}
+.recap .cell .label{margin-bottom:6px}
+.recap .cell .f{font-size:19px;white-space:normal}
+@media (max-width:760px){
+  .page{padding:28px 16px 64px}
+  .card{padding:30px 22px 40px}
+  h1{font-size:29px}
+  h1 .sub{font-size:18px}
+  h2{font-size:21px}
+  body{font-size:17px}
+  .withmargin{grid-template-columns:1fr}
+  .margin{border-left:none;padding-left:0}
+  .two,.recap .grid{grid-template-columns:1fr}
+  dl.defs{grid-template-columns:90px 1fr}
+  .f{white-space:normal}
+  .steps{grid-template-columns:1fr;gap:2px}
+  .steps .why{margin-bottom:8px}
+  .steps .m{white-space:normal}
+  table.t{font-size:15px}
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="kickerbar">
+    <div class="kicker">Physics Course · Maths · M01</div>
+    <div class="hand">no fear — just tools</div>
+  </div>
+
+  <main class="card">
+    <h1>Maths for Physics<span class="sub">the tools we keep reaching for</span></h1>
+
+    <p class="lead">Physics speaks in maths. Not because physicists love suffering, but because maths is the shortest way to say <em>how much</em> and <em>how it changes</em>.</p>
+    <p>This card is not a maths course. It is a toolbox: only the things we really use when we solve physics problems. Come back here every time a problem gets stuck <span class="honey">on the maths, not on the physics</span>.</p>
+
+    <!-- 1 -->
+    <section id="numbers">
+      <div class="sechead"><div class="num">1</div><h2>Numbers. What is inside them?</h2></div>
+
+      <p>I want you to think about how much information a number gives us. And the answer is — not much! A number is <strong>just a quantity</strong>. It tells you <em>how much</em>, and nothing else.</p>
+
+      <div class="withmargin">
+        <div>
+          <p>The mass of an object is <span class="f" style="font-size:20px">5 <span class="u">kg</span></span>.</p>
+          <p>Here <span class="f" style="font-size:20px">5</span> is the number of kilograms — one piece of information: <em>how much</em> of something. The unit <span class="f" style="font-size:20px"><span class="u">kg</span></span> is the second piece: <em>of what</em>.</p>
+        </div>
+        <div class="margin">5 kg literally means 5 × (one kilogram). Remember this — it will save you in section 7!</div>
+      </div>
+
+      <p class="aside">So in physics a number never walks alone. "5" — five what? Apples? Metres? Seconds?</p>
+    </section>
+
+    <!-- 2 -->
+    <section id="equation">
+      <div class="sechead"><div class="num">2</div><h2>Equation</h2></div>
+
+      <p>All equations have a <strong>left</strong> side and a <strong>right</strong> side, and an "=" sign between them. In other words, <span class="honey">something that represents the left side is equal to something that represents the right side</span>.</p>
+
+      <p>Example. Dima has 5 apples. Pasha has 5 apples too.</p>
+
+      <figure class="scene">
+        <svg viewBox="0 0 680 270" role="img" aria-label="Dima and Pasha each stand next to a basket with five apples; an equals sign between them">
+          <defs>
+            <g id="apple"><circle r="10" fill="#c4473f"/><circle cx="-3" cy="-3" r="3" fill="#e27a6e"/><path d="M0 -10 Q1 -15 3 -17" stroke="#6b4a2e" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M2 -14 Q9 -19 12 -13 Q6 -11 2 -14Z" fill="#7d9a4c"/></g>
+            <g id="basket"><path d="M-48 0 L48 0 L40 34 Q0 42 -40 34 Z" fill="#b78a55"/><path d="M-44 12 L44 12 M-41 24 L41 24" stroke="#9c7140" stroke-width="2"/><path d="M-48 0 L48 0" stroke="#8a6238" stroke-width="3" stroke-linecap="round"/></g>
+          </defs>
+          <ellipse cx="340" cy="232" rx="330" ry="40" fill="#e6dcc2"/>
+          <!-- Dima -->
+          <g transform="translate(120 0)">
+            <ellipse cx="0" cy="236" rx="30" ry="6" fill="#d4c8aa"/>
+            <rect x="-13" y="182" width="10" height="52" rx="4" fill="#4f4a46"/><rect x="3" y="182" width="10" height="52" rx="4" fill="#4f4a46"/>
+            <path d="M-22 118 Q0 108 22 118 L25 190 Q0 197 -25 190 Z" fill="#c9a548"/>
+            <path d="M-22 124 Q-34 152 -26 172" stroke="#c9a548" stroke-width="10" fill="none" stroke-linecap="round"/>
+            <path d="M22 124 Q40 146 50 160" stroke="#c9a548" stroke-width="10" fill="none" stroke-linecap="round"/>
+            <rect x="-6" y="102" width="12" height="12" fill="#e7c6a2"/>
+            <circle cx="0" cy="88" r="18" fill="#ecccaa"/>
+            <path d="M-18 86 Q-16 66 0 66 Q18 66 18 86 Q12 76 0 78 Q-10 74 -18 86Z" fill="#7a5034"/>
+            <circle cx="-6" cy="88" r="1.8" fill="#33291f"/><circle cx="6" cy="88" r="1.8" fill="#33291f"/>
+            <path d="M-7 96 Q0 101 7 96" stroke="#8a5a40" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+            <rect x="-15" y="230" width="15" height="7" rx="3" fill="#3b3330"/><rect x="2" y="230" width="15" height="7" rx="3" fill="#3b3330"/>
+          </g>
+          <g transform="translate(225 196)"><use href="#basket"/></g>
+          <g transform="translate(225 196)"><use href="#apple" x="-24" y="-6"/><use href="#apple" x="0" y="-6"/><use href="#apple" x="24" y="-6"/><use href="#apple" x="-12" y="-22"/><use href="#apple" x="12" y="-22"/></g>
+          <text x="96" y="58" class="h" font-size="26" fill="#5a6f9e">Dima</text>
+
+          <text x="322" y="196" font-family="Bricolage Grotesque, sans-serif" font-size="62" font-weight="600" fill="#33291f">=</text>
+
+          <!-- Pasha -->
+          <g transform="translate(470 0)">
+            <ellipse cx="0" cy="236" rx="30" ry="6" fill="#d4c8aa"/>
+            <rect x="-13" y="182" width="10" height="52" rx="4" fill="#3f4a55"/><rect x="3" y="182" width="10" height="52" rx="4" fill="#3f4a55"/>
+            <path d="M-22 118 Q0 108 22 118 L25 190 Q0 197 -25 190 Z" fill="#6f8f8f"/>
+            <path d="M22 124 Q34 152 26 172" stroke="#6f8f8f" stroke-width="10" fill="none" stroke-linecap="round"/>
+            <path d="M-22 124 Q-40 146 -50 160" stroke="#6f8f8f" stroke-width="10" fill="none" stroke-linecap="round"/>
+            <rect x="-6" y="102" width="12" height="12" fill="#e7c6a2"/>
+            <circle cx="0" cy="88" r="18" fill="#ecccaa"/>
+            <path d="M-19 84 Q-14 64 2 66 Q20 68 18 86 Q10 72 -2 74 Q-12 76 -19 84Z" fill="#3f342c"/>
+            <circle cx="-6" cy="88" r="1.8" fill="#33291f"/><circle cx="6" cy="88" r="1.8" fill="#33291f"/>
+            <path d="M-7 96 Q0 101 7 96" stroke="#8a5a40" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+            <rect x="-16" y="230" width="15" height="7" rx="3" fill="#3b3330"/><rect x="1" y="230" width="15" height="7" rx="3" fill="#3b3330"/>
+          </g>
+          <g transform="translate(575 196)"><use href="#basket"/></g>
+          <g transform="translate(575 196)"><use href="#apple" x="-24" y="-6"/><use href="#apple" x="0" y="-6"/><use href="#apple" x="24" y="-6"/><use href="#apple" x="-12" y="-22"/><use href="#apple" x="12" y="-22"/></g>
+          <text x="444" y="58" class="h" font-size="26" fill="#5a6f9e">Pasha</text>
+        </svg>
+        <figcaption>They both have the same amount.</figcaption>
+      </figure>
+
+      <p>So we write <span class="f">5 <span class="op">=</span> 5</span>. And it is actually very difficult to say from this equation which "5" is whose. That is why physicists like to <strong>use letters first</strong> — so we always know what we are talking about.</p>
+
+      <div class="formula-row">
+        <span class="note">So, instead of</span><span class="f pill">5 <span class="op">=</span> 5</span>
+        <span class="note">we write</span><span class="f pill key">D <span class="op">=</span> P</span>
+        <span class="tag">D — Dima's apples, P — Pasha's apples</span>
+      </div>
+    </section>
+
+    <!-- 3 -->
+    <section id="rearranging">
+      <div class="sechead"><div class="num">3</div><h2>What can we do with an equation?</h2></div>
+
+      <p>Let's come back to the same example with Dima and Pasha. What if we add two more apples to Dima?</p>
+
+      <figure class="scene">
+        <svg viewBox="0 0 680 150" role="img" aria-label="Two apples are added to Dima's basket only, so the sides are no longer equal; then two are added to Pasha's too and they are equal again">
+          <defs>
+            <g id="apple2"><circle r="9" fill="#c4473f"/><circle cx="-3" cy="-3" r="2.6" fill="#e27a6e"/><path d="M0 -9 Q1 -13 3 -15" stroke="#6b4a2e" stroke-width="2" fill="none" stroke-linecap="round"/></g>
+            <g id="pile5"><use href="#apple2" x="-22" y="0"/><use href="#apple2" x="0" y="0"/><use href="#apple2" x="22" y="0"/><use href="#apple2" x="-11" y="-16"/><use href="#apple2" x="11" y="-16"/></g>
+            <g id="pile2"><use href="#apple2" x="-11" y="0"/><use href="#apple2" x="11" y="0"/></g>
+          </defs>
+          <!-- left half: not equal -->
+          <g transform="translate(70 100)"><use href="#pile5"/></g>
+          <g transform="translate(70 52)"><use href="#pile2"/></g>
+          <text x="40" y="30" class="h" font-size="22" fill="#5a6f9e">+2</text>
+          <text x="128" y="104" font-family="Bricolage Grotesque, sans-serif" font-size="40" font-weight="600" fill="#6e2a48">≠</text>
+          <g transform="translate(210 100)"><use href="#pile5"/></g>
+          <text x="56" y="140" class="h" font-size="21" fill="#5a6f9e">Dima</text><text x="192" y="140" class="h" font-size="21" fill="#5a6f9e">Pasha</text>
+          <!-- arrow -->
+          <path d="M290 80 L370 80" stroke="#6b5d43" stroke-width="2" stroke-dasharray="5 5"/><path d="M382 80 L368 73 L368 87Z" fill="#6b5d43"/>
+          <text x="296" y="64" class="h" font-size="19" fill="#5a6f9e">fix it!</text>
+          <!-- right half: equal again -->
+          <g transform="translate(450 100)"><use href="#pile5"/></g>
+          <g transform="translate(450 52)"><use href="#pile2"/></g>
+          <text x="420" y="30" class="h" font-size="22" fill="#5a6f9e">+2</text>
+          <text x="510" y="104" font-family="Bricolage Grotesque, sans-serif" font-size="40" font-weight="600" fill="#33291f">=</text>
+          <g transform="translate(600 100)"><use href="#pile5"/></g>
+          <g transform="translate(600 52)"><use href="#pile2"/></g>
+          <text x="570" y="30" class="h" font-size="22" fill="#5a6f9e">+2</text>
+          <text x="436" y="140" class="h" font-size="21" fill="#5a6f9e">Dima</text><text x="582" y="140" class="h" font-size="21" fill="#5a6f9e">Pasha</text>
+        </svg>
+      </figure>
+
+      <div class="two">
+        <div class="steps"><div class="title">Only Dima got apples</div><span class="m">D <span class="op">≠</span> P</span><span></span><span class="m">5<span class="mv">+2</span> ≠ 5</span><span class="why">not equal anymore!</span></div>
+        <div class="steps"><div class="title">Both got apples</div><span class="m">D = P</span><span></span><span class="m">5<span class="mv">+2</span> = 5<span class="mv">+2</span></span><span></span><span class="m">7 = 7</span><span class="why">equal again</span></div>
+      </div>
+
+      <p>From this we see that the left side is not equal to the right side anymore. To return to the equality, we have to do the same thing with Pasha — also add two more.</p>
+      <p>This is going to work with <strong>all</strong> mathematical operations!</p>
+
+      <div class="panel" style="border-color:var(--ink);border-width:1.5px">
+        <div class="label">The only rule you really need</div>
+        <p style="margin:0;font-size:19px">If you do something with the left side of an equation, <span class="honey">do exactly the same with the right side</span> — then the equation keeps working.</p>
+      </div>
+
+      <h3>Examples — find <i>a</i></h3>
+
+      <div class="steps">
+        <div class="title math">a)</div>
+        <span class="m">a − 3 = 7</span><span></span>
+        <span class="m">a − 3 <span class="mv">+3</span> = 7 <span class="mv">+3</span></span><span class="why">I see that "3" on the left side is bothering me, I do not want it there. So I just add 3 to both sides.</span>
+        <span class="m ans">a = 10</span><span></span>
+      </div>
+
+      <div class="steps">
+        <div class="title math">b)</div>
+        <span class="m">3 − a = 7</span><span></span>
+        <span class="m">3 − a <span class="mv">−3</span> = 7 <span class="mv">−3</span></span><span class="why">I get rid of the 3 on the left side</span>
+        <span class="m">−a = 4</span><span class="why">Now I do not like the "−" sign before a…</span>
+        <span class="m">(−a)<span class="mv">·(−1)</span> = 4<span class="mv">·(−1)</span></span><span class="why">…so I multiply both sides by "−1"</span>
+        <span class="m ans">a = −4</span><span></span>
+      </div>
+
+      <div class="steps">
+        <div class="title math">c)</div>
+        <span class="m"><span class="frac"><span>1</span><span>a</span></span> = 7</span><span></span>
+        <span class="m"><span class="frac"><span>1</span><span>a</span></span> = <span class="frac"><span>7</span><span>1</span></span></span><span class="why">rewrite first — any number is itself over 1</span>
+        <span class="m">(<span class="frac"><span>1</span><span>a</span></span>)<span class="up mv">−1</span> = (<span class="frac"><span>7</span><span>1</span></span>)<span class="up mv">−1</span></span><span class="why">now I can use the negative power "−1": it flips a fraction upside down</span>
+        <span class="m"><span class="frac"><span>a</span><span>1</span></span> = <span class="frac"><span>1</span><span>7</span></span></span><span></span>
+        <span class="m ans">a = <span class="frac"><span>1</span><span>7</span></span></span><span></span>
+      </div>
+
+      <div class="steps">
+        <div class="title math">d)</div>
+        <span class="m"><span class="frac"><span>1</span><span>3 − a²</span></span> = 7</span><span></span>
+        <span class="m"><span class="frac"><span>3 − a²</span><span>1</span></span> = <span class="frac"><span>1</span><span>7</span></span></span><span class="why">rewrite 7 as 7/1 and flip both sides with "−1"</span>
+        <span class="m">3 − a² <span class="mv">−3</span> = <span class="frac"><span>1</span><span>7</span></span> <span class="mv">−3</span></span><span class="why">get rid of the 3</span>
+        <span class="m">−a² = <span class="frac"><span>1</span><span>7</span></span> − <span class="frac"><span>21</span><span>7</span></span> = −<span class="frac"><span>20</span><span>7</span></span></span><span class="why">fractions: 3 = 3·7 / 1·7 = 21/7</span>
+        <span class="m">a² = <span class="frac"><span>20</span><span>7</span></span></span><span class="why">multiply both sides by "−1"</span>
+        <span class="m"><span class="mv">√</span>a² = <span class="mv">√</span><span class="frac"><span>20</span><span>7</span></span></span><span class="why">take the square root of both sides</span>
+        <span class="m ans">a = ±√(20/7) ≈ ±1.69</span><span></span>
+      </div>
+
+      <h3>The quick way you will see in books</h3>
+      <p>Very soon you will stop writing "+3 to both sides" every time. People say: <em>"move the 3 to the other side and change its sign"</em>. It is not a new rule — it is <strong>our</strong> rule, done fast:</p>
+      <ul class="examples">
+        <li>a <strong>term</strong> (something added or subtracted) jumps to the other side with the opposite sign: <span class="f" style="font-size:19px">a − 3 = 7 → a = 7 + 3</span>;</li>
+        <li>a <strong>multiplier</strong> jumps to the other side as a divisor, and a divisor as a multiplier;</li>
+        <li>if each side is <strong>one single fraction</strong>, you can multiply "crosswise": <span class="f" style="font-size:19px"><span class="frac"><span>a</span><span>b</span></span> = <span class="frac"><span>c</span><span>d</span></span> → a·d = b·c</span>.</li>
+      </ul>
+
+      <div class="panel">
+        <div class="label">Where you'll meet it — every single problem</div>
+        <p style="margin-bottom:8px">Speed: <span class="f" style="font-size:20px"><span class="q-v">v</span> = <span class="frac"><span class="q-x">s</span><span class="q-t">t</span></span></span>. The problem asks for the time. Find <i class="q-t">t</i>:</p>
+        <div class="steps" style="margin:6px 0 0;background:transparent;border:none;padding:4px 0">
+          <span class="m"><span class="q-v">v</span><span class="mv">·<span class="q-t">t</span></span> = <span class="frac"><span class="q-x">s</span><span class="q-t">t</span></span><span class="mv">·<span class="q-t">t</span></span></span><span class="why">I don't like t downstairs — multiply both sides by t</span>
+          <span class="m"><span class="q-v">v</span><span class="q-t">t</span> = <span class="q-x">s</span></span><span></span>
+          <span class="m"><span class="frac"><span><span class="q-v">v</span><span class="q-t">t</span></span><span><span class="mv">v</span></span></span> = <span class="frac"><span class="q-x">s</span><span><span class="mv">v</span></span></span></span><span class="why">now divide both sides by v</span>
+          <span class="m ans"><span class="q-t">t</span> = <span class="frac"><span class="q-x">s</span><span class="q-v">v</span></span></span><span></span>
+        </div>
+      </div>
+
+      <div class="watch">
+        <div class="label">Watch out!</div>
+        <p><strong>The "−1" flip works only when each side is one single fraction.</strong> From <span class="f" style="font-size:18px">1/R = 1/R<sub>1</sub> + 1/R<sub>2</sub></span> you can <strong>not</strong> get R = R<sub>1</sub> + R<sub>2</sub>. First add the right side into one fraction, then flip.</p>
+        <p><strong>A square root gives two answers</strong>, + and −. In physics you then choose with your head: a length or a time of −1.69 usually makes no sense, but a velocity of −1.69 m/s can be perfectly fine.</p>
+      </div>
+    </section>
+
+    <!-- 4 -->
+    <section id="function">
+      <div class="sechead"><div class="num">4</div><h2>What is a function?</h2></div>
+
+      <p>It is a bit hard to find the right words to describe this, so let's look at how people use this word in real life.</p>
+
+      <dl class="defs">
+        <dt>Refrigerator</dt><dd>Can you tell me the function of a refrigerator? Easy! It takes our food and makes it cold enough to keep it fresh as long as possible.</dd>
+        <dt>Cow</dt><dd>The function of a cow? Easy! You give her grass and water, and she gives you milk — and from it we get cheese, sour cream, cottage cheese and butter.</dd>
+        <dt>Microwave</dt><dd>You give it frozen or cold food — it gives you a warm, ready-to-eat meal.</dd>
+      </dl>
+
+      <p>Conclusion from these examples: <span class="honey">a function takes something (the input), does something with it, and gives us back the result (the output)</span>. And in maths it is the same!</p>
+
+      <figure class="diagram">
+        <svg style="max-width:none" viewBox="0 0 640 150" role="img" aria-label="Function machine: x goes in, the rule x plus 1 is applied, y comes out">
+          <rect x="230" y="30" width="180" height="90" rx="14" fill="#fbf8f0" stroke="#33291f" stroke-width="2"/>
+          <path d="M250 30 L250 18 M390 30 L390 18" stroke="#33291f" stroke-width="2"/>
+          <text x="320" y="70" text-anchor="middle" font-family="Bricolage Grotesque, sans-serif" font-size="13" letter-spacing="2" fill="#6b5d43">THE RULE</text>
+          <text x="320" y="102" text-anchor="middle" class="s" font-size="28" fill="#33291f">x + 1</text>
+          <path d="M120 75 L218 75" stroke="#33291f" stroke-width="2.2"/><path d="M228 75 L214 68 L214 82Z" fill="#33291f"/>
+          <path d="M412 75 L510 75" stroke="#33291f" stroke-width="2.2"/><path d="M520 75 L506 68 L506 82Z" fill="#33291f"/>
+          <text x="40" y="84" class="s" font-size="28" fill="#33291f">x = 2</text>
+          <text x="530" y="84" class="s" font-size="28" fill="#33291f">y = 3</text>
+          <text x="54" y="122" class="h" font-size="21" fill="#5a6f9e">input</text>
+          <text x="540" y="122" class="h" font-size="21" fill="#5a6f9e">output</text>
+        </svg>
+      </figure>
+
+      <div class="formula-row">
+        <span class="note">General form of a function:</span><span class="f pill key">y <span class="op">=</span> f(x)</span>
+      </div>
+      <p>With words: this function takes an x-value, does something with it — something that is written inside this function — and gives us the result as a y-value.</p>
+
+      <h3>Example: y = x + 1</h3>
+      <p>It is a defined function, so I see what it does with x: it adds one. Let's see how it works! We just need to put some numbers instead of x:</p>
+
+      <table class="t" style="max-width:520px">
+        <tr><th>Input x</th><th>What the function does</th><th>Output y</th><th>Point</th></tr>
+        <tr><td class="i">x = 0</td><td class="i">y = 0 + 1</td><td>1</td><td>A (0, 1)</td></tr>
+        <tr><td class="i">x = 1</td><td class="i">y = 1 + 1</td><td>2</td><td>B (1, 2)</td></tr>
+        <tr><td class="i">x = 2</td><td class="i">y = 2 + 1</td><td>3</td><td>C (2, 3)</td></tr>
+      </table>
+
+      <p>When a function works, it always produces y's that are connected to some x's. That's why we always put x and y together, as a pair: <span class="f" style="font-size:20px">(x, y)</span>. And a pair is a <strong>point</strong> — so we can also show this function visually!</p>
+
+      <div class="two">
+        <figure class="diagram">
+          <svg viewBox="0 0 300 260" role="img" aria-label="Three points A, B, C plotted">
+            <g stroke="#9a8c70" stroke-width="1.22"><path d="M30 220 L282 220"/><path d="M50 242 L50 22"/></g>
+            <path d="M290 220 L277.84 215.27 L277.84 224.73Z M50 14 L45.27 26.16 L54.73 26.16Z" fill="#9a8c70"/>
+            <g stroke="#9a8c70" stroke-width="1.22"><path d="M95 215.95 L95 224.05 M140 215.95 L140 224.05 M185 215.95 L185 224.05 M45.95 175 L54.05 175 M45.95 130 L54.05 130 M45.95 85 L54.05 85"/></g>
+            <g class="s" font-size="17.56" fill="#6b5d43"><text x="91" y="240">1</text><text x="136" y="240">2</text><text x="181" y="240">3</text><text x="32" y="180">1</text><text x="32" y="135">2</text><text x="32" y="90">3</text><text x="34" y="238">0</text></g>
+            <g class="s" font-size="21.61" fill="#33291f"><text x="276" y="244">x</text><text x="60" y="26">y</text></g>
+            <g fill="#c95f7a"><circle cx="50" cy="175" r="5"/><circle cx="95" cy="130" r="5"/><circle cx="140" cy="85" r="5"/></g>
+            <g class="h" font-size="21" fill="#5a6f9e"><text x="58" y="170">A</text><text x="102" y="125">B</text><text x="148" y="80">C</text></g>
+          </svg>
+          <figcaption>Now we have only three points.</figcaption>
+        </figure>
+        <figure class="diagram">
+          <svg viewBox="0 0 300 260" role="img" aria-label="Many points merge into the straight line y = x + 1">
+            <g stroke="#9a8c70" stroke-width="1.22"><path d="M30 220 L282 220"/><path d="M50 242 L50 22"/></g>
+            <path d="M290 220 L277.84 215.27 L277.84 224.73Z M50 14 L45.27 26.16 L54.73 26.16Z" fill="#9a8c70"/>
+            <g stroke="#9a8c70" stroke-width="1.22"><path d="M95 215.95 L95 224.05 M140 215.95 L140 224.05 M185 215.95 L185 224.05 M45.95 175 L54.05 175 M45.95 130 L54.05 130 M45.95 85 L54.05 85"/></g>
+            <g class="s" font-size="17.56" fill="#6b5d43"><text x="91" y="240">1</text><text x="136" y="240">2</text><text x="181" y="240">3</text><text x="32" y="180">1</text><text x="32" y="135">2</text><text x="32" y="90">3</text></g>
+            <g class="s" font-size="21.61" fill="#33291f"><text x="276" y="244">x</text><text x="60" y="26">y</text></g>
+            <path d="M27.5 197.5 L212 13" stroke="#c95f7a" stroke-width="2.4" stroke-linecap="round"/>
+            <g fill="#c95f7a" fill-opacity=".55"><circle cx="38" cy="187" r="2.2"/><circle cx="72.5" cy="152.5" r="2.2"/><circle cx="117.5" cy="107.5" r="2.2"/><circle cx="162.5" cy="62.5" r="2.2"/><circle cx="185" cy="40" r="2.2"/><circle cx="196" cy="29" r="2.2"/></g>
+            <g fill="#c95f7a"><circle cx="50" cy="175" r="5"/><circle cx="95" cy="130" r="5"/><circle cx="140" cy="85" r="5"/></g>
+            <g class="h" font-size="21" fill="#5a6f9e"><text x="58" y="196">A</text><text x="104" y="150">B</text><text x="150" y="104">C</text><text x="206" y="36" fill="#c95f7a">y = x + 1</text></g>
+          </svg>
+          <figcaption>Put lots of x's inside — the points join into a line.</figcaption>
+        </figure>
+      </div>
+
+      <p>But what if I put lots and lots of x's inside the function? We are going to have an infinite number of points. And if I put them on the graph, I am going to see a straight line.</p>
+    </section>
+
+    <!-- 5 -->
+    <section id="straight-line">
+      <div class="sechead"><div class="num">5</div><h2>Straight-line function</h2></div>
+
+      <div class="formula-row">
+        <span class="f pill key">y <span class="op">=</span> m x <span class="op">+</span> c</span><span class="tag">— general form</span>
+      </div>
+
+      <p>But let us get the understanding of this form slowly, starting from the most famous straight line: <span class="f" style="font-size:20px">y = x</span>, which is the same as <span class="f" style="font-size:20px">y = x<span class="up">1</span></span>.</p>
+
+      <div class="withmargin">
+        <div><p><span class="honey">If the maximum power of x is one, the graph is going to be a straight line</span> — so we need just <strong>two points</strong> to draw it! For <span class="f" style="font-size:20px">y = x</span>: x = 1 gives y = 1, so A (1, 1); x = 2 gives y = 2, so B (2, 2). Connect them — done.</p></div>
+        <div class="margin">Two points are enough for a line. A third one is just to check yourself.</div>
+      </div>
+
+      <h3>The "c" coefficient</h3>
+      <p>Now, let's understand the <i>c</i> coefficient in the standard form. We already know <span class="f" style="font-size:20px">y = x</span>. Let's build two more lines the same way — put two x-values, 0 and 1, inside each function and see which y's come out:</p>
+
+      <div class="two">
+        <div class="steps" style="margin:0"><div class="title math">y = x + 1</div><span class="m">x = 0 → y = 0 + 1 = 1</span><span class="why" style="white-space:nowrap">(0, 1)</span><span class="m">x = 1 → y = 1 + 1 = 2</span><span class="why" style="white-space:nowrap">(1, 2)</span></div>
+        <div class="steps" style="margin:0"><div class="title math">y = x − 1</div><span class="m">x = 0 → y = 0 − 1 = −1</span><span class="why" style="white-space:nowrap">(0, −1)</span><span class="m">x = 1 → y = 1 − 1 = 0</span><span class="why" style="white-space:nowrap">(1, 0)</span></div>
+      </div>
+
+      <p style="margin-top:16px">Two points for each line — that is enough to draw it. Now put all three lines on one graph:</p>
+
+      <figure class="diagram">
+        <svg viewBox="0 0 340 290" role="img" aria-label="Three parallel lines y = x + 1, y = x and y = x − 1 crossing the y-axis at 1, 0 and −1">
+          <g stroke="#9a8c70" stroke-width="0.9"><path d="M96 190 L302 190"/><path d="M110 280 L110 14"/></g>
+          <path d="M308 190 L299 186.5 L299 193.5Z M110 8 L106.5 17 L113.5 17Z" fill="#9a8c70"/>
+          <g stroke="#9a8c70" stroke-width="0.9"><path d="M160 187 L160 193 M210 187 L210 193 M107 90 L113 90 M107 40 L113 40"/></g>
+          <g class="s" font-size="13" fill="#6b5d43"><text x="157" y="208">1</text><text x="207" y="208">2</text><text x="94" y="94">2</text><text x="94" y="44">3</text></g>
+          <g class="s" font-size="16" fill="#33291f"><text x="300" y="210">x</text><text x="118" y="18">y</text></g>
+          <g stroke-width="2.4" stroke-linecap="round"><path d="M80 170 L230 20" stroke="#c95f7a"/><path d="M80 220 L230 70" stroke="#2e8a86"/><path d="M80 270 L230 120" stroke="#c0912e"/></g>
+          <g fill="#c95f7a"><circle cx="110" cy="140" r="4.5"/><circle cx="160" cy="90" r="3.5"/></g>
+          <g fill="#2e8a86"><circle cx="110" cy="190" r="4.5"/><circle cx="160" cy="140" r="3.5"/></g>
+          <g fill="#c0912e"><circle cx="110" cy="240" r="4.5"/><circle cx="160" cy="190" r="3.5"/></g>
+          <g class="h" font-size="19"><text x="240" y="26" fill="#c95f7a">y = x + 1</text><text x="240" y="76" fill="#2e8a86">y = x</text><text x="240" y="126" fill="#c0912e">y = x − 1</text></g>
+          <g class="h" font-size="17" text-anchor="end"><text x="100" y="134" fill="#c95f7a">c = 1</text><text x="100" y="184" fill="#2e8a86">c = 0</text><text x="98" y="236" fill="#c0912e">c = −1</text></g>
+        </svg>
+        <figcaption>Same steepness — just lifted up or dropped down.</figcaption>
+      </figure>
+
+      <p>From these examples we get that the <i>c</i> coefficient shows us <strong>by how much the line is lifted up or dropped down</strong>. Or, in other words, at which coordinate on the y-axis the line is going through. So that is why it is called the <strong>y-intercept</strong>.</p>
+
+      <h3>The "m" coefficient</h3>
+      <p>Now let's understand the <i>m</i> coefficient. This time I keep <i>c</i> = 0 and only change <i>m</i>:</p>
+
+      <figure class="diagram">
+        <svg viewBox="0 0 340 300" role="img" aria-label="Lines through the origin: y = 2x is steepest, y = x, y = x/2 is gentle, y = −x goes down">
+          <g stroke="#9a8c70" stroke-width="0.9"><path d="M10 170 L322 170"/><path d="M170 294 L170 22"/></g>
+          <path d="M330 170 L321 166.5 L321 173.5Z M170 14 L166.5 23 L173.5 23Z" fill="#9a8c70"/>
+          <g stroke="#9a8c70" stroke-width="0.9"><path d="M210 167 L210 173 M250 167 L250 173 M290 167 L290 173 M167 130 L173 130 M167 90 L173 90 M167 50 L173 50"/></g>
+          <g class="s" font-size="13" fill="#6b5d43"><text x="206" y="190">1</text><text x="246" y="190">2</text><text x="286" y="190">3</text><text x="152" y="135">1</text><text x="152" y="95">2</text><text x="152" y="55">3</text></g>
+          <g class="s" font-size="16" fill="#33291f"><text x="320" y="194">x</text><text x="180" y="24">y</text></g>
+          <path d="M110 290 L230 50" stroke="#c95f7a" stroke-width="2.4" stroke-linecap="round"/>
+          <path d="M50 290 L270 70" stroke="#2e8a86" stroke-width="2.4" stroke-linecap="round"/>
+          <path d="M10 250 L330 90" stroke="#c0912e" stroke-width="2.4" stroke-linecap="round"/>
+          <path d="M50 50 L270 270" stroke="#8a6a4e" stroke-width="2.4" stroke-linecap="round"/>
+          <g class="h" font-size="19"><text x="184" y="40" fill="#c95f7a">y = 2x</text><text x="276" y="74" fill="#2e8a86">y = x</text><text x="262" y="146" fill="#c0912e">y = ½x</text><text x="276" y="280" fill="#8a6a4e">y = −x</text></g>
+        </svg>
+        <figcaption>The bigger m, the steeper the line. Negative m — the line goes down.</figcaption>
+      </figure>
+
+      <p>Look what happens: with <i>m</i> = 2 the line climbs fast, with <i>m</i> = ½ it climbs slowly, and with <i>m</i> = −1 it goes <strong>down</strong>. So <span class="honey"><i>m</i> shows how steep the line is</span> — that is why it is called the <strong>slope</strong> (or gradient).</p>
+      <p>But "steep" is just a feeling. Let's turn it into a number. Take any two points on the line and ask: <em>when I walk one step to the right, how much do I climb?</em></p>
+
+      <div class="formula-row">
+        <span class="f pill key">m <span class="op">=</span> <span class="frac"><span>rise</span><span>run</span></span> <span class="op">=</span> <span class="frac"><span>Δy</span><span>Δx</span></span> <span class="op">=</span> <span class="frac"><span>y<sub>2</sub> − y<sub>1</sub></span><span>x<sub>2</sub> − x<sub>1</sub></span></span></span>
+      </div>
+
+      <div class="two" style="align-items:start">
+        <figure class="diagram">
+          <svg viewBox="0 0 340 300" role="img" aria-label="Line through (1,3) and (3,7) with a run of 2 and a rise of 4 marked">
+            <g stroke="#9a8c70" stroke-width="1.38"><path d="M40 260 L322 260"/><path d="M60 282 L60 8"/></g>
+            <path d="M330 260 L316.23 254.64 L316.23 265.36Z M60 0 L54.64 13.77 L65.36 13.77Z" fill="#9a8c70"/>
+            <g stroke="#9a8c70" stroke-width="1.38"><path d="M120 255.41 L120 264.59 M180 255.41 L180 264.59 M240 255.41 L240 264.59 M55.41 230 L64.59 230 M55.41 170 L64.59 170 M55.41 50 L64.59 50"/></g>
+            <g class="s" font-size="19.9" fill="#6b5d43"><text x="116" y="280">1</text><text x="176" y="280">2</text><text x="236" y="280">3</text><text x="44" y="235">1</text><text x="44" y="175">3</text><text x="44" y="55">7</text></g>
+            <g class="s" font-size="24.49" fill="#33291f"><text x="320" y="284">x</text><text x="70" y="14">y</text></g>
+            <path d="M60 230 L276 14" stroke="#c95f7a" stroke-width="2.4" stroke-linecap="round"/>
+            <path d="M120 170 L240 170" stroke="#5a6f9e" stroke-width="2"/>
+            <path d="M240 170 L240 50" stroke="#5a6f9e" stroke-width="2"/>
+            <path d="M228 170 L228 158 L240 158" fill="none" stroke="#5a6f9e" stroke-width="1.4"/>
+            <g fill="#c95f7a"><circle cx="120" cy="170" r="4.5"/><circle cx="240" cy="50" r="4.5"/><circle cx="60" cy="230" r="4.5"/></g>
+            <g class="h" font-size="20" fill="#5a6f9e"><text x="130" y="194">run Δx = 2</text><text x="248" y="118">rise</text><text x="248" y="138">Δy = 4</text><text x="68" y="252">c = 1</text><text x="74" y="164">(1, 3)</text><text x="180" y="44">(3, 7)</text></g>
+          </svg>
+        </figure>
+        <div class="steps" style="margin:0">
+          <div class="title math">Find the line through (1, 3) and (3, 7)</div>
+          <span class="m">m = <span class="frac"><span>7 − 3</span><span>3 − 1</span></span> = <span class="frac"><span>4</span><span>2</span></span> = 2</span><span class="why">rise over run</span>
+          <span class="m">3 = 2·1 + c</span><span class="why">put one point inside y = mx + c</span>
+          <span class="m">3 <span class="mv">−2</span> = 2 + c <span class="mv">−2</span></span><span class="why">the rule from section 3!</span>
+          <span class="m ans">y = 2x + 1</span><span></span>
+        </div>
+      </div>
+
+      <dl class="defs">
+        <dt>m &gt; 0</dt><dd>the line goes up (left → right)</dd>
+        <dt>m &lt; 0</dt><dd>the line goes down</dd>
+        <dt>m = 0</dt><dd>the line is flat (horizontal): <i>y = c</i> — y never changes, whatever x you put inside</dd>
+      </dl>
+
+      <div class="panel">
+        <div class="label">Where you'll meet it — motion with constant velocity</div>
+        <p>Here comes the payoff. The coordinate equation from motion with constant velocity is <strong>exactly</strong> a straight line — just with physics letters:</p>
+        <div class="formula-row" style="margin-bottom:6px">
+          <span class="f pill">y <span class="op">=</span> c <span class="op">+</span> m x</span>
+          <span class="tag">→</span>
+          <span class="f pill key"><span class="q-x">x</span> <span class="op">=</span> <span class="q-x">x</span><sub>0</sub> <span class="op">+</span> <span class="q-v">v</span><span class="q-t">t</span></span>
+        </div>
+        <figure class="diagram" style="margin:14px 0 8px">
+          <svg viewBox="0 0 340 250" role="img" aria-label="Position-time graph of x = 2 + 3t: intercept 2 m is the starting position, slope 3 m/s is the velocity">
+            <g stroke="#9a8c70" stroke-width="0.9"><path d="M40 220 L322 220"/><path d="M60 240 L60 10"/></g>
+            <path d="M330 220 L321 216.5 L321 223.5Z M60 2 L56.5 11 L63.5 11Z" fill="#9a8c70"/>
+            <g stroke="#9a8c70" stroke-width="0.9"><path d="M120 217 L120 223 M180 217 L180 223 M240 217 L240 223 M300 217 L300 223 M57 192 L63 192 M57 150 L63 150 M57 66 L63 66"/></g>
+            <g class="s" font-size="13" fill="#6b5d43"><text x="116" y="240">1</text><text x="176" y="240">2</text><text x="236" y="240">3</text><text x="296" y="240">4</text><text x="44" y="197">2</text><text x="44" y="155">5</text><text x="38" y="71">11</text></g>
+            <g class="s" font-size="16"><text x="300" y="206" fill="#4a7c59">t, s</text><text x="70" y="16" fill="#3d6bb3">x, m</text></g>
+            <path d="M60 192 L300 24" stroke="#3d6bb3" stroke-width="2.6"/>
+            <path d="M120 150 L240 150" stroke="#4a7c59" stroke-width="2"/>
+            <path d="M240 150 L240 66" stroke="#3d6bb3" stroke-width="2"/>
+            <g fill="#33291f"><circle cx="60" cy="192" r="5"/><circle cx="120" cy="150" r="4"/><circle cx="240" cy="66" r="4"/></g>
+            <g class="h" font-size="20"><text x="140" y="172" fill="#4a7c59">Δt = 2 s</text><text x="248" y="114" fill="#3d6bb3">Δx = 6 m</text><text x="68" y="212" fill="#3d6bb3">x<tspan font-size="14" dy="4">0</tspan><tspan dy="-4"> = 2 m</tspan></text><text x="80" y="60" fill="#c15b38">slope = v</text><text x="80" y="84" fill="#c15b38">= 6/2 = 3 m/s</text></g>
+          </svg>
+        </figure>
+        <p style="margin:0">The <strong>y-intercept</strong> is where the body was when we turned on the stopwatch (<i class="q-x">x</i><sub>0</sub>). The <strong>slope</strong> is the velocity <i class="q-v">v</i>. Same maths, now with meaning.</p>
+      </div>
+
+      <div class="watch">
+        <div class="label">Watch out!</div>
+        <p>The slope is <strong>not</strong> "how high the line is". A line can sit very high on the graph and be completely flat (m = 0) — a body standing still far from the origin.</p>
+        <p>And always compute the slope with the <strong>numbers on the axes</strong>, with units — not by measuring the picture with a protractor. Stretch the axes and the same line looks steeper.</p>
+      </div>
+    </section>
+
+    <!-- 6 -->
+    <section id="two-equations">
+      <div class="sechead"><div class="num">6</div><h2>Two equations at once</h2></div>
+
+      <p>Sometimes one equation is not enough, because there are <strong>two</strong> unknowns. Then we need two equations — and we solve them together. This is called a <strong>system</strong>.</p>
+      <div class="formula-row"><span class="f pill key"><span class="sys"><span><span>x + y = 10</span><span>x − y = 4</span></span></span></span><span class="tag">the brace means "both are true at the same time"</span></div>
+
+      <h3>Way 1 — substitution</h3>
+      <p>Express one letter from one equation, and put it inside the other one. Now the second equation has only one unknown — and we already know how to deal with that.</p>
+
+      <h3>Way 2 — adding the equations</h3>
+      <p>Equations can be added like the two sides of a scale: left + left = right + right. Choose it so that one letter disappears.</p>
+
+      <div class="two">
+        <div class="steps" style="margin:0">
+          <div class="title">Substitution</div>
+          <span class="m"><span class="sys"><span><span>y = 2x</span><span>x + y = 9</span></span></span></span><span></span>
+          <span class="m">x + <span class="mv">2x</span> = 9</span><span class="why">put 2x instead of y</span>
+          <span class="m">3x = 9 → x = 3</span><span></span>
+          <span class="m ans">x = 3, y = 6</span><span></span>
+        </div>
+        <div class="steps" style="margin:0">
+          <div class="title">Adding</div>
+          <span class="m"><span class="sys"><span><span>x + y = 10</span><span>x − y = 4</span></span></span></span><span class="why">+y and −y will cancel</span>
+          <span class="m">2x = 14 → x = 7</span><span class="why">added left to left, right to right</span>
+          <span class="m ans">x = 7, y = 3</span><span></span>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="label">Where you'll meet it — "when and where do they meet?"</div>
+        <p>Two towns are 240 km apart. Car A leaves the first town at 60 km/h; at the same moment car B leaves the second town towards it at 20 km/h. Both coordinates are measured from the first town:</p>
+        <div class="two" style="align-items:center">
+          <div class="steps" style="margin:0">
+            <span class="m"><span class="sys"><span><span><span class="q-x">x</span><sub>A</sub> = 60<span class="q-t">t</span></span><span><span class="q-x">x</span><sub>B</sub> = 240 − 20<span class="q-t">t</span></span></span></span></span><span></span>
+            <span class="m">60<span class="q-t">t</span> = 240 − 20<span class="q-t">t</span></span><span class="why">they meet ⇒ same x</span>
+            <span class="m">80<span class="q-t">t</span> = 240</span><span class="why">+20t to both sides</span>
+            <span class="m ans"><span class="q-t">t</span> = 3 h, <span class="q-x">x</span> = 180 km</span><span></span>
+          </div>
+          <figure class="diagram" style="margin:0">
+            <svg viewBox="-26 0 366 276" role="img" aria-label="Two position-time lines crossing at t = 3 h, x = 180 km">
+              <g stroke="#9a8c70" stroke-width="1.49"><path d="M40 220 L322 220"/><path d="M60 240 L60 12"/></g>
+              <path d="M330 220 L315.1 214.21 L315.1 225.79Z M60 4 L54.21 18.9 L65.79 18.9Z" fill="#9a8c70"/>
+              <g stroke="#9a8c70" stroke-width="1.49"><path d="M120 215.03 L120 224.97 M180 215.03 L180 224.97 M240 215.03 L240 224.97 M300 215.03 L300 224.97 M55.03 28 L64.97 28"/></g>
+              <g class="s" font-size="21.52" fill="#6b5d43"><text x="116" y="240">1</text><text x="176" y="240">2</text><text x="236" y="240">3</text><text x="296" y="240">4</text><text x="18" y="42">240</text><text x="18" y="83">180</text></g>
+              <g class="s" font-size="26.48"><text x="336" y="270" text-anchor="end" fill="#4a7c59">t, h</text><text x="52" y="20" text-anchor="end" fill="#3d6bb3">x, km</text></g>
+              <path d="M60 220 L300 28" stroke="#3d6bb3" stroke-width="2.6"/>
+              <path d="M60 28 L300 92" stroke="#3d6bb3" stroke-width="2.4" stroke-dasharray="9 6"/>
+              <path d="M240 76 L240 220 M240 76 L60 76" stroke="#6b5d43" stroke-width="1.3" stroke-dasharray="3 4"/>
+              <circle cx="240" cy="76" r="6" fill="#33291f"/>
+              <g class="h" font-size="20" fill="#5a6f9e"><text x="140" y="190">car A</text><text x="120" y="38">car B</text><text x="244" y="134">they meet!</text></g>
+            </svg>
+          </figure>
+        </div>
+        <p style="margin:12px 0 0">On the graph a system is just <span class="honey">the point where two lines cross</span>.</p>
+      </div>
+    </section>
+
+    <!-- 7 -->
+    <section id="powers-units">
+      <div class="sechead"><div class="num">7</div><h2>Powers of ten and units</h2></div>
+
+      <p>Physics jumps between the tiny and the huge: an atom is about 0.000 000 000 1 m, the Sun is 150 000 000 000 m away from us. Counting zeros is painful and dangerous, so we write such numbers with <strong>powers of ten</strong>:</p>
+      <div class="formula-row">
+        <span class="f pill">150 000 000 000 m <span class="op">=</span> 1.5 · 10<span class="up">11</span> m</span>
+        <span class="f pill">0.000 000 000 1 m <span class="op">=</span> 1 · 10<span class="up">−10</span> m</span>
+      </div>
+      <p>The power just says how many steps the decimal point jumps: positive — big number, negative — small number.</p>
+
+      <h3>Rules for powers</h3>
+      <table class="t">
+        <tr><th>Rule</th><th>Example</th></tr>
+        <tr><td class="i">a<sup>m</sup> · a<sup>n</sup> = a<sup>m+n</sup></td><td>10³ · 10<sup>5</sup> = 10<sup>8</sup></td></tr>
+        <tr><td class="i">a<sup>m</sup> / a<sup>n</sup> = a<sup>m−n</sup></td><td>10<sup>6</sup> / 10<sup>8</sup> = 10<sup>−2</sup></td></tr>
+        <tr><td class="i">(a<sup>m</sup>)<sup>n</sup> = a<sup>m·n</sup></td><td>(10³)² = 10<sup>6</sup></td></tr>
+        <tr><td class="i">a<sup>−n</sup> = 1 / a<sup>n</sup></td><td>10<sup>−3</sup> = 1/1000 = 0.001</td></tr>
+        <tr><td class="i">a<sup>0</sup> = 1,  a<span style="font-size:.75em;vertical-align:.5em">½</span> = √a</td><td>(3·10<sup>8</sup>) · (2·10<sup>−3</sup>) = 6·10<sup>5</sup></td></tr>
+      </table>
+      <p class="note" style="margin-top:-8px">The fourth line is exactly the "−1 flip" from section 3: <i>a</i><sup>−1</sup> = 1/<i>a</i>.</p>
+
+      <h3>Prefixes</h3>
+      <p>A prefix is just a power of ten glued to a unit. These are the ones we really use:</p>
+      <table class="t">
+        <tr><th>Prefix</th><th>Symbol</th><th>Means</th><th>Example</th></tr>
+        <tr><td>giga</td><td>G</td><td>10<sup>9</sup></td><td>GHz</td></tr>
+        <tr><td>mega</td><td>M</td><td>10<sup>6</sup></td><td>MW, MeV</td></tr>
+        <tr><td>kilo</td><td>k</td><td>10³</td><td>km, kg</td></tr>
+        <tr><td>centi</td><td>c</td><td>10<sup>−2</sup></td><td>cm</td></tr>
+        <tr><td>milli</td><td>m</td><td>10<sup>−3</sup></td><td>mm, ms</td></tr>
+        <tr><td>micro</td><td>μ</td><td>10<sup>−6</sup></td><td>μm, μs</td></tr>
+        <tr><td>nano</td><td>n</td><td>10<sup>−9</sup></td><td>nm</td></tr>
+      </table>
+
+      <p>Remember from section 1: <em>2 km</em> means 2 × (one kilometre). So converting is just <span class="honey">replacing the unit with what it equals</span>:</p>
+
+      <div class="two">
+        <div class="steps" style="margin:0">
+          <div class="title">Prefix → plain unit</div>
+          <span class="m">2 km = 2 · <span class="mv">10³ m</span></span><span class="why">kilo = 10³</span>
+          <span class="m">35 ms = 35 · <span class="mv">10<sup>−3</sup> s</span></span><span class="why">milli = 10<sup>−3</sup></span>
+          <span class="m">1 h 20 min = 3600 s + 20·60 s</span><span></span>
+          <span class="m ans">= 4800 s</span><span></span>
+        </div>
+        <div class="steps" style="margin:0">
+          <div class="title">km/h → m/s</div>
+          <span class="m">72 <span class="frac"><span>km</span><span>h</span></span> = 72 · <span class="frac"><span class="mv">1000 m</span><span class="mv">3600 s</span></span></span><span class="why">replace each unit</span>
+          <span class="m">= <span class="frac"><span>72</span><span>3.6</span></span> <span class="frac"><span>m</span><span>s</span></span></span><span class="why">1000/3600 = 1/3.6</span>
+          <span class="m ans">= 20 m/s</span><span></span>
+        </div>
+      </div>
+
+      <div class="watch">
+        <div class="label">Watch out!</div>
+        <p><strong>km/h → m/s: divide by 3.6</strong>, m/s → km/h: multiply. Check yourself with common sense: m/s must give the <strong>smaller</strong> number (a metre is tiny, a second is short).</p>
+        <p><strong>Squared and cubed units</strong> get the power too: 1 cm = 10<sup>−2</sup> m, so 1 cm² = (10<sup>−2</sup> m)² = 10<sup>−4</sup> m², and 1 cm³ = 10<sup>−6</sup> m³. Not 10<sup>−2</sup>!</p>
+      </div>
+    </section>
+
+    <!-- 8 -->
+    <section id="right-triangle">
+      <div class="sechead"><div class="num">8</div><h2>The right triangle</h2></div>
+
+      <p>A right triangle has one angle of 90°. The longest side, opposite the right angle, is the <strong>hypotenuse</strong>. The other two sides are named by where they stand <em>relative to the angle α we are looking at</em>: one is <strong>opposite</strong> to it, one is <strong>adjacent</strong> (lying next to it).</p>
+
+      <figure class="diagram">
+        <svg viewBox="0 0 340 230" role="img" aria-label="Right triangle with sides 3, 4, 5; angle alpha at the left corner">
+          <path d="M30 190 L250 190 L250 25 Z" fill="#f4f8f3"/><g stroke-width="2.6" stroke-linecap="round"><path d="M30 190 L250 190" stroke="#2e8a86"/><path d="M250 190 L250 25" stroke="#c0912e"/><path d="M30 190 L250 25" stroke="#c95f7a"/></g>
+          <path d="M238 190 L238 178 L250 178" fill="none" stroke="#9a8c70" stroke-width="1.2"/>
+          <path d="M70 190 A40 40 0 0 0 62 166" fill="none" stroke="#33291f" stroke-width="1.6"/>
+          <text x="76" y="182" class="s" font-size="20" fill="#33291f">α</text>
+          <g class="h" font-size="21" fill="#5a6f9e">
+            <text x="96" y="216" fill="#2e8a86">adjacent  b = 4</text>
+            <text x="258" y="100" fill="#c0912e">opposite</text><text x="258" y="122" fill="#c0912e">a = 3</text>
+            <text x="128" y="98" text-anchor="middle" transform="rotate(-36.87 128 98)" fill="#c95f7a">hypotenuse  c = 5</text>
+          </g>
+        </svg>
+      </figure>
+
+      <h3>Pythagoras</h3>
+      <div class="formula-row"><span class="f pill key">c² <span class="op">=</span> a² <span class="op">+</span> b²</span><span class="tag">3² + 4² = 9 + 16 = 25 = 5²</span></div>
+
+      <h3>Sine, cosine, tangent</h3>
+      <p>These are just names for the <strong>ratios</strong> of the sides. For a given angle the ratio is always the same — however big you draw the triangle.</p>
+      <div class="formula-row">
+        <span class="f pill">sin α <span class="op">=</span> <span class="frac"><span>opposite</span><span>hypotenuse</span></span></span>
+        <span class="f pill">cos α <span class="op">=</span> <span class="frac"><span>adjacent</span><span>hypotenuse</span></span></span>
+        <span class="f pill">tan α <span class="op">=</span> <span class="frac"><span>opposite</span><span>adjacent</span></span> <span class="op">=</span> <span class="frac"><span>sin α</span><span>cos α</span></span></span>
+      </div>
+      <p class="aside">SOH · CAH · TOA — say it out loud a few times, it sticks.</p>
+      <p>For our 3-4-5 triangle: sin α = 3/5 = 0.6, cos α = 4/5 = 0.8, tan α = 3/4 = 0.75. And to get the angle <strong>back</strong> from a ratio, use the inverse button: α = tan<sup>−1</sup>(0.75) ≈ 37°.</p>
+
+      <p>Because of Pythagoras, there is one identity that is always true: <span class="f" style="font-size:20px">sin²α + cos²α = 1</span>.</p>
+
+      <h3>Values worth knowing by heart</h3>
+      <table class="t">
+        <tr><th style="text-transform:none">α</th><th>0°</th><th>30°</th><th>45°</th><th>60°</th><th>90°</th></tr>
+        <tr><td class="i">sin α</td><td>0</td><td>½</td><td>√2/2 ≈ 0.71</td><td>√3/2 ≈ 0.87</td><td>1</td></tr>
+        <tr><td class="i">cos α</td><td>1</td><td>√3/2 ≈ 0.87</td><td>√2/2 ≈ 0.71</td><td>½</td><td>0</td></tr>
+        <tr><td class="i">tan α</td><td>0</td><td>1/√3 ≈ 0.58</td><td>1</td><td>√3 ≈ 1.73</td><td>—</td></tr>
+      </table>
+      <p class="note" style="margin-top:-8px">Look: the cosine row is the sine row read backwards. Learn one, get both.</p>
+
+      <div class="watch">
+        <div class="label">Watch out!</div>
+        <p>"Opposite" and "adjacent" depend on <strong>which angle</strong> you look from. Switch to the other sharp angle and they swap places.</p>
+        <p>Check that your calculator is in <strong>degrees</strong> (DEG) when the angle is in degrees. sin 30 in radian mode gives −0.99 — and a very confusing evening.</p>
+      </div>
+    </section>
+
+    <!-- 9 -->
+    <section id="vectors">
+      <div class="sechead"><div class="num">9</div><h2>Vectors and their components</h2></div>
+
+      <p>A <strong>vector</strong> is an arrow: it has a <strong>size</strong> (its length, also called magnitude or modulus) and a <strong>direction</strong>. Displacement, velocity, acceleration, force — all of them are vectors. A number like mass or time has no direction; it is called a scalar.</p>
+
+      <p>Arrows pointing in a slanted direction are awkward to work with. So we do a trick: we look at the arrow's <strong>shadows</strong> on the axes. Shine a light from above — the shadow on the x-axis is the <strong>x-component</strong>. Shine from the side — the shadow on the y-axis is the <strong>y-component</strong>.</p>
+
+      <div class="two">
+        <figure class="diagram">
+          <svg viewBox="0 0 300 260" role="img" aria-label="Velocity vector of 5 m/s at angle alpha with components 4 along x and 3 along y">
+            <defs><marker id="arO" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#c15b38"/></marker></defs>
+            <g stroke="#9a8c70" stroke-width="1.22"><path d="M30 220 L282 220"/><path d="M50 242 L50 22"/></g>
+            <path d="M290 220 L277.84 215.27 L277.84 224.73Z M50 14 L45.27 26.16 L54.73 26.16Z" fill="#9a8c70"/>
+            <g class="s" font-size="21.61" fill="#33291f"><text x="276" y="244">x</text><text x="60" y="26">y</text></g>
+            <path d="M210 100 L210 220 M210 100 L50 100" stroke="#6b5d43" stroke-width="1.3" stroke-dasharray="4 4"/>
+            <path d="M50 220 L206 220" stroke="#c15b38" stroke-width="3.2" stroke-opacity=".55" marker-end="url(#arO)"/>
+            <path d="M50 220 L50 104" stroke="#c15b38" stroke-width="3.2" stroke-opacity=".55" marker-end="url(#arO)"/>
+            <path d="M50 220 L207 102" stroke="#c15b38" stroke-width="3" marker-end="url(#arO)"/>
+            <path d="M88 220 A38 38 0 0 0 80.4 197.2" fill="none" stroke="#33291f" stroke-width="1.5"/>
+            <text x="94" y="212" class="s" font-size="18" fill="#33291f">α</text>
+            <g class="h" font-size="20" fill="#c15b38"><text x="66" y="140">v = 5 m/s</text><text x="96" y="250">v<tspan font-size="14" dy="4">x</tspan><tspan dy="-4"> = v cos α = 4</tspan></text><text x="58" y="90">v<tspan font-size="14" dy="4">y</tspan><tspan dy="-4"> = v sin α = 3</tspan></text></g>
+          </svg>
+          <figcaption>Both components positive: the arrow goes along both axes.</figcaption>
+        </figure>
+        <figure class="diagram">
+          <svg viewBox="0 0 300 260" role="img" aria-label="A vector pointing up and to the left: its x-component is negative">
+            <defs><marker id="arO2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#c15b38"/></marker></defs>
+            <g stroke="#9a8c70" stroke-width="1.22"><path d="M20 200 L282 200"/><path d="M190 232 L190 22"/></g>
+            <path d="M290 200 L277.84 195.27 L277.84 204.73Z M190 14 L185.27 26.16 L194.73 26.16Z" fill="#9a8c70"/>
+            <g class="s" font-size="21.61" fill="#33291f"><text x="276" y="224">x</text><text x="200" y="26">y</text></g>
+            <path d="M70 90 L70 200 M70 90 L190 90" stroke="#6b5d43" stroke-width="1.3" stroke-dasharray="4 4"/>
+            <path d="M190 200 L74 200" stroke="#c15b38" stroke-width="3.2" stroke-opacity=".55" marker-end="url(#arO2)"/>
+            <path d="M190 200 L190 94" stroke="#c15b38" stroke-width="3.2" stroke-opacity=".55" marker-end="url(#arO2)"/>
+            <path d="M190 200 L73 93" stroke="#c15b38" stroke-width="3" marker-end="url(#arO2)"/>
+            <g class="h" font-size="20"><text x="80" y="228" fill="#c15b38">v<tspan font-size="14" dy="4">x</tspan><tspan dy="-4"> &lt; 0</tspan></text><text x="198" y="150" fill="#c15b38">v<tspan font-size="14" dy="4">y</tspan><tspan dy="-4"> &gt; 0</tspan></text><text x="20" y="44" fill="#5a6f9e">shadow points against</text><text x="20" y="66" fill="#5a6f9e">the x-axis → minus</text></g>
+          </svg>
+          <figcaption>Against the axis — the component gets a minus.</figcaption>
+        </figure>
+      </div>
+
+      <p>The vector and its two components make a right triangle — so section 8 does all the work:</p>
+      <div class="formula-row">
+        <span class="f pill key">v<sub>x</sub> <span class="op">=</span> v cos α</span>
+        <span class="f pill key">v<sub>y</sub> <span class="op">=</span> v sin α</span>
+        <span class="f pill">v <span class="op">=</span> √(v<sub>x</sub>² + v<sub>y</sub>²)</span>
+        <span class="f pill">tan α <span class="op">=</span> <span class="frac"><span>v<sub>y</sub></span><span>v<sub>x</sub></span></span></span>
+      </div>
+      <p class="note">Here α is measured from the x-axis. Measure it from the y-axis and sin and cos swap — always look at your own drawing.</p>
+
+      <dl class="defs">
+        <dt>Along an axis</dt><dd>the component equals the whole vector (with + or −)</dd>
+        <dt>Across an axis</dt><dd>(perpendicular) the component on that axis is zero — no shadow at all</dd>
+      </dl>
+
+      <h3>Adding vectors</h3>
+      <p>Vectors are <strong>not</strong> added like plain numbers: 3 m/s and 4 m/s can give anything from 1 m/s to 7 m/s, depending on the directions. There are two pictures for it — they always give the same answer:</p>
+
+      <div class="two">
+        <figure class="diagram">
+          <svg viewBox="0 0 300 210" role="img" aria-label="Triangle rule: b starts at the tip of a; the sum goes from the start of a to the tip of b">
+            <defs><marker id="arIa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#2e8a86"/></marker><marker id="arIb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#c0912e"/></marker><marker id="arIs" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#c95f7a"/></marker></defs>
+            <path d="M30 180 L168 136" stroke="#2e8a86" stroke-width="2.4" marker-end="url(#arIa)"/>
+            <path d="M172 134 L262 34" stroke="#c0912e" stroke-width="2.4" marker-end="url(#arIb)"/>
+            <path d="M30 180 L258 36" stroke="#c95f7a" stroke-width="3" marker-end="url(#arIs)"/>
+            <g class="s" font-size="22"><text x="100" y="186" fill="#2e8a86">a</text><text x="228" y="100" fill="#c0912e">b</text><text x="62" y="112" fill="#c95f7a">a + b</text></g>
+          </svg>
+          <figcaption>Triangle: the start of b goes to the tip of a.</figcaption>
+        </figure>
+        <figure class="diagram">
+          <svg viewBox="0 0 300 210" role="img" aria-label="Parallelogram rule: a and b start from one point; the diagonal is the sum">
+            
+            <path d="M180 150 L250 20" stroke="#c0912e" stroke-width="1.3" stroke-dasharray="5 5"/><path d="M110 60 L250 20" stroke="#2e8a86" stroke-width="1.3" stroke-dasharray="5 5"/>
+            <path d="M40 190 L176 151" stroke="#2e8a86" stroke-width="2.4" marker-end="url(#arIa)"/>
+            <path d="M40 190 L108 64" stroke="#c0912e" stroke-width="2.4" marker-end="url(#arIb)"/>
+            <path d="M40 190 L246 23" stroke="#c95f7a" stroke-width="3" marker-end="url(#arIs)"/>
+            <g class="s" font-size="22"><text x="112" y="196" fill="#2e8a86">a</text><text x="52" y="116" fill="#c0912e">b</text><text x="150" y="125" fill="#c95f7a">a + b</text></g>
+          </svg>
+          <figcaption>Parallelogram: same start, the diagonal is the sum.</figcaption>
+        </figure>
+      </div>
+      <p>The easiest way to <strong>calculate</strong> a sum is with components: add all the x-components, add all the y-components, then put the result back together with Pythagoras.</p>
+
+      <div class="watch">
+        <div class="label">Watch out!</div>
+        <p>A component can be <strong>negative</strong> — the size of a vector can not. "The velocity is −3 m/s" means "3 m/s, pointing against the axis".</p>
+      </div>
+    </section>
+
+    <!-- 10 -->
+    <section id="circle">
+      <div class="sechead"><div class="num">10</div><h2>The circle and the radian</h2></div>
+
+      <div class="formula-row">
+        <span class="f pill key">L <span class="op">=</span> 2πR</span><span class="tag">circumference — one full lap</span>
+        <span class="f pill">S <span class="op">=</span> πR²</span><span class="tag">area</span>
+      </div>
+      <p>π ≈ 3.14 is how many diameters fit around a circle — for <em>any</em> circle, from a coin to the Earth's orbit.</p>
+
+      <h3>Measuring angles with a ruler</h3>
+      <p>Degrees are a human invention: someone once decided that a full turn is 360. Physics prefers a more natural way: <span class="honey">measure the angle by how long the arc is, compared to the radius</span>.</p>
+
+      <div class="two" style="align-items:center">
+        <figure class="diagram">
+          <svg viewBox="0 0 300 260" role="img" aria-label="Circle of radius R; an arc of length s subtends angle theta at the centre">
+            <circle cx="140" cy="140" r="100" fill="none" stroke="#9a8c70" stroke-width="1.2"/>
+            <path d="M240 140 A100 100 0 0 0 174.2 46.0" fill="none" stroke="#c95f7a" stroke-width="4" stroke-linecap="round"/>
+            <path d="M140 140 L240 140 M140 140 L174.2 46.0" stroke="#2e8a86" stroke-width="2"/>
+            <path d="M170 140 A30 30 0 0 0 150.3 111.8" fill="none" stroke="#c0912e" stroke-width="2"/>
+            <circle cx="140" cy="140" r="3.5" fill="#33291f"/>
+            <text x="174" y="128" class="s" font-size="20" fill="#c0912e">θ</text>
+            <text x="188" y="160" class="s" font-size="20" fill="#2e8a86">R</text>
+            <text x="232" y="74" class="s" font-size="22" fill="#c95f7a">s</text>
+          </svg>
+        </figure>
+        <div>
+          <div class="formula-row"><span class="f pill key">θ <span class="op">=</span> <span class="frac"><span>s</span><span>R</span></span></span><span class="tag">angle in radians</span></div>
+          <p style="font-size:17px">A full lap: s = 2πR, so θ = 2π. That means</p>
+          <div class="formula-row"><span class="f pill">360° <span class="op">=</span> 2π rad</span><span class="f pill">180° <span class="op">=</span> π rad</span></div>
+          <p class="note">1 rad ≈ 57°. The arc length is then simply s = Rθ.</p>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="label">Where you'll meet it — distance vs displacement on a circle</div>
+        <div class="two" style="align-items:center">
+          <figure class="diagram" style="margin:0">
+            <svg viewBox="0 0 300 300" role="img" aria-label="A quarter lap on a circle of radius 2 m: path along the arc, displacement along the chord">
+              <defs><marker id="arB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#3d6bb3"/></marker></defs>
+              <circle cx="130" cy="140" r="100" fill="none" stroke="#6b5d43" stroke-width="1.3"/>
+              <path d="M130 140 L230 140 M130 140 L130 40" stroke="#6b5d43" stroke-width="1.3" stroke-dasharray="4 4"/>
+              <path d="M142 140 L142 128 L130 128" fill="none" stroke="#6b5d43" stroke-width="1.2"/>
+              <path d="M230 140 A100 100 0 0 0 130 40" fill="none" stroke="#3d6bb3" stroke-width="3" stroke-dasharray="8 6"/>
+              <path d="M230 140 L134 44" stroke="#3d6bb3" stroke-width="3" marker-end="url(#arB)"/>
+              <g fill="#33291f"><circle cx="230" cy="140" r="5"/><circle cx="130" cy="40" r="5"/><circle cx="130" cy="140" r="3"/></g>
+              <path d="M14 268 L50 268" stroke="#3d6bb3" stroke-width="3" stroke-dasharray="8 6"/><path d="M110 268 L142 268" stroke="#3d6bb3" stroke-width="3" marker-end="url(#arB)"/>
+              <g class="h" font-size="20" fill="#3d6bb3"><text x="58" y="275">path</text><text x="150" y="275">displacement</text></g>
+              <text x="150" y="162" class="h" font-size="19" fill="#6b5d43">R = 2 m</text>
+            </svg>
+          </figure>
+          <div class="steps" style="margin:0">
+            <span class="m"><span class="q-x">s</span> = <span class="frac"><span>2π<span class="q-x">R</span></span><span>4</span></span> = π m ≈ 3.14 m</span><span class="why">a quarter of a lap</span>
+            <span class="m">|Δ<span class="q-x">r</span>| = √(<span class="q-x">R</span>² + <span class="q-x">R</span>²) = <span class="q-x">R</span>√2</span><span class="why">Pythagoras!</span>
+            <span class="m ans">≈ 2.83 m</span><span></span>
+          </div>
+        </div>
+        <p style="margin:12px 0 0">After a full lap the path is 2πR, but the displacement is <strong>zero</strong> — you are back where you started.</p>
+      </div>
+
+      <div class="watch">
+        <div class="label">Watch out!</div>
+        <p>θ = s/R and s = Rθ work <strong>only in radians</strong>. Put 90 instead of π/2 and the arc comes out 57 times too long.</p>
+      </div>
+    </section>
+
+    <!-- 11 -->
+    <section id="parabola">
+      <div class="sechead"><div class="num">11</div><h2>The parabola and the quadratic equation</h2></div>
+
+      <p>Remember the red rule from section 5: maximum power of x is one — straight line. Now let the maximum power be <strong>two</strong>:</p>
+
+      <div class="formula-row"><span class="f pill key">y <span class="op">=</span> ax² <span class="op">+</span> bx <span class="op">+</span> c</span><span class="tag">— a parabola</span></div>
+
+      <div class="withmargin">
+        <div>
+          <dl class="defs" style="grid-template-columns:90px 1fr">
+            <dt>a &gt; 0</dt><dd>branches go up, like a smile — the vertex is the <strong>lowest</strong> point</dd>
+            <dt>a &lt; 0</dt><dd>branches go down, like a frown — the vertex is the <strong>highest</strong> point</dd>
+            <dt>|a| big</dt><dd>narrow parabola; |a| small — wide</dd>
+            <dt>c</dt><dd>the y-intercept again, just like in a line</dd>
+          </dl>
+        </div>
+        <figure class="diagram" style="margin:0;padding:10px">
+          <svg viewBox="0 0 330 140" role="img" aria-label="Two small parabolas: one opening up, one opening down">
+            <path d="M29.0 23.3 L35.0 42.5 L41.0 59.3 L47.0 73.7 L53.0 85.7 L59.0 95.3 L65.0 102.5 L71.0 107.3 L77.0 109.7 L80.0 110.0 L83.0 109.7 L89.0 107.3 L95.0 102.5 L101.0 95.3 L107.0 85.7 L113.0 73.7 L119.0 59.3 L125.0 42.5 L131.0 23.3" fill="none" stroke="#c95f7a" stroke-width="2.4" stroke-linecap="round"/>
+            <path d="M199.0 126.7 L205.0 107.5 L211.0 90.7 L217.0 76.3 L223.0 64.3 L229.0 54.7 L235.0 47.5 L241.0 42.7 L247.0 40.3 L250.0 40.0 L253.0 40.3 L259.0 42.7 L265.0 47.5 L271.0 54.7 L277.0 64.3 L283.0 76.3 L289.0 90.7 L295.0 107.5 L301.0 126.7" fill="none" stroke="#2e8a86" stroke-width="2.4" stroke-linecap="round"/>
+            <g class="h" font-size="32"><text x="104" y="136" fill="#c95f7a">a &gt; 0</text><text x="296" y="30" text-anchor="end" fill="#2e8a86">a &lt; 0</text></g>
+          </svg>
+        </figure>
+      </div>
+
+      <p>Two points of a parabola matter most of all: the <strong>vertex</strong> (the turning point) and the <strong>roots</strong> — the x's where y = 0, where the parabola crosses the x-axis.</p>
+
+      <div class="formula-row">
+        <span class="f pill">x<sub>vertex</sub> <span class="op">=</span> −<span class="frac"><span>b</span><span>2a</span></span></span>
+        <span class="f pill">D <span class="op">=</span> b² − 4ac</span>
+        <span class="f pill key">x<sub>1,2</sub> <span class="op">=</span> <span class="frac"><span>−b ± √D</span><span>2a</span></span></span>
+      </div>
+      <p class="note">D &gt; 0 — two roots, D = 0 — one root (the vertex touches the axis), D &lt; 0 — no roots: the parabola never reaches y = 0.</p>
+
+      <div class="two" style="align-items:start">
+        <div class="steps" style="margin:0">
+          <div class="title math">y = x² − 4x + 3</div>
+          <span class="m">x<sub>v</sub> = −<span class="frac"><span>−4</span><span>2·1</span></span> = 2</span><span></span>
+          <span class="m">y<sub>v</sub> = 4 − 8 + 3 = −1</span><span class="why">put x = 2 inside</span>
+          <span class="m">D = 16 − 12 = 4</span><span></span>
+          <span class="m">x = <span class="frac"><span>4 ± 2</span><span>2</span></span></span><span></span>
+          <span class="m ans">x<sub>1</sub> = 1, x<sub>2</sub> = 3</span><span></span>
+        </div>
+        <figure class="diagram" style="margin:0">
+          <svg viewBox="0 0 340 280" role="img" aria-label="Parabola y = x² − 4x + 3 with vertex (2, −1) and roots 1 and 3">
+            <g stroke="#9a8c70" stroke-width="1.38"><path d="M40 200 L322 200"/><path d="M80 276 L80 8"/></g>
+            <path d="M330 200 L316.23 194.64 L316.23 205.36Z M80 0 L74.64 13.77 L85.36 13.77Z" fill="#9a8c70"/>
+            <g stroke="#9a8c70" stroke-width="1.38"><path d="M130 195.41 L130 204.59 M180 195.41 L180 204.59 M230 195.41 L230 204.59 M280 195.41 L280 204.59 M75.41 50 L84.59 50 M75.41 250 L84.59 250"/></g>
+            <g class="s" font-size="19.9" fill="#6b5d43"><text x="186" y="194">2</text><text x="64" y="55">3</text><text x="58" y="255">−1</text></g>
+            <g class="s" font-size="24.49" fill="#33291f"><text x="320" y="224">x</text><text x="90" y="14">y</text></g>
+            <path d="M70.0 8.0 L75.0 29.5 L80.0 50.0 L85.0 69.5 L90.0 88.0 L95.0 105.5 L100.0 122.0 L105.0 137.5 L110.0 152.0 L115.0 165.5 L120.0 178.0 L125.0 189.5 L130.0 200.0 L135.0 209.5 L140.0 218.0 L145.0 225.5 L150.0 232.0 L155.0 237.5 L160.0 242.0 L165.0 245.5 L170.0 248.0 L175.0 249.5 L180.0 250.0 L185.0 249.5 L190.0 248.0 L195.0 245.5 L200.0 242.0 L205.0 237.5 L210.0 232.0 L215.0 225.5 L220.0 218.0 L225.0 209.5 L230.0 200.0 L235.0 189.5 L240.0 178.0 L245.0 165.5 L250.0 152.0 L255.0 137.5 L260.0 122.0 L265.0 105.5 L270.0 88.0 L275.0 69.5 L280.0 50.0 L285.0 29.5 L290.0 8.0" fill="none" stroke="#c95f7a" stroke-width="2.4" stroke-linecap="round"/>
+            <path d="M180 200 L180 250" stroke="#6b5d43" stroke-width="1.3" stroke-dasharray="3 4"/>
+            <g fill="#c95f7a"><circle cx="130" cy="200" r="4.5"/><circle cx="230" cy="200" r="4.5"/><circle cx="180" cy="250" r="4.5"/><circle cx="80" cy="50" r="4"/></g>
+            <g class="h" font-size="20" fill="#5a6f9e"><text x="192" y="268">vertex (2, −1)</text><text x="86" y="226">x = 1</text><text x="240" y="226">x = 3</text><text x="88" y="44">c = 3</text></g>
+          </svg>
+        </figure>
+      </div>
+
+      <div class="panel">
+        <div class="label">Where you'll meet it — accelerated motion</div>
+        <p>A ball is thrown straight up at 20 m/s. With g ≈ 10 m/s², its height is <span class="f" style="font-size:20px"><span class="q-x">h</span> = 20<span class="q-t">t</span> − 5<span class="q-t">t</span>²</span> — a parabola with a &lt; 0, a frown.</p>
+        <div class="two" style="align-items:center">
+          <figure class="diagram" style="margin:0">
+            <svg viewBox="0 0 340 260" role="img" aria-label="Height-time parabola of a ball thrown up: highest point 20 m at 2 s; reaches 15 m at 1 s and 3 s">
+              <g stroke="#9a8c70" stroke-width="1.49"><path d="M40 220 L322 220"/><path d="M60 250 L60 16"/></g>
+              <path d="M330 220 L315.1 214.21 L315.1 225.79Z M60 8 L54.21 22.9 L65.79 22.9Z" fill="#9a8c70"/>
+              <g stroke="#9a8c70" stroke-width="1.49"><path d="M120 215.03 L120 224.97 M180 215.03 L180 224.97 M240 215.03 L240 224.97 M300 215.03 L300 224.97 M55.03 60 L64.97 60 M55.03 100 L64.97 100"/></g>
+              <g class="s" font-size="21.52" fill="#6b5d43"><text x="116" y="240">1</text><text x="176" y="240">2</text><text x="236" y="240">3</text><text x="296" y="240">4</text><text x="38" y="65">20</text><text x="38" y="105">15</text></g>
+              <g class="s" font-size="26.48"><text x="300" y="206" fill="#4a7c59">t, s</text><text x="70" y="22" fill="#3d6bb3">h, m</text></g>
+              <path d="M60 100 L310 100" stroke="#6b5d43" stroke-width="1.3" stroke-dasharray="5 5"/>
+              <path d="M60.0 220.0 L66.0 204.4 L72.0 189.6 L78.0 175.6 L84.0 162.4 L90.0 150.0 L96.0 138.4 L102.0 127.6 L108.0 117.6 L114.0 108.4 L120.0 100.0 L126.0 92.4 L132.0 85.6 L138.0 79.6 L144.0 74.4 L150.0 70.0 L156.0 66.4 L162.0 63.6 L168.0 61.6 L174.0 60.4 L180.0 60.0 L186.0 60.4 L192.0 61.6 L198.0 63.6 L204.0 66.4 L210.0 70.0 L216.0 74.4 L222.0 79.6 L228.0 85.6 L234.0 92.4 L240.0 100.0 L246.0 108.4 L252.0 117.6 L258.0 127.6 L264.0 138.4 L270.0 150.0 L276.0 162.4 L282.0 175.6 L288.0 189.6 L294.0 204.4 L300.0 220.0" fill="none" stroke="#3d6bb3" stroke-width="2.6"/>
+              <g fill="#33291f"><circle cx="180" cy="60" r="5"/><circle cx="120" cy="100" r="4.5"/><circle cx="240" cy="100" r="4.5"/></g>
+              <g class="h" font-size="19" fill="#5a6f9e"><text x="150" y="44">top: v = 0</text><text x="126" y="140">going up</text><text x="184" y="172">coming down</text></g>
+            </svg>
+          </figure>
+          <div class="steps" style="margin:0">
+            <div class="title">When is it 15 m high?</div>
+            <span class="m">15 = 20<span class="q-t">t</span> − 5<span class="q-t">t</span>²</span><span></span>
+            <span class="m"><span class="q-t">t</span>² − 4<span class="q-t">t</span> + 3 = 0</span><span class="why">everything to one side, ÷5</span>
+            <span class="m ans"><span class="q-t">t</span><sub>1</sub> = 1 s, <span class="q-t">t</span><sub>2</sub> = 3 s</span><span class="why">our example above!</span>
+          </div>
+        </div>
+        <p style="margin:12px 0 0"><strong>Both</strong> answers are true: once on the way up, once on the way down. The vertex is the highest point: <i class="q-t">t</i> = −20 / (2·(−5)) = 2 s, <i class="q-x">h</i> = 40 − 20 = 20 m.</p>
+      </div>
+
+      <div class="watch">
+        <div class="label">Watch out!</div>
+        <p><strong>Don't throw away a root automatically — ask what it means.</strong> If the ball is thrown from a cliff and we ask when it is 25 m below the edge, we get <i>t</i> = 5 s and <i>t</i> = −1 s.</p>
+        <p>The −1 s is not "an error". Remember: t = 0 is just the moment we turned on the stopwatch. −1 s answers the question "if the ball had been flying on this same parabola <em>before</em> we started watching, when would it have been there?" It didn't — so for our problem only 5 s is the answer.</p>
+      </div>
+    </section>
+
+    <!-- RECAP -->
+    <section class="recap">
+      <div class="label">Everything from this card</div>
+      <div class="grid">
+        <div class="cell"><div class="label">The rule</div><span class="note" style="color:var(--ink);font-size:16px">Whatever you do to the left side, do to the right side</span></div>
+        <div class="cell"><div class="label">Straight line</div><span class="f">y = mx + c,  m = Δy/Δx</span></div>
+        <div class="cell"><div class="label">System</div><span class="note" style="color:var(--ink);font-size:16px">substitute or add · on a graph: where lines cross</span></div>
+        <div class="cell"><div class="label">Units</div><span class="f">1 km/h = 1/3.6 m/s</span></div>
+        <div class="cell"><div class="label">Right triangle</div><span class="f">c² = a² + b²,  SOH CAH TOA</span></div>
+        <div class="cell"><div class="label">Components</div><span class="f">v<sub>x</sub> = v cos α,  v<sub>y</sub> = v sin α</span></div>
+        <div class="cell"><div class="label">Circle</div><span class="f">L = 2πR,  s = Rθ</span></div>
+        <div class="cell"><div class="label">Radians</div><span class="f">180° = π rad</span></div>
+        <div class="cell"><div class="label">Quadratic</div><span class="f">x = (−b ± √D)/2a,  D = b² − 4ac</span></div>
+      </div>
+    </section>
+  </main>
+</div>
+</body>
+</html>

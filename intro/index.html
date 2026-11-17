@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kedr · Physics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --page:#efe8d8; --card:#f9f4e9; --border:#e3d9c2; --ink:#33291f; --muted:#6b5d43; --faint:#9a8c70;
+  --teacher:#5a6f9e; --amber:#d9a032;
+  --needle-1:#2c4334; --needle-2:#3f5e47; --needle-3:#5b7d5c; --bark:#7a5a43; --bark-d:#5b4030;
+  --f-struct:'Bricolage Grotesque',system-ui,sans-serif; --f-body:'Source Serif 4',Georgia,serif; --f-hand:'Caveat',cursive;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--page);color:var(--ink);font-family:var(--f-body);-webkit-font-smoothing:antialiased}
+.switch{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:30;display:flex;gap:6px;
+  background:rgba(249,244,233,.92);border:1px solid var(--border);border-radius:999px;padding:5px;box-shadow:0 4px 20px rgba(90,70,40,.12)}
+.switch button{border:0;background:transparent;border-radius:999px;padding:7px 14px;font-family:var(--f-struct);font-size:13.5px;cursor:pointer;color:var(--muted)}
+.switch button.on{background:var(--ink);color:var(--card)}
+.switch .note{font-family:var(--f-hand);font-size:17px;color:var(--teacher);padding:4px 10px 0 6px}
+.v{display:none;min-height:100vh}
+.v.on{display:block}
+svg{display:block}
+.hot{cursor:pointer}
+.hot .ring{transition:opacity .2s}
+.hot:hover .ring{opacity:1}
+.title{font-family:var(--f-struct);font-weight:700;letter-spacing:-.02em}
+.kick{font-family:var(--f-struct);font-weight:700;letter-spacing:.16em;text-transform:uppercase;font-size:12.5px;fill:var(--muted);color:var(--muted)}
+.hand{font-family:var(--f-hand)}
+.tip{position:fixed;z-index:40;pointer-events:none;background:var(--ink);color:var(--card);border-radius:10px;padding:9px 12px;
+  font-family:var(--f-struct);font-size:13px;line-height:1.4;max-width:260px;display:none;box-shadow:0 8px 30px rgba(0,0,0,.25)}
+@keyframes glow{0%,100%{opacity:.55}50%{opacity:1}}
+.glow{animation:glow 2.4s ease-in-out infinite}
+@keyframes drift{0%{transform:translateX(0)}100%{transform:translateX(-60px)}}
+.mist{animation:drift 18s ease-in-out infinite alternate}
+</style>
+</head>
+<body>
+
+<div class="switch">
+  <span class="note">three ideas —</span>
+  <button data-v="a" class="on">A · The tree</button>
+  <button data-v="b">B · The climb</button>
+  <button data-v="c">C · The rings</button>
+</div>
+<div class="tip" id="tip"></div>
+
+<!-- ===================== A · THE TREE ===================== -->
+<section class="v on" id="v-a">
+<svg viewBox="0 0 1400 980" width="100%" style="max-height:100vh" preserveAspectRatio="xMidYMid meet" id="svg-a">
+  <defs>
+    <radialGradient id="a-sun" cx="50%" cy="45%" r="60%"><stop offset="0" stop-color="#f6e7c4"/><stop offset="1" stop-color="#efe8d8" stop-opacity="0"/></radialGradient>
+    <linearGradient id="a-bark" x1="0" x2="1"><stop offset="0" stop-color="#5b4030"/><stop offset=".45" stop-color="#8a6a4e"/><stop offset="1" stop-color="#5b4030"/></linearGradient>
+  </defs>
+  <rect width="1400" height="980" fill="#efe8d8"/>
+  <ellipse cx="880" cy="420" rx="620" ry="460" fill="url(#a-sun)"/>
+  <text x="90" y="118" class="kick">Physics Course</text>
+  <text x="88" y="190" class="title" font-size="86" fill="#33291f">Kedr</text>
+  <text x="92" y="300" class="hand" font-size="30" fill="#5a6f9e">a tall tree grows from deep roots —</text>
+  <text x="92" y="334" class="hand" font-size="30" fill="#5a6f9e">so does physics. Start at the bottom.</text>
+  <!-- ground -->
+  <path d="M330 790 C 600 770, 1160 770, 1400 792" fill="none" stroke="#9a8c70" stroke-width="2"/>
+  <g id="a-roots"></g>
+  <g id="a-tree"></g>
+  <g id="a-labels"></g>
+  <text x="1380" y="960" text-anchor="end" font-family="Bricolage Grotesque" font-size="13" fill="#9a8c70">bright = ready · pale = growing</text>
+</svg>
+</section>
+
+<!-- ===================== B · THE CLIMB ===================== -->
+<section class="v" id="v-b">
+<svg viewBox="0 0 1400 900" width="100%" style="max-height:100vh" preserveAspectRatio="xMidYMid slice" id="svg-b">
+  <defs>
+    <linearGradient id="b-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e9e1cf"/><stop offset=".6" stop-color="#f4ead6"/><stop offset="1" stop-color="#efe3c8"/></linearGradient>
+    <linearGradient id="b-mist" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#f4ecdc" stop-opacity="0"/><stop offset=".5" stop-color="#f4ecdc" stop-opacity=".95"/><stop offset="1" stop-color="#f4ecdc" stop-opacity="0"/></linearGradient>
+  </defs>
+  <rect width="1400" height="900" fill="url(#b-sky)"/>
+  <circle cx="1080" cy="170" r="56" fill="#f2d9a3" opacity=".8"/>
+  <!-- far mountains -->
+  <path d="M0 470 L120 360 L210 410 L330 280 L450 390 L560 300 L700 420 L820 330 L960 410 L1080 300 L1200 380 L1300 320 L1400 380 L1400 900 L0 900Z" fill="#b9c2c7"/>
+  <path d="M330 280 L365 312 L345 318 L380 340 L330 330Z M1080 300 L1110 330 L1092 334 L1120 352 L1078 344Z M560 300 L588 326 L570 330 Z" fill="#f4f1ea" opacity=".9"/>
+  <path d="M0 540 L150 440 L300 500 L430 430 L600 520 L760 450 L900 510 L1050 440 L1220 520 L1400 460 L1400 900 L0 900Z" fill="#8fa09c"/>
+  <rect class="mist" x="-100" y="430" width="1700" height="120" fill="url(#b-mist)"/>
+  <!-- hill -->
+  <path d="M0 900 L0 720 C 260 690, 520 640, 760 560 C 900 515, 1040 470, 1160 470 C 1260 470, 1340 500, 1400 520 L1400 900Z" fill="#6f8a63"/>
+  <path d="M0 900 L0 780 C 300 740, 600 720, 900 680 C 1100 650, 1300 640, 1400 650 L1400 900Z" fill="#5e7853"/>
+  <g id="b-cedar"></g>
+  <path id="b-trail" d="M90 860 C 260 840, 300 790, 420 770 S 640 720, 700 650 S 900 600, 960 560 S 1080 520, 1130 500" fill="none" stroke="#efe3c8" stroke-width="5" stroke-dasharray="2 12" stroke-linecap="round"/>
+  <g id="b-stops"></g>
+  <text x="80" y="110" class="kick">Physics Course</text>
+  <text x="78" y="182" class="title" font-size="84" fill="#33291f">Kedr</text>
+  <text x="82" y="228" class="hand" font-size="30" fill="#5a6f9e">every topic is a step up the hill —</text>
+  <text x="82" y="262" class="hand" font-size="30" fill="#5a6f9e">the cedar waits at the top.</text>
+</svg>
+</section>
+
+<!-- ===================== C · THE RINGS ===================== -->
+<section class="v" id="v-c">
+<svg viewBox="0 0 1400 900" width="100%" style="max-height:100vh" preserveAspectRatio="xMidYMid meet" id="svg-c">
+  <rect width="1400" height="900" fill="#efe8d8"/>
+  <text x="90" y="128" class="kick">Physics Course</text>
+  <text x="88" y="200" class="title" font-size="86" fill="#33291f">Kedr</text>
+  <text x="92" y="248" class="hand" font-size="30" fill="#5a6f9e">cut a cedar and you can read</text>
+  <text x="92" y="282" class="hand" font-size="30" fill="#5a6f9e">its whole life in the rings.</text>
+  <g font-family="Bricolage Grotesque" font-size="15" fill="#6b5d43">
+    <text x="92" y="360">The core — the maths everything rests on.</text>
+    <text x="92" y="388">Each slice — one part of physics.</text>
+    <text x="92" y="416">Each ring outward — the next step in that part.</text>
+    <text x="92" y="460" fill="#9a8c70">Bright rings are ready. The rest is still growing.</text>
+  </g>
+  <g id="c-disc" transform="translate(880 480)"></g>
+</svg>
+</section>
+
+<script>
+(function(){
+const NS='http://www.w3.org/2000/svg';
+const MAP='../index.html#/';
+const el=(tag,attrs,parent,text)=>{const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;if(parent)parent.appendChild(e);return e;};
+let seed=7; const rnd=()=>{seed=(seed*16807)%2147483647;return (seed-1)/2147483646;};
+const tip=document.getElementById('tip');
+function hover(g,html){g.addEventListener('mouseenter',()=>{tip.innerHTML=html;tip.style.display='block';});
+  g.addEventListener('mousemove',e=>{tip.style.left=Math.min(e.clientX+16,innerWidth-280)+'px';tip.style.top=(e.clientY+18)+'px';});
+  g.addEventListener('mouseleave',()=>tip.style.display='none');}
+
+const THEMES=[
+  {k:'A',short:'Motion',name:'Space, time & motion',ready:true,units:[{n:'Kinematics',ready:true},{n:'Forces & momentum'},{n:'Work, energy & power'},{n:'Rigid bodies'},{n:'Relativity'}]},
+  {k:'B',short:'Matter',name:'The particulate nature of matter',units:[{n:'Thermal energy'},{n:'Greenhouse effect'},{n:'Gas laws'},{n:'Thermodynamics'},{n:'Current & circuits'}]},
+  {k:'C',short:'Waves',name:'Wave behaviour',units:[{n:'Simple harmonic motion'},{n:'Wave model'},{n:'Wave phenomena'},{n:'Standing waves'},{n:'Doppler effect'}]},
+  {k:'D',short:'Fields',name:'Fields',units:[{n:'Gravitational fields'},{n:'Electric & magnetic fields'},{n:'Motion in fields'},{n:'Induction'}]},
+  {k:'E',short:'Nuclear & quantum',name:'Nuclear & quantum physics',units:[{n:'Structure of the atom'},{n:'Quantum physics'},{n:'Radioactive decay'},{n:'Fission'},{n:'Fusion & stars'}]},
+];
+
+/* needle clump: layered cloud of circles + needle strokes */
+function clump(g,cx,cy,w,h,live){
+  const grp=el('g',{opacity:live?1:.32},g);
+  const n=Math.round(w/16);
+  [['#2c4334',0,8],['#3f5e47',-4,0],['#5b7d5c',-9,-7]].forEach(([c,dy,dx],li)=>{
+    for(let i=0;i<n;i++){
+      const t=i/(n-1||1), x=cx-w/2+t*w+(rnd()-.5)*10+dx*.3, arch=Math.sin(Math.PI*t);
+      const r=(h*.35+arch*h*.35)*(1-li*.18)*(.8+rnd()*.35);
+      const y=cy-arch*h*.35+dy+(rnd()-.5)*6;
+      if(li===2 && rnd()<.45) continue;
+      el('circle',{cx:x,cy:y,r:r,fill:c},grp);
+    }
+  });
+  for(let i=0;i<n*5;i++){ // needles
+    const t=rnd(), x=cx-w/2+t*w, y=cy-Math.sin(Math.PI*t)*h*.5+(rnd()-.3)*h*.5, a=-Math.PI/2+(rnd()-.5)*2.2, L=7+rnd()*9;
+    el('line',{x1:x,y1:y,x2:x+Math.cos(a)*L,y2:y+Math.sin(a)*L,stroke:rnd()<.5?'#6f9070':'#22362a','stroke-width':1.3,'stroke-linecap':'round'},grp);
+  }
+  return grp;
+}
+function cone(g,x,y,s,live){
+  const c=el('g',{transform:`translate(${x} ${y}) rotate(${(rnd()-.5)*30}) scale(${s})`,opacity:live?1:.35},g);
+  el('ellipse',{cx:0,cy:0,rx:7,ry:11,fill:live?'#8a5a32':'#9a8c70'},c);
+  for(let i=-1;i<=1;i++) el('path',{d:`M-6 ${i*5} Q0 ${i*5+3} 6 ${i*5}`,stroke:'#5b3a20','stroke-width':1,fill:'none'},c);
+  return c;
+}
+
+/* ---------------- A ---------------- */
+(function(){
+  const root=document.getElementById('a-roots'), tree=document.getElementById('a-tree'), lab=document.getElementById('a-labels');
+  // roots = maths
+  const rg=el('g',{class:'hot'},root);
+  for(let i=0;i<9;i++){const dx=(i-4)*58, x2=880+dx*1.9, y2=880+rnd()*50;
+    el('path',{d:`M${880+dx*.18} 792 C ${880+dx*.6} 830, ${x2-dx*.2} ${y2-30}, ${x2} ${y2}`,stroke:'#7a5a43','stroke-width':6-Math.abs(i-4)*.9,fill:'none','stroke-linecap':'round'},rg);}
+  el('rect',{x:600,y:800,width:560,height:150,fill:'transparent'},rg);
+  el('text',{x:1080,y:910,'font-family':'Caveat','font-size':28,fill:'#5a6f9e'},rg,'roots · Maths for Physics (M01)');
+  rg.addEventListener('click',()=>location.href=MAP+'M01');
+  hover(rg,'<b>M01 · Maths for Physics</b><br>the roots — every branch feeds on them');
+  // trunk
+  el('path',{d:'M852 800 C 860 600, 866 400, 874 120 L 886 120 C 894 400, 900 600, 908 800 Z',fill:'url(#a-bark)'},tree);
+  for(let i=0;i<14;i++){const y=160+i*45;el('path',{d:`M${868+rnd()*8} ${y} q ${6} ${12} 0 ${24}`,stroke:'#4a3424','stroke-width':1.2,fill:'none',opacity:.6},tree);}
+  // tiers: A at bottom
+  const tiers=[{y:690,w:520,side:-1},{y:575,w:460,side:1},{y:465,w:400,side:-1},{y:360,w:330,side:1},{y:260,w:250,side:-1}];
+  THEMES.forEach((th,i)=>{
+    const T=tiers[i], live=!!th.ready;
+    const g=el('g',{class:'hot'},tree);
+    // branch arm
+    el('path',{d:`M880 ${T.y+20} Q ${880+T.side*T.w*.3} ${T.y+6} ${880+T.side*T.w*.55} ${T.y-6}`,stroke:'#6a4c38','stroke-width':9-i,fill:'none','stroke-linecap':'round',opacity:live?1:.4},g);
+    clump(g,880+T.side*T.w*.3,T.y,T.w*.62,96-i*8,live);
+    clump(g,880-T.side*T.w*.16,T.y+12,T.w*.42,70-i*6,live);
+    // cones = units
+    th.units.forEach((u,j)=>{ const cx=880+T.side*(T.w*.12+j*T.w*.09), cy=T.y+30+(j%2)*10;
+      const c=cone(g,cx,cy,1.2,!!u.ready);
+      if(u.ready){ el('circle',{cx,cy,r:22,fill:'#f2c94c',opacity:.35,class:'glow'},g); c.parentNode.appendChild(c);
+        c.addEventListener('click',e=>{e.stopPropagation();location.href=MAP;}); hover(c,'<b>Kinematics</b><br>5 theory cards · 41 problems<br><span style="color:#f2c94c">open the map →</span>'); c.style.cursor='pointer'; }
+    });
+    // label
+    const lx=880+T.side*(T.w*.62+20), anchor=T.side<0?'end':'start';
+    el('text',{x:lx,y:T.y-4,'text-anchor':anchor,'font-family':'Bricolage Grotesque','font-weight':880,'font-size':15,fill:live?'#33291f':'#9a8c70','letter-spacing':'.08em'},lab,th.k+' · '+th.short.toUpperCase());
+    el('text',{x:lx,y:T.y+24,'text-anchor':anchor,'font-family':'Caveat','font-size':24,fill:live?'#5a6f9e':'#b3a789'},lab,live?'Kinematics is ready — click the glowing cone':'growing…');
+    g.addEventListener('click',()=>{ if(live) location.href=MAP; });
+    hover(g,`<b>${th.k} · ${th.name}</b><br>${th.units.map(u=>(u.ready?'● ':'○ ')+u.n).join('<br>')}`);
+  });
+  // crown
+  clump(tree,880,175,160,90,false); clump(tree,880,120,90,60,false);
+})();
+
+/* ---------------- B ---------------- */
+(function(){
+  const g=document.getElementById('b-cedar');
+  seed=11;
+  // big cedar on the hilltop
+  el('path',{d:'M1150 480 C 1154 380, 1158 260, 1162 120 L 1172 120 C 1176 260, 1180 380, 1186 480 Z',fill:'#5b4030'},g);
+  [[470,300],[420,280],[370,250],[318,210],[268,170],[220,130],[175,90]].forEach(([y,w],i)=>clump(g,1166+(i%2?14:-14),y-20,w,80-i*5,true));
+  const trail=document.getElementById('b-trail'), L=trail.getTotalLength(), stops=document.getElementById('b-stops');
+  const units=[{n:'Kinematics',k:'A',ready:true},{n:'Forces & momentum',k:'A'},{n:'Energy',k:'A'},{n:'Thermal physics',k:'B'},{n:'Waves',k:'C'},{n:'Fields',k:'D'},{n:'Quantum & nuclear',k:'E'}];
+  units.forEach((u,i)=>{
+    const p=trail.getPointAtLength(L*(.08+i*.135)), s=el('g',{class:'hot',transform:`translate(${p.x} ${p.y})`,opacity:u.ready?1:.55},stops);
+    el('line',{x1:0,y1:0,x2:0,y2:-46,stroke:'#33291f','stroke-width':2},s);
+    el('path',{d:'M0 -46 L26 -38 L0 -30 Z',fill:u.ready?'#d9a032':'#cdbf9f'},s);
+    if(u.ready) el('circle',{cx:0,cy:0,r:16,fill:'#f2c94c',opacity:.5,class:'glow'},s);
+    el('circle',{cx:0,cy:0,r:6,fill:u.ready?'#33291f':'#9a8c70'},s);
+    el('text',{x:10,y:-54,'font-family':'Bricolage Grotesque','font-weight':600,'font-size':u.ready?18:15,fill:u.ready?'#33291f':'#f4ecdc',stroke:u.ready?'#f4ecdc':'#3f5440','stroke-width':u.ready?4:3,'paint-order':'stroke'},s,u.n);
+    if(u.ready){ el('text',{x:-30,y:30,'font-family':'Caveat','font-size':26,fill:'#f9f4e9'},s,'start here ↗'); s.addEventListener('click',()=>location.href=MAP); }
+    hover(s,`<b>${u.k} · ${u.n}</b><br>${u.ready?'ready — 5 theory cards, 41 problems':'not yet built'}`);
+  });
+  // maths as the backpack at the start
+  const m=el('g',{class:'hot',transform:'translate(60 780)'},stops);
+  el('rect',{x:-6,y:-40,width:36,height:42,rx:8,fill:'#8a6a4e',stroke:'#33291f','stroke-width':1.5},m);
+  el('rect',{x:0,y:-30,width:24,height:12,rx:3,fill:'#a9876a'},m);
+  el('text',{x:40,y:-14,'font-family':'Caveat','font-size':24,fill:'#f9f4e9'},m,'pack: Maths (M01)');
+  m.addEventListener('click',()=>location.href=MAP+'M01'); hover(m,'<b>M01 · Maths for Physics</b><br>what you carry the whole way');
+})();
+
+/* ---------------- C ---------------- */
+(function(){
+  const g=document.getElementById('c-disc'); seed=23;
+  const R=315, core=58, rings=5, step=(R-28-core)/rings;
+  // bark
+  let d=''; for(let a=0;a<=360;a+=4){const r=R+(rnd()-.5)*10, x=Math.cos(a*Math.PI/180)*r, y=Math.sin(a*Math.PI/180)*r; d+=(a?'L':'M')+x.toFixed(1)+' '+y.toFixed(1);}
+  el('path',{d:d+'Z',fill:'#6a4c38'},g);
+  el('circle',{r:R-14,fill:'#e8d3ae'},g);
+  const sector=(r0,r1,a0,a1)=>{const p=(r,a)=>[Math.cos(a)*r,Math.sin(a)*r].map(v=>v.toFixed(1)).join(' ');
+    return `M${p(r0,a0)} L${p(r1,a0)} A${r1} ${r1} 0 0 1 ${p(r1,a1)} L${p(r0,a1)} A${r0} ${r0} 0 0 0 ${p(r0,a0)} Z`;};
+  const N=THEMES.length, gap=.012;
+  THEMES.forEach((th,i)=>{
+    const a0=-Math.PI/2+i*2*Math.PI/N+gap, a1=a0+2*Math.PI/N-2*gap;
+    th.units.forEach((u,j)=>{
+      const r0=core+8+j*step, r1=r0+step-4, live=!!u.ready;
+      const s=el('g',{class:'hot'},g);
+      el('path',{d:sector(r0,r1,a0,a1),fill:live?'#d9a032':(j%2?'#e2c99c':'#dcc193'),stroke:'#b8956a','stroke-width':1,opacity:live?1:.75},s);
+      if(live){ el('path',{d:sector(r0,r1,a0,a1),fill:'#f2c94c',opacity:.5,class:'glow'},s); s.addEventListener('click',()=>location.href=MAP); }
+      hover(s,`<b>${th.k} · ${u.n}</b><br>${live?'ready — open the map':'growing…'}`);
+    });
+    // grain lines
+    for(let k=0;k<3;k++){const r=core+20+rnd()*(R-core-60); el('path',{d:`M${Math.cos(a0)*r} ${Math.sin(a0)*r} A${r} ${r} 0 0 1 ${Math.cos(a1)*r} ${Math.sin(a1)*r}`,stroke:'#b8956a','stroke-width':.6,fill:'none',opacity:.6},g);}
+    const am=(a0+a1)/2, lr=R+34, lx=Math.cos(am)*lr, ly=Math.sin(am)*lr;
+    el('text',{x:lx,y:ly,'text-anchor':Math.abs(Math.cos(am))<.2?'middle':(Math.cos(am)>0?'start':'end'),'font-family':'Bricolage Grotesque','font-weight':700,'font-size':14,fill:th.ready?'#33291f':'#9a8c70','letter-spacing':'.06em'},g,th.k+' · '+th.short.toUpperCase());
+  });
+  const c=el('g',{class:'hot'},g);
+  el('circle',{r:core,fill:'#8a6a4e'},c); el('circle',{r:core-10,fill:'#a9876a'},c);
+  el('text',{y:-2,'text-anchor':'middle','font-family':'Bricolage Grotesque','font-weight':700,'font-size':15,fill:'#f9f4e9'},c,'MATHS');
+  el('text',{y:18,'text-anchor':'middle','font-family':'Caveat','font-size':20,fill:'#f9f4e9'},c,'the core');
+  c.addEventListener('click',()=>location.href=MAP+'M01'); hover(c,'<b>M01 · Maths for Physics</b><br>the heartwood');
+  // kinematics label
+  const a=-Math.PI/2+Math.PI/N, r=core+8+step/2;
+  el('text',{x:Math.cos(a)*r+30,y:Math.sin(a)*r-38,'font-family':'Caveat','font-size':26,fill:'#5a6f9e'},g,'Kinematics — ready');
+  el('path',{d:`M${Math.cos(a)*r+32} ${Math.sin(a)*r-32} q -14 10 -22 26`,stroke:'#5a6f9e','stroke-width':1.6,fill:'none'},g);
+})();
+
+/* switcher */
+document.querySelectorAll('.switch button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.switch button').forEach(x=>x.classList.toggle('on',x===b));
+  document.querySelectorAll('.v').forEach(v=>v.classList.toggle('on',v.id==='v-'+b.dataset.v));
+  try{localStorage.setItem('kedr-intro',b.dataset.v)}catch(e){}
+}));
+try{const s=localStorage.getItem('kedr-intro'); if(s) document.querySelector(`.switch button[data-v="${s}"]`).click();}catch(e){}
+})();
+</script>
+</body>
+</html>

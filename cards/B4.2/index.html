@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Four processes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --page:#efe8d8; --card:#f9f4e9; --card-inner:#fbf8f0;
+  --border:#e3d9c2; --border-inner:#ddd2b8;
+  --shadow-card:0 2px 24px rgba(90,70,40,0.10);
+  --ink:#33291f; --ink-muted:#6b5d43;
+  --qty-time:#4a7c59; --qty-position:#3d6bb3; --qty-velocity:#c15b38;
+  --qty-acceleration:#7a5aa8;
+  --diagram-bg:#eaf1ea;
+  --misconception:#6e2a48; --misconception-bg:#e9dbe3;
+  --honey-wash:linear-gradient(101deg,rgba(224,188,120,0) 1.5%,rgba(224,188,120,.5) 4%,rgba(228,192,122,.4) 52%,rgba(224,188,120,.5) 96%,rgba(224,188,120,0) 98.5%);
+  --teacher:#5a6f9e; --teacher-bubble-border:#b9c5dd;
+  --font-structure:'Bricolage Grotesque',sans-serif;
+  --font-body:'Source Serif 4',Georgia,serif;
+  --font-hand:'Caveat',cursive;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--page);color:var(--ink);font-family:var(--font-body);
+  font-size:18px;line-height:1.62;-webkit-font-smoothing:antialiased}
+.wrap{max-width:860px;margin:0 auto;padding:40px 16px 80px}
+.topline{display:flex;justify-content:space-between;align-items:baseline;
+  gap:16px;flex-wrap:wrap;margin:0 4px 14px}
+.kicker{font-family:var(--font-structure);font-size:12.5px;font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted)}
+.topnote{font-family:var(--font-hand);font-size:19px;color:var(--teacher)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:18px;
+  box-shadow:var(--shadow-card);padding:46px 52px 56px}
+h1{font-family:var(--font-structure);font-size:38px;font-weight:600;line-height:1.2;
+  letter-spacing:-0.01em;margin:0 0 8px}
+.h1sub{font-family:var(--font-structure);font-size:21px;font-weight:400;
+  color:var(--ink-muted);margin:0 0 38px}
+.hl{background:var(--honey-wash);padding:0 2px}
+h2{font-family:var(--font-structure);font-size:24px;font-weight:600;
+  margin:52px 0 14px;line-height:1.25;display:flex;gap:12px;align-items:baseline}
+h2 .num{display:inline-flex;align-items:center;justify-content:center;
+  min-width:30px;height:30px;border-radius:50%;border:1.6px solid var(--ink);
+  font-size:15px;font-weight:600;flex:none;transform:translateY(2px)}
+h3{font-family:var(--font-structure);font-size:17.5px;font-weight:600;
+  margin:30px 0 8px;letter-spacing:.005em}
+p{margin:0 0 16px}
+em{font-style:italic}
+.fig{background:var(--diagram-bg);border:1px solid var(--border-inner);
+  border-radius:12px;padding:20px 18px;margin:24px 0}
+.fig svg{display:block;width:100%;height:auto}
+.figcap{font-family:var(--font-structure);font-size:13px;color:var(--ink-muted);
+  margin-top:12px;text-align:center}
+.formula{background:var(--card-inner);border:1px solid var(--border-inner);
+  border-radius:10px;padding:16px 20px;margin:20px 0;text-align:center;
+  font-family:var(--font-body);font-size:21px}
+.formula .lbl{font-family:var(--font-structure);font-size:12px;
+  color:var(--ink-muted);letter-spacing:.1em;text-transform:uppercase;
+  display:block;margin-bottom:8px}
+.formula-row{display:flex;gap:16px;flex-wrap:wrap;margin:20px 0}
+.formula-row>div{flex:1 1 240px;background:var(--card-inner);
+  border:1px solid var(--border-inner);border-radius:10px;padding:16px 20px}
+.formula-row h4{font-family:var(--font-structure);font-size:14px;margin:0 0 10px;
+  letter-spacing:.06em;text-transform:uppercase}
+.formula-row p{margin:0 0 8px;font-size:19px}
+.formula-row p:last-child{margin:0}
+var{font-style:italic;font-family:var(--font-body)}
+.t{color:var(--qty-time)} .x{color:var(--qty-position)}
+.v{color:var(--qty-velocity)} .a{color:var(--qty-acceleration)}
+.teacher{display:flex;gap:14px;align-items:flex-start;margin:26px 0}
+.teacher .mark{font-family:var(--font-hand);font-size:30px;color:var(--teacher);
+  line-height:1;flex:none;margin-top:2px}
+.teacher .bubble{font-family:var(--font-hand);font-size:21px;color:var(--teacher);
+  line-height:1.45;border-left:2px solid var(--teacher-bubble-border);
+  padding-left:16px}
+.watch{background:var(--misconception-bg);border-left:4px solid var(--misconception);
+  border-radius:0 10px 10px 0;padding:16px 20px;margin:26px 0}
+.watch h4{font-family:var(--font-structure);font-size:14px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--misconception);margin:0 0 8px}
+.watch p{margin:0;color:var(--misconception)}
+.notes{display:flex;gap:18px;flex-wrap:wrap;margin:26px 0}
+.note{flex:1 1 300px;background:#f6e6a8;border:1px solid #e3cf86;
+  border-radius:4px;padding:20px 22px;box-shadow:0 2px 10px rgba(90,70,40,.10);
+  transform:rotate(-.5deg)}
+.note:nth-child(2){transform:rotate(.6deg);background:#f3e4b2;border-color:#ded0a0}
+.note h4{font-family:var(--font-hand);font-size:22px;margin:0 0 10px;color:#5c4a1e}
+.note p{font-family:var(--font-hand);font-size:19.5px;line-height:1.4;
+  color:#4a3c18;margin:0 0 10px}
+.note p:last-child{margin:0}
+.note .meta{font-size:16.5px;color:#7a6630;margin:-4px 0 12px;line-height:1.3}
+.note ul{list-style:none;padding:0;margin:0}
+.note li{font-family:var(--font-hand);font-size:19.5px;line-height:1.4;color:#4a3c18;
+  margin:0 0 9px;padding-left:16px;position:relative}
+.note li::before{content:"–";position:absolute;left:0}
+.note s{text-decoration-thickness:1.6px;color:#7a6630}
+.note .sketch{display:block;margin:4px 0 6px}
+.note .sign{text-align:right;font-family:var(--font-hand);font-size:20px;color:#5c4a1e;margin-top:6px}
+ul{margin:0 0 16px;padding-left:22px}
+li{margin:0 0 8px}
+table{width:100%;border-collapse:collapse;margin:20px 0;font-size:17px}
+th,td{border:1px solid var(--border-inner);padding:9px 12px;text-align:center}
+th{font-family:var(--font-structure);font-size:13px;letter-spacing:.06em;
+  text-transform:uppercase;background:var(--card-inner);font-weight:600}
+.anchors{margin-top:56px;padding-top:22px;border-top:1px solid var(--border)}
+.anchors h4{font-family:var(--font-structure);font-size:12.5px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-muted);margin:0 0 12px}
+.anchors code{font-family:var(--font-structure);font-size:13.5px;
+  background:var(--card-inner);border:1px solid var(--border-inner);
+  border-radius:5px;padding:3px 9px;margin:0 7px 7px 0;display:inline-block;
+  color:var(--ink-muted)}
+@media(max-width:640px){
+  .card{padding:30px 22px 40px}
+  h1{font-size:29px} .h1sub{font-size:18px} h2{font-size:21px}
+  body{font-size:17px}
+}
+.q{color:#c15b38} .w{color:#2e8a86} .u{color:#7a5aa8}
+.frac{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;font-size:.78em;line-height:1.05;margin:0 2px}
+.frac i{font-style:normal;padding:0 3px}
+.frac i:first-child{border-bottom:1.2px solid currentColor}
+td var,th var{font-size:1.05em}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="topline">
+  <span class="kicker">Physics Course · Theory · B4.2</span>
+  <span class="topnote">one law, four roads — on each of them something switches off</span>
+</div>
+
+<div class="card">
+
+<h1>Four <span class="hl">processes</span></h1>
+<p class="h1sub">or what the first law turns into when you hold one thing still</p>
+
+<p>The first law has three players: <var class="q">Q</var> = Δ<var class="u">U</var> + <var class="w">W</var>. In a general process all three are alive at once, and that is hard to think about. So physicists do what they always do — they look for the simple cases first.</p>
+
+<p>There are four of them. In each one, something is held fixed — the volume, the pressure, the temperature, or the heat — and because of that <strong>one term of the first law either vanishes or becomes easy</strong>. Learn these four and you can read almost any <var>pV</var> diagram, because exam cycles are built out of exactly these pieces.</p>
+
+<div class="fig">
+<svg viewBox="0 0 740 245" xmlns="http://www.w3.org/2000/svg" font-family="Georgia, serif"><defs><marker id="x" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="10" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 z" fill="#9a8c70"/></marker>
+<marker id="k" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="6" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 z" fill="#33291f"/></marker>
+<marker id="pk" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="6" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 z" fill="#c95f7a"/></marker>
+<marker id="oc" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="6" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 z" fill="#c0912e"/></marker></defs><line x1="28" y1="190" x2="158" y2="190" stroke="#9a8c70" stroke-width="1.1" marker-end="url(#x)"/><line x1="28" y1="190" x2="28" y2="40" stroke="#9a8c70" stroke-width="1.1" marker-end="url(#x)"/><text x="164" y="195" font-size="14" font-style="italic" fill="#33291f">V</text><text x="14" y="48" font-size="14" font-style="italic" fill="#33291f">p</text><path d="M84.9,145.9 L84.9,141.5 L84.9,137.1 L84.9,132.6 L84.9,128.2 L84.9,123.8 L84.9,119.4 L84.9,115.0 L84.9,110.6 L84.9,106.2 L84.9,101.8 L84.9,97.4 L84.9,92.9 L84.9,88.5 L84.9,84.1 L84.9,79.7 L84.9,75.3 L84.9,70.9 L84.9,66.5 L84.9,62.1 L84.9,57.6" fill="none" stroke="#33291f" stroke-width="2"/><line x1="84.9" y1="106.2" x2="84.9" y2="97.4" stroke="#33291f" stroke-width="2" marker-end="url(#k)"/><text x="121.4" y="106.2" font-size="12" fill="#2e8a86" text-anchor="middle">no area</text><circle cx="84.9" cy="145.9" r="3.2" fill="#33291f"/><circle cx="84.9" cy="57.6" r="3.2" fill="#33291f"/><text x="93.0" y="216.0" font-size="14" fill="#33291f" text-anchor="middle">isovolumetric</text><text x="93.0" y="235" font-size="12.5" fill="#6b5d43" text-anchor="middle" font-style="italic">V = const</text><line x1="206" y1="190" x2="336" y2="190" stroke="#9a8c70" stroke-width="1.1" marker-end="url(#x)"/><line x1="206" y1="190" x2="206" y2="40" stroke="#9a8c70" stroke-width="1.1" marker-end="url(#x)"/><text x="342" y="195" font-size="14" font-style="italic" fill="#33291f">V</text><text x="192" y="48" font-size="14" font-style="italic" fill="#33291f">p</text><path d="M238.5,92.9 L240.4,92.9 L242.4,92.9 L244.3,92.9 L246.2,92.9 L248.1,92.9 L250.1,92.9 L252.0,92.9 L253.9,92.9 L255.9,92.9 L257.8,92.9 L259.7,92.9 L261.7,92.9 L263.6,92.9 L265.5,92.9 L267.4,92.9 L269.4,92.9 L271.3,92.9 L273.2,92.9 L275.2,92.9 L277.1,92.9 L279.0,92.9 L281.0,92.9 L282.9,92.9 L284.8,92.9 L286.7,92.9 L288.7,92.9 L290.6,92.9 L292.5,92.9 L294.5,92.9 L296.4,92.9 L298.3,92.9 L300.2,92.9 L302.2,92.9 L304.1,92.9 L306.0,92.9 L308.0,92.9 L309.9,92.9 L311.8,92.9 L313.8,92.9 L315.7,92.9 L315.7,190 L238.5,190 Z" fill="#2e8a86" opacity=".18"/><path d="M238.5,92.9 L240.4,92.9 L242.4,92.9 L244.3,92.9 L246.2,92.9 L248.1,92.9 L250.1,92.9 L252.0,92.9 L253.9,92.9 L255.9,92.9 L257.8,92.9 L259.7,92.9 L261.7,92.9 L263.6,92.9 L265.5,92.9 L267.4,92.9 L269.4,92.9 L271.3,92.9 L273.2,92.9 L275.2,92.9 L277.1,92.9 L279.0,92.9 L281.0,92.9 L282.9,92.9 L284.8,92.9 L286.7,92.9 L288.7,92.9 L290.6,92.9 L292.5,92.9 L294.5,92.9 L296.4,92.9 L298.3,92.9 L300.2,92.9 L302.2,92.9 L304.1,92.9 L306.0,92.9 L308.0,92.9 L309.9,92.9 L311.8,92.9 L313.8,92.9 L315.7,92.9" fill="none" stroke="#33291f" stroke-width="2"/><line x1="271.3" y1="92.9" x2="275.2" y2="92.9" stroke="#33291f" stroke-width="2" marker-end="url(#k)"/><text x="277.1" y="176.0" font-size="13" fill="#2e8a86" text-anchor="middle" font-style="italic">W</text><circle cx="238.5" cy="92.9" r="3.2" fill="#33291f"/><circle cx="315.7" cy="92.9" r="3.2" fill="#33291f"/><text x="271.0" y="216.0" font-size="14" fill="#33291f" text-anchor="middle">isobaric</text><text x="271.0" y="235" font-size="12.5" fill="#6b5d43" text-anchor="middle" font-style="italic">p = const</text><line x1="384" y1="190" x2="514" y2="190" stroke="#9a8c70" stroke-width="1.1" marker-end="url(#x)"/><line x1="384" y1="190" x2="384" y2="40" stroke="#9a8c70" stroke-width="1.1" marker-end="url(#x)"/><text x="520" y="195" font-size="14" font-style="italic" fill="#33291f">V</text><text x="370" y="48" font-size="14" font-style="italic" fill="#33291f">p</text><path d="M416.5,57.6 L418.4,65.1 L420.4,71.7 L422.3,77.7 L424.2,83.0 L426.1,87.9 L428.1,92.4 L430.0,96.5 L431.9,100.3 L433.9,103.7 L435.8,107.0 L437.7,109.9 L439.7,112.7 L441.6,115.3 L443.5,117.7 L445.4,120.0 L447.4,122.1 L449.3,124.1 L451.2,126.0 L453.2,127.8 L455.1,129.5 L457.0,131.1 L459.0,132.6 L460.9,134.1 L462.8,135.4 L464.7,136.7 L466.7,138.0 L468.6,139.2 L470.5,140.3 L472.5,141.4 L474.4,142.4 L476.3,143.4 L478.2,144.4 L480.2,145.3 L482.1,146.2 L484.0,147.0 L486.0,147.8 L487.9,148.6 L489.8,149.4 L491.8,150.1 L493.7,150.8 L493.7,190 L416.5,190 Z" fill="#2e8a86" opacity=".18"/><path d="M416.5,57.6 L418.4,65.1 L420.4,71.7 L422.3,77.7 L424.2,83.0 L426.1,87.9 L428.1,92.4 L430.0,96.5 L431.9,100.3 L433.9,103.7 L435.8,107.0 L437.7,109.9 L439.7,112.7 L441.6,115.3 L443.5,117.7 L445.4,120.0 L447.4,122.1 L449.3,124.1 L451.2,126.0 L453.2,127.8 L455.1,129.5 L457.0,131.1 L459.0,132.6 L460.9,134.1 L462.8,135.4 L464.7,136.7 L466.7,138.0 L468.6,139.2 L470.5,140.3 L472.5,141.4 L474.4,142.4 L476.3,143.4 L478.2,144.4 L480.2,145.3 L482.1,146.2 L484.0,147.0 L486.0,147.8 L487.9,148.6 L489.8,149.4 L491.8,150.1 L493.7,150.8" fill="none" stroke="#33291f" stroke-width="2"/><line x1="449.3" y1="124.1" x2="453.2" y2="127.8" stroke="#33291f" stroke-width="2" marker-end="url(#k)"/><text x="455.1" y="176.0" font-size="13" fill="#2e8a86" text-anchor="middle" font-style="italic">W</text><circle cx="416.5" cy="57.6" r="3.2" fill="#33291f"/><circle cx="493.7" cy="150.8" r="3.2" fill="#33291f"/><text x="449.0" y="216.0" font-size="14" fill="#33291f" text-anchor="middle">isothermal</text><text x="449.0" y="235" font-size="12.5" fill="#6b5d43" text-anchor="middle" font-style="italic">T = const</text><line x1="562" y1="190" x2="692" y2="190" stroke="#9a8c70" stroke-width="1.1" marker-end="url(#x)"/><line x1="562" y1="190" x2="562" y2="40" stroke="#9a8c70" stroke-width="1.1" marker-end="url(#x)"/><text x="698" y="195" font-size="14" font-style="italic" fill="#33291f">V</text><text x="548" y="48" font-size="14" font-style="italic" fill="#33291f">p</text><path d="M594.5,57.6 L596.4,69.8 L598.4,80.2 L600.3,89.3 L602.2,97.2 L604.1,104.2 L606.1,110.4 L608.0,115.8 L609.9,120.8 L611.9,125.2 L613.8,129.1 L615.7,132.7 L617.7,136.0 L619.6,139.0 L621.5,141.7 L623.4,144.2 L625.4,146.5 L627.3,148.6 L629.2,150.6 L631.2,152.4 L633.1,154.1 L635.0,155.7 L637.0,157.1 L638.9,158.5 L640.8,159.8 L642.7,161.0 L644.7,162.1 L646.6,163.1 L648.5,164.1 L650.5,165.1 L652.4,165.9 L654.3,166.8 L656.2,167.6 L658.2,168.3 L660.1,169.0 L662.0,169.7 L664.0,170.3 L665.9,170.9 L667.8,171.5 L669.8,172.0 L671.7,172.6 L671.7,190 L594.5,190 Z" fill="#2e8a86" opacity=".18"/><path d="M594.5,57.6 L596.4,69.8 L598.4,80.2 L600.3,89.3 L602.2,97.2 L604.1,104.2 L606.1,110.4 L608.0,115.8 L609.9,120.8 L611.9,125.2 L613.8,129.1 L615.7,132.7 L617.7,136.0 L619.6,139.0 L621.5,141.7 L623.4,144.2 L625.4,146.5 L627.3,148.6 L629.2,150.6 L631.2,152.4 L633.1,154.1 L635.0,155.7 L637.0,157.1 L638.9,158.5 L640.8,159.8 L642.7,161.0 L644.7,162.1 L646.6,163.1 L648.5,164.1 L650.5,165.1 L652.4,165.9 L654.3,166.8 L656.2,167.6 L658.2,168.3 L660.1,169.0 L662.0,169.7 L664.0,170.3 L665.9,170.9 L667.8,171.5 L669.8,172.0 L671.7,172.6" fill="none" stroke="#33291f" stroke-width="2"/><line x1="627.3" y1="148.6" x2="631.2" y2="152.4" stroke="#33291f" stroke-width="2" marker-end="url(#k)"/><text x="633.1" y="176.0" font-size="13" fill="#2e8a86" text-anchor="middle" font-style="italic">W</text><circle cx="594.5" cy="57.6" r="3.2" fill="#33291f"/><circle cx="671.7" cy="172.6" r="3.2" fill="#33291f"/><text x="627.0" y="216.0" font-size="14" fill="#33291f" text-anchor="middle">adiabatic</text><text x="627.0" y="235" font-size="12.5" fill="#6b5d43" text-anchor="middle" font-style="italic">Q = 0</text></svg>
+<p class="figcap">The four roads on a pV diagram. The shaded area is the work done by the gas.</p>
+</div>
+
+<p>We keep the agreements of the previous card: a fixed amount of monatomic ideal gas, <var class="q">Q</var> counted into the gas, <var class="w">W</var> done by the gas. And we keep two tools in the pocket for every section below: <var>pV</var> = <var>nRT</var> and Δ<var class="u">U</var> = <span class="frac"><i>3</i><i>2</i></span><var>nR</var>Δ<var>T</var>.</p>
+
+<h2 id="isovolumetric"><span class="num">1</span> Isovolumetric — the piston is locked</h2>
+
+<p>Lock the piston, or simply take a closed rigid bottle. The volume cannot change. On the <var>pV</var> diagram this is a <strong>vertical line</strong>.</p>
+
+<p>No change of volume means no area under the line — the gas pushes on the walls, but nothing moves, so it does no work:</p>
+
+<div class="formula">
+  <span class="lbl">constant volume</span>
+  <var class="w">W</var> = 0 &nbsp;&nbsp;→&nbsp;&nbsp; <var class="q">Q</var> = Δ<var class="u">U</var>
+</div>
+
+<p>Every joule of heat you give goes straight into internal energy — the gas has nothing else to do with it. Heat in: the temperature and the pressure go up, the line goes up. Heat out: the line goes down.</p>
+
+<h2 id="isobaric"><span class="num">2</span> Isobaric — the piston is free</h2>
+
+<p>Let the piston move freely with a constant load on it — the atmosphere, or a weight. The pressure of the gas then stays equal to that load. On the diagram this is a <strong>horizontal line</strong>.</p>
+
+<p>This is the one process where all three players are alive, but each of them is easy:</p>
+
+<div class="formula">
+  <span class="lbl">constant pressure</span>
+  <var class="w">W</var> = <var>p</var>Δ<var>V</var>, &nbsp;&nbsp; Δ<var class="u">U</var> = <span class="frac"><i>3</i><i>2</i></span><var>p</var>Δ<var>V</var>, &nbsp;&nbsp; <var class="q">Q</var> = Δ<var class="u">U</var> + <var class="w">W</var> = <span class="frac"><i>5</i><i>2</i></span><var>p</var>Δ<var>V</var>
+</div>
+
+<p>Where the middle one comes from: at constant pressure <var>pV</var> = <var>nRT</var> gives <var>p</var>Δ<var>V</var> = <var>nR</var>Δ<var>T</var>, and we put that into Δ<var class="u">U</var> = <span class="frac"><i>3</i><i>2</i></span><var>nR</var>Δ<var>T</var>. We did exactly this in the example of the previous card.</p>
+
+<p>Look at how the heat is shared. Out of every 5 parts of heat, 3 stay in the gas and 2 leave as work. Heating a gas at constant pressure is therefore more "expensive" than at constant volume: for the same rise in temperature you also have to pay for the expansion.</p>
+
+<h2 id="isothermal"><span class="num">3</span> Isothermal — the temperature is held</h2>
+
+<p>Put the cylinder in good contact with something big at a fixed temperature — a water bath, the air of the room — and move the piston <strong>slowly</strong>, so that the gas always has time to exchange heat and stay at that temperature.</p>
+
+<p>Constant <var>T</var> means <var>pV</var> = <var>nRT</var> = constant. The line is a curve that falls as the volume grows — double the volume, half the pressure. Such a curve is called an <strong>isotherm</strong>.</p>
+
+<p>And constant <var>T</var> means the internal energy does not change at all:</p>
+
+<div class="formula">
+  <span class="lbl">constant temperature</span>
+  Δ<var class="u">U</var> = 0 &nbsp;&nbsp;→&nbsp;&nbsp; <var class="q">Q</var> = <var class="w">W</var>
+</div>
+
+<p>The gas is a perfect middleman here. In an expansion it takes heat in and hands all of it on as work, keeping nothing. In a compression the work done on it leaves at once as heat.</p>
+
+<div class="watch">
+  <h4>Watch out!</h4>
+  <p>"Isothermal" does not mean "no heat". It is the opposite: heat <em>must</em> flow, otherwise the temperature could not stay constant while the gas does work. The process with no heat is the next one.</p>
+</div>
+
+<p>The work is still the area under the curve. The curve is not straight, so in the exam you count the squares of the grid — or you are simply given the value.</p>
+
+<h2 id="adiabatic"><span class="num">4</span> Adiabatic — no heat at all</h2>
+
+<p>Now do the opposite of the water bath: wrap the cylinder in insulation — or just move the piston so <strong>fast</strong> that heat has no time to get in or out. This is the bicycle pump and the air rushing out of the tyre.</p>
+
+<div class="formula">
+  <span class="lbl">no heat exchanged</span>
+  <var class="q">Q</var> = 0 &nbsp;&nbsp;→&nbsp;&nbsp; Δ<var class="u">U</var> = −<var class="w">W</var>
+</div>
+
+<p>The gas has only its own internal energy to pay with. If it expands and does work, <var class="w">W</var> &gt; 0, so Δ<var class="u">U</var> &lt; 0 — it <strong>cools</strong>. If it is compressed, <var class="w">W</var> &lt; 0, so Δ<var class="u">U</var> &gt; 0 — it <strong>heats up</strong>. No flame needed.</p>
+
+<p>Along this road all three of <var>p</var>, <var>V</var> and <var>T</var> change together. For a monatomic ideal gas they are tied by one rule:</p>
+
+<div class="formula">
+  <span class="lbl">adiabatic process, monatomic ideal gas</span>
+  <var>p</var><var>V</var><sup>5/3</sup> = constant &nbsp;&nbsp;→&nbsp;&nbsp; <var>p</var><sub>1</sub><var>V</var><sub>1</sub><sup>5/3</sup> = <var>p</var><sub>2</sub><var>V</var><sub>2</sub><sup>5/3</sup>
+</div>
+
+<p>This one you do not derive — it is given in the data booklet, and you only need to use it. If the question asks about temperature instead of pressure, bring in <var>pV</var> = <var>nRT</var>: replace <var>p</var> by <var>nRT</var>/<var>V</var> and the rule becomes <var>T</var><var>V</var><sup>2/3</sup> = constant.</p>
+
+<p>The work comes from the first law, with no area to count: <var class="w">W</var> = −Δ<var class="u">U</var> = −<span class="frac"><i>3</i><i>2</i></span><var>nR</var>Δ<var>T</var>. And since <var>nRT</var> = <var>pV</var> at both ends,</p>
+
+<div class="formula">
+  <span class="lbl">work in an adiabatic process</span>
+  <var class="w">W</var> = <span class="frac"><i>3</i><i>2</i></span>(<var>p</var><sub>1</sub><var>V</var><sub>1</sub> − <var>p</var><sub>2</sub><var>V</var><sub>2</sub>)
+</div>
+
+<div class="teacher">
+  <span class="mark">✎</span>
+  <div class="bubble">On the calculator the power 5/3 needs brackets: (V₁ ÷ V₂) ^ (5 ÷ 3). And the units of volume cancel in the ratio — you may leave both volumes in cm³ or in 10⁻³ m³.</div>
+</div>
+
+<h2 id="isotherm-vs-adiabat"><span class="num">5</span> Isotherm or adiabat — telling them apart</h2>
+
+<p>Both are falling curves, and on an exam diagram they often sit next to each other. Start both from the same state A and let the gas expand to the same final volume.</p>
+
+<div class="fig">
+<svg viewBox="0 0 740 335" xmlns="http://www.w3.org/2000/svg" font-family="Georgia, serif"><defs><marker id="x" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="10" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 z" fill="#9a8c70"/></marker>
+<marker id="k" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="6" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 z" fill="#33291f"/></marker>
+<marker id="pk" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="6" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 z" fill="#c95f7a"/></marker>
+<marker id="oc" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="6" refY="5" orient="auto"><path d="M0,0 L11,5 L0,10 z" fill="#c0912e"/></marker></defs><line x1="70" y1="300" x2="590" y2="300" stroke="#9a8c70" stroke-width="1.1" marker-end="url(#x)"/><line x1="70" y1="300" x2="70" y2="40" stroke="#9a8c70" stroke-width="1.1" marker-end="url(#x)"/><text x="596" y="305" font-size="14" font-style="italic" fill="#33291f">V</text><text x="56" y="48" font-size="14" font-style="italic" fill="#33291f">p</text><path d="M182.3,51.2 L187.1,61.4 L191.9,70.8 L196.7,79.5 L201.5,87.5 L206.3,95.0 L211.1,102.0 L215.9,108.5 L220.7,114.6 L225.5,120.3 L230.3,125.7 L235.1,130.8 L239.9,135.6 L244.7,140.1 L249.5,144.4 L254.3,148.4 L259.1,152.3 L263.9,155.9 L268.7,159.4 L273.5,162.7 L278.3,165.9 L283.1,168.9 L287.9,171.8 L292.7,174.6 L297.5,177.2 L302.3,179.8 L307.1,182.2 L311.9,184.5 L316.7,186.8 L321.5,188.9 L326.3,191.0 L331.1,193.0 L335.9,194.9 L340.7,196.8 L345.5,198.6 L350.3,200.3 L355.1,202.0 L359.9,203.6 L364.7,205.2 L369.5,206.7 L374.3,208.2 L379.1,209.6 L383.9,211.0 L388.7,212.4 L393.5,213.7 L398.3,214.9 L403.1,216.1 L407.9,217.3 L412.7,218.5 L417.5,219.6 L422.3,220.7 L427.1,221.8 L431.9,222.8 L436.7,223.8 L441.5,224.8 L446.3,225.8 L451.1,226.7 L455.9,227.6 L460.7,228.5 L465.5,229.4 L470.3,230.2 L475.1,231.1 L479.9,231.9 L484.7,232.6 L489.5,233.4 L494.3,234.2 L499.1,234.9 L503.9,235.6 L508.8,236.3 L513.6,237.0 L518.4,237.7 L523.2,238.4 L528.0,239.0 L532.8,239.6 L537.6,240.3 L542.4,240.9 L547.2,241.5 L552.0,242.0 L556.8,242.6 L561.6,243.2 L566.4,243.7" fill="none" stroke="#9a8c70" stroke-width="1.1" stroke-dasharray="5,4"/><path d="M129.1,72.7 L134.6,92.0 L140.0,108.2 L145.5,122.1 L151.0,134.1 L156.4,144.6 L161.9,153.8 L167.4,162.1 L172.8,169.4 L178.3,176.0 L183.8,181.9 L189.2,187.4 L194.7,192.3 L200.1,196.8 L205.6,201.0 L211.1,204.8 L216.5,208.4 L222.0,211.7 L227.5,214.7 L232.9,217.6 L238.4,220.3 L243.9,222.8 L249.3,225.1 L254.8,227.3 L260.3,229.4 L265.7,231.4 L271.2,233.3 L276.7,235.0 L282.1,236.7 L287.6,238.3 L293.1,239.8 L298.5,241.2 L304.0,242.6 L309.5,243.9 L314.9,245.2 L320.4,246.4 L325.9,247.5 L331.3,248.6 L336.8,249.7 L342.3,250.7 L347.7,251.6 L353.2,252.6 L358.7,253.5 L364.1,254.3 L369.6,255.2 L375.1,256.0 L380.5,256.8 L386.0,257.5 L391.5,258.2 L396.9,258.9 L402.4,259.6 L407.9,260.3 L413.3,260.9 L418.8,261.5 L424.2,262.1 L429.7,262.7 L435.2,263.2 L440.6,263.8 L446.1,264.3 L451.6,264.8 L457.0,265.3 L462.5,265.8 L468.0,266.3 L473.4,266.7 L478.9,267.2 L484.4,267.6 L489.8,268.0 L495.3,268.4 L500.8,268.8 L506.2,269.2 L511.7,269.6 L517.2,270.0 L522.6,270.3 L528.1,270.7 L533.6,271.0 L539.0,271.4 L544.5,271.7 L550.0,272.0 L555.4,272.3 L560.9,272.6 L566.4,272.9" fill="none" stroke="#9a8c70" stroke-width="1.1" stroke-dasharray="5,4"/><path d="M188.2,63.6 L191.1,69.4 L194.1,74.9 L197.0,80.1 L200.0,85.1 L203.0,89.9 L205.9,94.5 L208.9,98.8 L211.8,103.0 L214.8,107.1 L217.7,110.9 L220.7,114.6 L223.6,118.2 L226.6,121.6 L229.5,124.9 L232.5,128.1 L235.5,131.2 L238.4,134.1 L241.4,137.0 L244.3,139.8 L247.3,142.4 L250.2,145.0 L253.2,147.5 L256.1,149.9 L259.1,152.3 L262.0,154.5 L265.0,156.7 L268.0,158.9 L270.9,161.0 L273.9,163.0 L276.8,164.9 L279.8,166.8 L282.7,168.7 L285.7,170.5 L288.6,172.2 L291.6,173.9 L294.5,175.6 L297.5,177.2 L300.5,178.8 L303.4,180.3 L306.4,181.8 L309.3,183.3 L312.3,184.7 L315.2,186.1 L318.2,187.4 L321.1,188.8 L324.1,190.1 L327.0,191.3 L330.0,192.6 L333.0,193.8 L335.9,194.9 L338.9,196.1 L341.8,197.2 L344.8,198.3 L347.7,199.4 L350.7,200.5 L353.6,201.5 L356.6,202.5 L359.5,203.5 L362.5,204.5 L365.5,205.5 L368.4,206.4 L371.4,207.3 L374.3,208.2 L377.3,209.1 L380.2,210.0 L383.2,210.8 L386.1,211.6 L389.1,212.5 L392.0,213.3 L395.0,214.0 L398.0,214.8 L400.9,215.6 L403.9,216.3 L406.8,217.1 L409.8,217.8 L412.7,218.5 L415.7,219.2 L418.6,219.9 L421.6,220.6 L424.5,221.2" fill="none" stroke="#c95f7a" stroke-width="2.2"/><line x1="318.2" y1="187.4" x2="324.1" y2="190.1" stroke="#c95f7a" stroke-width="2" marker-end="url(#pk)"/><path d="M188.2,63.6 L191.1,73.2 L194.1,82.1 L197.0,90.5 L200.0,98.4 L203.0,105.8 L205.9,112.8 L208.9,119.3 L211.8,125.6 L214.8,131.5 L217.7,137.0 L220.7,142.3 L223.6,147.4 L226.6,152.1 L229.5,156.7 L232.5,161.0 L235.5,165.1 L238.4,169.0 L241.4,172.8 L244.3,176.3 L247.3,179.7 L250.2,183.0 L253.2,186.1 L256.1,189.1 L259.1,192.0 L262.0,194.8 L265.0,197.4 L268.0,199.9 L270.9,202.4 L273.9,204.7 L276.8,207.0 L279.8,209.2 L282.7,211.3 L285.7,213.3 L288.6,215.2 L291.6,217.1 L294.5,218.9 L297.5,220.7 L300.5,222.3 L303.4,224.0 L306.4,225.6 L309.3,227.1 L312.3,228.6 L315.2,230.0 L318.2,231.4 L321.1,232.7 L324.1,234.0 L327.0,235.3 L330.0,236.5 L333.0,237.7 L335.9,238.8 L338.9,239.9 L341.8,241.0 L344.8,242.1 L347.7,243.1 L350.7,244.1 L353.6,245.1 L356.6,246.0 L359.5,246.9 L362.5,247.8 L365.5,248.7 L368.4,249.5 L371.4,250.3 L374.3,251.1 L377.3,251.9 L380.2,252.7 L383.2,253.4 L386.1,254.1 L389.1,254.9 L392.0,255.5 L395.0,256.2 L398.0,256.9 L400.9,257.5 L403.9,258.1 L406.8,258.7 L409.8,259.3 L412.7,259.9 L415.7,260.5 L418.6,261.0 L421.6,261.6 L424.5,262.1" fill="none" stroke="#c0912e" stroke-width="2.2"/><line x1="273.9" y1="204.7" x2="279.8" y2="209.2" stroke="#c0912e" stroke-width="2" marker-end="url(#oc)"/><circle cx="188.2" cy="63.6" r="3.2" fill="#33291f"/><text x="174.2" y="65.6" font-size="15" fill="#33291f" text-anchor="middle">A</text><circle cx="424.5" cy="221.2" r="3.2" fill="#33291f"/><circle cx="424.5" cy="262.1" r="3.2" fill="#33291f"/><line x1="341.8181818181818" y1="69.54545454545456" x2="375.8181818181818" y2="69.54545454545456" stroke="#c95f7a" stroke-width="2.2"/><text x="385.8" y="73.5" font-size="13" fill="#c95f7a" text-anchor="start">isothermal — stays on the same isotherm</text><line x1="341.8181818181818" y1="95.54545454545456" x2="375.8181818181818" y2="95.54545454545456" stroke="#c0912e" stroke-width="2.2"/><text x="385.8" y="99.5" font-size="13" fill="#c0912e" text-anchor="start">adiabatic — slides down to a colder one</text><text x="572.3" y="235.7" font-size="13" fill="#33291f" text-anchor="start" font-style="italic">T</text><text x="581.3" y="239.7" font-size="9.5" fill="#33291f">hot</text><text x="572.3" y="288.9" font-size="13" fill="#33291f" text-anchor="start" font-style="italic">T</text><text x="581.3" y="292.9" font-size="9.5" fill="#33291f">cold</text><line x1="424.5" y1="300" x2="424.5" y2="221.2" stroke="#9a8c70" stroke-dasharray="3,3"/><line x1="188.2" y1="300" x2="188.2" y2="63.6" stroke="#9a8c70" stroke-dasharray="3,3"/><text x="188.2" y="318.0" font-size="13" fill="#33291f" text-anchor="middle" font-style="italic">V</text><text x="195.2" y="322" font-size="9.5" fill="#33291f">1</text><text x="424.5" y="318.0" font-size="13" fill="#33291f" text-anchor="middle" font-style="italic">V</text><text x="431.5" y="322" font-size="9.5" fill="#33291f">2</text></svg>
+<p class="figcap">From the same point, the adiabat always falls more steeply than the isotherm</p>
+</div>
+
+<p>Why steeper? On the isotherm the pressure falls for one reason only: the volume grows. On the adiabat it falls for two reasons at once: the volume grows <em>and</em> the gas cools. So at the same final volume the adiabatic gas ends at a lower pressure — on a colder isotherm.</p>
+
+<p>For a compression read the same picture backwards: the adiabat climbs more steeply, because the gas is also heating up.</p>
+
+<div class="teacher">
+  <span class="mark">✎</span>
+  <div class="bubble">When a question asks "show that BC is adiabatic" or "which part is isothermal", do not judge by eye. Take two points of the curve from the graph and test them: is pV the same (isothermal), or is pV^(5/3) the same (adiabatic)?</div>
+</div>
+
+<h2 id="processes-summary"><span class="num">6</span> All four on one page</h2>
+
+<table>
+  <tr><th>process</th><th>what is fixed</th><th>line on <var>pV</var></th><th>what the first law says</th></tr>
+  <tr><td>isovolumetric</td><td><var>V</var></td><td>vertical</td><td><var class="w">W</var> = 0, so <var class="q">Q</var> = Δ<var class="u">U</var></td></tr>
+  <tr><td>isobaric</td><td><var>p</var></td><td>horizontal</td><td><var class="q">Q</var> = Δ<var class="u">U</var> + <var>p</var>Δ<var>V</var></td></tr>
+  <tr><td>isothermal</td><td><var>T</var></td><td>curve, <var>pV</var> = const</td><td>Δ<var class="u">U</var> = 0, so <var class="q">Q</var> = <var class="w">W</var></td></tr>
+  <tr><td>adiabatic</td><td><var class="q">Q</var> = 0</td><td>steeper curve, <var>pV</var><sup>5/3</sup> = const</td><td>Δ<var class="u">U</var> = −<var class="w">W</var></td></tr>
+</table>
+
+<p>Do not learn the last column by heart. Learn the second one — what is fixed — and get the last column from <var class="q">Q</var> = Δ<var class="u">U</var> + <var class="w">W</var> each time. It takes one line.</p>
+
+<h2><span class="num">7</span> Try it on a real one</h2>
+
+<p>A monatomic ideal gas at a pressure of 3.2 × 10<sup>5</sup> Pa and a volume of 1.0 × 10<sup>−3</sup> m<sup>3</sup> expands adiabatically to a volume of 8.0 × 10<sup>−3</sup> m<sup>3</sup>. Find the final pressure, the work done by the gas, and how many times its temperature has dropped.</p>
+
+<div class="formula-row">
+  <div>
+    <h4>What we know</h4>
+    <p><var>p</var><sub>1</sub> = 3.2 × 10<sup>5</sup> Pa</p>
+    <p><var>V</var><sub>1</sub> = 1.0 × 10<sup>−3</sup> m<sup>3</sup></p>
+    <p><var>V</var><sub>2</sub> = 8.0 × 10<sup>−3</sup> m<sup>3</sup></p>
+  </div>
+  <div>
+    <h4>The signs first</h4>
+    <p>adiabatic → <var class="q">Q</var> = 0</p>
+    <p>expands → <var class="w">W</var> &gt; 0</p>
+    <p>so Δ<var class="u">U</var> &lt; 0: the gas cools</p>
+  </div>
+</div>
+
+<p><strong>Pressure.</strong> From <var>p</var><sub>1</sub><var>V</var><sub>1</sub><sup>5/3</sup> = <var>p</var><sub>2</sub><var>V</var><sub>2</sub><sup>5/3</sup>:</p>
+
+<div class="formula">
+  <var>p</var><sub>2</sub> = <var>p</var><sub>1</sub> (<var>V</var><sub>1</sub>/<var>V</var><sub>2</sub>)<sup>5/3</sup> = 3.2 × 10<sup>5</sup> × (1/8)<sup>5/3</sup> = 3.2 × 10<sup>5</sup> × <span class="frac"><i>1</i><i>32</i></span> = 1.0 × 10<sup>4</sup> Pa
+</div>
+
+<p>The volume grew 8 times, the pressure fell 32 times. On an isotherm it would have fallen only 8 times — the extra factor of 4 is the cooling.</p>
+
+<p><strong>Work.</strong> <var>p</var><sub>1</sub><var>V</var><sub>1</sub> = 3.2 × 10<sup>5</sup> × 1.0 × 10<sup>−3</sup> = 320 J and <var>p</var><sub>2</sub><var>V</var><sub>2</sub> = 1.0 × 10<sup>4</sup> × 8.0 × 10<sup>−3</sup> = 80 J, so</p>
+
+<div class="formula">
+  <var class="w">W</var> = <span class="frac"><i>3</i><i>2</i></span>(<var>p</var><sub>1</sub><var>V</var><sub>1</sub> − <var>p</var><sub>2</sub><var>V</var><sub>2</sub>) = <span class="frac"><i>3</i><i>2</i></span> × (320 − 80) = 360 J
+</div>
+
+<p><strong>Temperature.</strong> <var>T</var> = <var>pV</var>/(<var>nR</var>), so <var>T</var><sub>2</sub>/<var>T</var><sub>1</sub> = <var>p</var><sub>2</sub><var>V</var><sub>2</sub>/(<var>p</var><sub>1</sub><var>V</var><sub>1</sub>) = 80/320 = <span class="frac"><i>1</i><i>4</i></span>. The absolute temperature dropped 4 times — the same factor of 4 we met in the pressure.</p>
+
+<p>The gas did 360 J of work and received nothing from outside. It paid for all of it with its own internal energy: Δ<var class="u">U</var> = −360 J.</p>
+
+<p>In the next card we join such pieces into a closed loop — a cycle — and ask the question every engine builder asks: how much of the heat can be turned into work?</p>
+
+<div class="anchors">
+  <h4>Connection points</h4>
+  <code>B4.2#isovolumetric</code><code>B4.2#isobaric</code><code>B4.2#isothermal</code><code>B4.2#adiabatic</code><code>B4.2#isotherm-vs-adiabat</code><code>B4.2#processes-summary</code>
+</div>
+
+</div>
+</div>
+</body>
+</html>

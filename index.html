@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kedr Physics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Caveat:wght@500;600&family=Baloo+2:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --page:#efe8d8; --card:#f9f4e9; --card-inner:#fbf8f0;
+  --border:#e3d9c2; --border-inner:#ddd2b8;
+  --shadow:0 2px 24px rgba(90,70,40,.10);
+  --ink:#33291f; --ink-muted:#6b5d43; --ink-faint:#9a8c70;
+  --qty-time:#4a7c59; --qty-position:#3d6bb3; --qty-velocity:#c15b38; --qty-acceleration:#7a5aa8;
+  --teacher:#5a6f9e;
+  --marigold:#d9a032; --apricot:#f2c79a; --cream:#fdf6e8; --cocoa:#5b3a29;
+  --f-struct:'Bricolage Grotesque',system-ui,sans-serif;
+  --f-body:'Source Serif 4',Georgia,serif;
+  --f-hand:'Caveat',cursive;
+  --f-prob:'Baloo 2','Bricolage Grotesque',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--page);color:var(--ink)}
+body{font-family:var(--f-body);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+button{font:inherit;color:inherit;cursor:pointer}
+
+/* ---------- top bar ---------- */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;align-items:center;gap:18px;
+  padding:12px 28px;background:rgba(239,232,216,.94);backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--border)}
+.brand{font-family:var(--f-struct);font-weight:700;letter-spacing:.16em;text-transform:uppercase;font-size:13px;text-decoration:none}
+.crumbs{font-family:var(--f-struct);font-size:14px;color:var(--ink-muted);display:flex;gap:8px;align-items:center;min-width:0}
+.crumbs b{color:var(--ink);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar .spacer{flex:1}
+.btn{border:1px solid var(--border-inner);background:var(--card);border-radius:999px;padding:6px 14px;
+  font-family:var(--f-struct);font-size:13.5px;text-decoration:none;white-space:nowrap}
+.btn:hover{background:var(--card-inner);border-color:var(--ink-faint)}
+.btn[disabled]{opacity:.35;pointer-events:none}
+
+/* ---------- map ---------- */
+#map{padding:34px 28px 80px;max-width:1600px;margin:0 auto}
+.map-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin:0 4px 26px}
+.map-head h1{font-family:var(--f-struct);font-size:40px;font-weight:600;letter-spacing:-.01em;margin:4px 0 0}
+.kicker{font-family:var(--f-struct);font-size:12.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted)}
+.hand{font-family:var(--f-hand);color:var(--teacher)}
+.map-head .hand{font-size:23px}
+.legend{display:flex;gap:18px;flex-wrap:wrap;font-family:var(--f-struct);font-size:13px;color:var(--ink-muted);align-items:center}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+
+.maths{display:flex;align-items:center;gap:16px;background:var(--card);border:1px dashed var(--ink-faint);
+  border-radius:14px;padding:12px 18px;margin:0 0 44px;cursor:pointer;text-decoration:none}
+.maths:hover{border-style:solid;box-shadow:var(--shadow)}
+.maths .tag{font-family:var(--f-struct);font-weight:700;font-size:13px;border:1.6px solid var(--ink);border-radius:8px;padding:3px 8px}
+.maths .t{font-family:var(--f-struct);font-weight:600;font-size:17px}
+.maths .hand{font-size:20px;margin-left:auto}
+
+.units{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 6px}
+.units a{font-family:var(--f-struct);font-size:14px;font-weight:600;text-decoration:none;color:var(--ink-muted);border:1.4px solid var(--border-inner);border-radius:999px;padding:5px 14px;cursor:pointer}
+.units a.on{color:var(--ink);border-color:var(--ink);background:var(--card)}
+.board{position:relative}
+.cols{display:grid;grid-template-columns:repeat(var(--n),minmax(220px,1fr));gap:30px;position:relative;z-index:1}
+#wires{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:visible}
+
+.tnode{display:block;text-decoration:none;background:var(--card);border:1px solid var(--border);border-radius:18px;
+  box-shadow:var(--shadow);padding:18px 20px 16px;position:relative;transition:transform .15s, box-shadow .15s}
+.tnode:hover{transform:translateY(-2px);box-shadow:0 6px 30px rgba(90,70,40,.18)}
+.tnode .num{display:inline-flex;align-items:center;justify-content:center;min-width:40px;height:40px;padding:0 9px;border-radius:20px;
+  border:2px solid var(--ink);font-family:var(--f-struct);font-weight:700;font-size:15px}
+.tnode h2{font-family:var(--f-struct);font-size:19px;font-weight:600;line-height:1.25;margin:12px 0 4px}
+.tnode .meta{font-family:var(--f-struct);font-size:12.5px;color:var(--ink-muted)}
+.seen{position:absolute;top:14px;right:16px;font-family:var(--f-hand);font-size:19px;color:var(--qty-time)}
+
+.anchors{margin-top:16px;display:flex;flex-direction:column;gap:12px}
+.anchor{border-left:2px solid var(--border-inner);padding:2px 0 4px 14px;transition:border-color .15s}
+.anchor.hot{border-left-color:var(--marigold)}
+.anchor h3{font-family:var(--f-struct);font-size:12px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-muted);margin:0 0 8px}
+.anchor.syn h3{color:var(--teacher)}
+.anchor .empty{font-family:var(--f-hand);font-size:19px;color:var(--ink-faint)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+
+.chip{position:relative;min-width:46px;padding:0 9px;box-sizing:border-box;height:46px;border-radius:23px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-decoration:none;font-family:var(--f-prob);font-weight:600;font-size:14px;line-height:1;transition:transform .12s, box-shadow .12s}
+.chip.styled{background:var(--apricot);border:2px solid var(--cocoa);color:var(--cocoa)}
+.chip.draft{background:var(--card-inner);border:2px dashed var(--ink-faint);color:var(--ink-muted)}
+.chip .d{display:flex;gap:2px;margin-top:3px}
+.chip .d i{width:4px;height:4px;border-radius:50%;background:currentColor;opacity:.75}
+.chip:hover,.chip.hot{transform:scale(1.12);box-shadow:0 0 0 4px rgba(217,160,50,.35)}
+.chip.dim{opacity:.28}
+.chip.booklet{background:#f6dc8f;border:2px solid #b07d18;color:#5a3d06}
+.chip.booklet::after{content:"B";position:absolute;bottom:-7px;right:-5px;width:15px;height:15px;border-radius:50%;background:#b07d18;color:#fff;font-size:9.5px;font-weight:700;line-height:15px;text-align:center}
+.booklet-legend{display:inline-flex;align-items:center;gap:7px;margin-left:14px;font-family:var(--f-struct);font-size:13px;color:var(--ink-muted)}
+.booklet-legend i{width:14px;height:14px;border-radius:50%;background:#f6dc8f;border:2px solid #b07d18}
+.pp-mark{float:right;margin-left:12px;font-family:var(--f-struct);font-size:13px;font-weight:600;color:var(--ink-muted)}
+.pp-bk{margin-left:10px;font-family:var(--f-struct);font-size:11.5px;font-weight:600;padding:2px 8px;border-radius:999px;background:#f6dc8f;color:#5a3d06}
+.chip .ok{position:absolute;top:-6px;right:-6px;width:17px;height:17px;border-radius:50%;background:var(--qty-time);color:#fff;
+  font-size:11px;display:flex;align-items:center;justify-content:center;font-family:var(--f-struct)}
+
+.tip{position:fixed;z-index:50;pointer-events:none;max-width:290px;background:var(--ink);color:#f9f4e9;border-radius:10px;padding:10px 13px;
+  font-family:var(--f-struct);font-size:13px;line-height:1.4;box-shadow:0 8px 30px rgba(0,0,0,.25);display:none}
+.tip b{font-weight:700}
+.tip .s{opacity:.7;font-size:12px;margin-top:4px}
+
+.foot{margin:40px 4px 0;font-family:var(--f-struct);font-size:13px;color:var(--ink-muted)}
+
+/* ---------- card view ---------- */
+#view{display:none}
+.view{display:grid;grid-template-columns:minmax(0,1fr) 300px;min-height:calc(100vh - 57px)}
+.stage{min-width:0}
+.stage iframe{display:block;width:100%;border:0;height:calc(100vh - 57px);background:var(--page)}
+.side{border-left:1px solid var(--border);background:var(--card);padding:22px 20px 40px;position:sticky;top:57px;
+  height:calc(100vh - 57px);overflow:auto}
+.side h4{font-family:var(--f-struct);font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-muted);margin:22px 0 10px}
+.side h4:first-child{margin-top:0}
+.side .big{font-family:var(--f-struct);font-size:20px;font-weight:600;line-height:1.25;margin:0 0 6px}
+.side .small{font-family:var(--f-struct);font-size:13px;color:var(--ink-muted);line-height:1.45}
+.side .group{margin:0 0 12px}
+.side .group .lbl{font-family:var(--f-struct);font-size:13.5px;font-weight:600;margin:0 0 7px}
+.side .chips{gap:6px}
+.side .chip{width:40px;height:40px;font-size:13px}
+.link{display:flex;gap:10px;align-items:center;text-decoration:none;padding:8px 10px;border-radius:10px;border:1px solid var(--border-inner);
+  background:var(--card-inner);font-family:var(--f-struct);font-size:14px;margin:0 0 7px}
+.link:hover{border-color:var(--ink-faint)}
+.link .tg{font-weight:700;border:1.5px solid var(--ink);border-radius:6px;padding:1px 6px;font-size:12px}
+.link .an{color:var(--ink-muted);font-size:12.5px}
+
+/* problem page */
+.pwrap{max-width:900px;margin:0 auto;padding:36px 24px 90px}
+.pwrap img{display:block;width:100%;height:auto;border-radius:16px;margin:0 0 22px;box-shadow:var(--shadow)}
+.pcard{background:var(--cream);border:2px dashed var(--marigold);border-radius:22px;padding:34px 40px 40px;box-shadow:var(--shadow);font-family:var(--f-prob)}
+.pcard .ribbon{display:inline-block;font-family:var(--f-struct);font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-muted);border:1px solid var(--border-inner);border-radius:999px;padding:3px 10px;margin-bottom:14px;background:var(--card-inner)}
+.pcard h2{font-family:var(--f-prob);font-size:30px;font-weight:700;color:var(--cocoa);margin:0 0 4px;line-height:1.15}
+.pcard .concept{font-family:var(--f-struct);color:var(--ink-muted);font-size:15px;margin:0 0 22px}
+.pcard .lab{font-family:var(--f-struct);font-size:12.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--cocoa);margin:24px 0 8px}
+.pcard .txt{font-family:var(--f-body);font-size:18px;line-height:1.6}
+.pcard .txt table{border-collapse:collapse;margin:12px 0;font-size:16px}
+.pcard .txt td,.pcard .txt th{border:1px solid var(--border-inner);padding:6px 12px;text-align:center}
+.turn{margin:26px 0 0;border-radius:16px;background:#2e3a52;color:#fdf6e8;padding:20px 24px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.turn .w{font-family:var(--f-prob);font-weight:700;font-size:22px;letter-spacing:.04em}
+.turn .h{font-family:var(--f-hand);font-size:21px;opacity:.9}
+.turn button{margin-left:auto;background:var(--marigold);border:0;border-radius:999px;padding:9px 18px;font-family:var(--f-struct);font-weight:600;color:#2e2010}
+.ans{display:inline-block;border:2px solid var(--cocoa);border-radius:12px;padding:8px 16px;background:#fff8ea;font-family:var(--f-body);font-size:18px}
+.hidden{display:none}
+.pager{display:flex;justify-content:space-between;gap:12px;margin-top:26px}
+
+/* ---------- home (the student's cedar) ---------- */
+#home{position:relative;height:calc(100vh - 57px);min-height:560px;overflow:hidden;display:none}
+#home > svg{position:absolute;inset:0;width:100%;height:100%}
+#home .hot{cursor:pointer}
+@keyframes glow{0%,100%{opacity:.45}50%{opacity:1}}
+.glow{animation:glow 2.4s ease-in-out infinite}
+@keyframes drift{0%{transform:translateX(0)}100%{transform:translateX(-60px)}}
+.mist{animation:drift 18s ease-in-out infinite alternate}
+.home-title{position:absolute;left:56px;top:40px;pointer-events:none}
+.home-title h1{font-family:var(--f-struct);font-size:84px;font-weight:700;letter-spacing:-.02em;margin:0;line-height:1}
+.home-title .hand{font-size:28px;margin-top:8px}
+.ycard{position:absolute;right:32px;top:28px;width:290px;background:rgba(249,244,233,.95);border:1px solid var(--border);
+  border-radius:18px;padding:18px 20px 18px;box-shadow:0 8px 30px rgba(90,70,40,.15)}
+.ycard .stage{font-family:var(--f-struct);font-size:24px;font-weight:600;margin:6px 0 0}
+.ycard .small{font-family:var(--f-struct);font-size:12.5px;color:var(--ink-muted)}
+.bar2{height:8px;border-radius:99px;background:#e3d9c2;overflow:hidden;margin:0 0 6px}
+.bar2 i{display:block;height:100%;background:var(--marigold);border-radius:99px}
+.rings{display:block;width:150px;height:150px;margin:10px auto 6px}
+.cta{display:block;text-align:center;margin-top:10px;padding:10px 14px;border-radius:999px;background:var(--ink);color:var(--card);
+  font-family:var(--f-struct);font-weight:600;font-size:14px;text-decoration:none}
+.cta.ghost{background:transparent;color:var(--ink);border:1px solid var(--border-inner)}
+.toast{position:absolute;left:50%;top:22px;transform:translateX(-50%);background:var(--qty-time);color:#fff;border-radius:999px;
+  padding:9px 18px;font-family:var(--f-struct);font-size:14px;box-shadow:0 6px 20px rgba(0,0,0,.18);animation:toast 4s forwards}
+@keyframes toast{0%{opacity:0;transform:translate(-50%,-10px)}10%,80%{opacity:1;transform:translate(-50%,0)}100%{opacity:0}}
+.say{position:absolute;left:24px;bottom:250px;max-width:340px;background:#fff;border:2.5px solid var(--ink);border-radius:20px;padding:14px 18px;
+  box-shadow:0 10px 30px rgba(0,0,0,.18);z-index:5}
+.say .hand{font-family:var(--f-hand);font-size:23px;line-height:1.25;color:var(--ink);margin-bottom:10px}
+.say::after{content:"";position:absolute;left:46px;bottom:-22px;border:11px solid transparent;border-top:18px solid var(--ink)}
+.say .next{border:1px solid var(--ink);background:var(--ink);color:var(--card);border-radius:999px;padding:7px 16px;font-family:var(--f-struct);font-size:13.5px;font-weight:600;cursor:pointer}
+@keyframes wag{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(8deg)}}
+.wag{transform-box:fill-box;transform-origin:0% 100%;animation:wag .5s ease-in-out infinite}
+@keyframes hop{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+.archik.jump,.hop{animation:hop .6s ease-in-out infinite}
+@keyframes stride{0%,100%{transform:rotate(-14deg)}50%{transform:rotate(14deg)}}
+.stride{transform-box:fill-box;transform-origin:50% 0%;animation:stride .9s ease-in-out infinite}
+.stride.b{animation-delay:-.45s}
+.comic{position:fixed;inset:0;z-index:100;background:rgba(51,41,31,.55);display:flex;align-items:center;justify-content:center;padding:24px}
+.comic .panel{position:relative;width:min(960px,100%);background:var(--card);border:3px solid var(--ink);border-radius:20px;padding:18px;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.comic .scene{display:block;width:100%;height:auto;border:2px solid var(--ink);border-radius:12px;background:#efe3c8}
+.comic .bubble{position:absolute;left:46%;top:44px;right:44px;background:#fff;border:2.5px solid var(--ink);border-radius:22px;padding:16px 20px;
+  font-family:var(--f-hand);font-size:27px;line-height:1.25;color:var(--ink)}
+.comic .bubble::after{content:"";position:absolute;left:-22px;bottom:24px;border:12px solid transparent;border-right:20px solid var(--ink)}
+.comic .row{display:flex;align-items:center;gap:10px;margin-top:14px}
+.comic .dots{display:flex;gap:6px;margin-right:auto}
+.comic .dots i{width:9px;height:9px;border-radius:50%;background:#d8cdb4}
+.comic .dots i.on{background:var(--ink)}
+.comic button{border:1px solid var(--border-inner);background:var(--card);border-radius:999px;padding:9px 18px;font-family:var(--f-struct);font-size:14px}
+.comic .next{background:var(--ink);color:var(--card);border-color:var(--ink);font-weight:600}
+.comic .skip{border:0;background:transparent;color:var(--ink-muted)}
+
+/* ---------- solved ---------- */
+.chip.opened::before{content:"";position:absolute;inset:-5px;border-radius:50%;border:1.5px solid var(--ink-faint);opacity:.6}
+.chip.solved{box-shadow:0 0 0 3px rgba(74,124,89,.45)}
+.chip.solved.hot,.chip.solved:hover{box-shadow:0 0 0 4px rgba(217,160,50,.35)}
+.clip{position:relative;overflow:hidden;border-radius:16px;box-shadow:var(--shadow);margin:0 0 22px}
+.clip img{margin:0;box-shadow:none;border-radius:0}
+.clip .veil{position:absolute;left:0;right:0;bottom:0;height:120px;background:linear-gradient(rgba(253,246,236,0),#fdf6e8 75%);
+  display:flex;align-items:flex-end;justify-content:center;padding-bottom:18px}
+.clip.open .veil{display:none}
+.reveal2{background:#2e3a52;color:#fdf6e8;border:0;border-radius:999px;padding:11px 22px;font-family:var(--f-struct);font-weight:600;font-size:15px}
+.solvedbar{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin:26px 0 0;padding:16px 20px;border-radius:16px;
+  border:2px dashed var(--qty-time);background:#eef3ec;font-family:var(--f-struct);font-size:14.5px}
+.solvedbar .msg{flex:1;min-width:220px;color:var(--ink)}
+.solvedbar .msg .hand{font-size:21px}
+.solvedbar .tick{background:var(--qty-time);color:#fff;border:0;border-radius:999px;padding:11px 20px;font-weight:600;font-size:15px}
+.solvedbar.done{border-style:solid;background:#e3eee3}
+.solvedbar .undo{background:transparent;border:0;color:var(--ink-muted);text-decoration:underline;font-size:13px}
+.status{display:inline-block;margin-top:8px;font-family:var(--f-struct);font-size:12.5px;font-weight:600;border-radius:999px;padding:3px 10px}
+.status.s{background:var(--qty-time);color:#fff}.status.o{background:#e3d9c2;color:var(--ink-muted)}
+
+
+/* ---------- minimal problem page (01.11.2026) ---------- */
+.pview{max-width:720px;margin:0 auto;padding:34px 20px 80px}
+.pp{background:#fbf8f0;border-radius:16px;padding:30px 40px 26px;box-shadow:0 2px 20px rgba(90,70,40,.08)}
+.pp-top{display:flex;justify-content:space-between;align-items:center;font-family:var(--f-struct);font-size:13.5px;color:var(--ink-muted);margin-bottom:24px}
+.pp-top a{color:var(--teacher);text-decoration:none;border-bottom:1px solid #c9d1e3}
+.pp-dots{color:#c15b38;letter-spacing:3px;font-size:13px}.pp-dots i{font-style:normal;color:#ddd2b8}
+.pp-st{font-family:var(--f-body);font-size:18.5px;line-height:1.65}
+.pp-st p{margin:0 0 10px}
+.pp-st table,.pp-sol table{border-collapse:collapse;margin:10px 0;font-size:16px}.pp-st td,.pp-st th,.pp-sol td,.pp-sol th{border:1px solid var(--border-inner);padding:5px 12px;text-align:center}
+.pp-parts{list-style:none;padding:0;margin:12px 0 0}.pp-parts li{margin:5px 0;padding-left:34px;text-indent:-34px}.pp-parts li br + *{text-indent:0}
+.pp-parts li > b:first-child{font-family:var(--f-struct);font-weight:600;color:var(--ink-faint);display:inline-block;width:34px;text-indent:0}
+.pp-btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}
+.pp-btn{border:1px solid var(--ink);border-radius:999px;padding:9px 18px;font-family:var(--f-struct);font-size:14px;font-weight:600;background:var(--ink);color:#fbf8f0;cursor:pointer}
+.pp-btn.g{background:transparent;color:var(--ink);border-color:#cfc4aa}
+.pp-btn[hidden]{display:none}
+.pp-btn.g.on{background:#f1ead9;border-color:#b9ab8c}.pp-btn.on:not(.g){background:#5b4e3f;border-color:#5b4e3f}
+.pp-block{margin-top:24px;border-top:1px solid var(--border);padding-top:18px}
+.pp-h{font-family:var(--f-struct);font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 8px}
+.pp-sol{font-family:var(--f-body);font-size:16.5px;line-height:1.62}.pp-sol p{margin:0 0 8px}
+.pp-ans{display:inline-block;background:#f1ead9;border-radius:8px;padding:8px 14px;font-family:var(--f-body);font-size:16px}
+.pp-ans p{margin:0}
+.pp-fig{margin:14px 0 16px;text-align:center}.pp-fig img{max-width:min(100%,560px);border-radius:10px;border:1px solid var(--border)}
+.pp-sketch img{max-width:100%;border-radius:10px}.pp-whatfig{display:block;width:100%;max-width:360px;border-radius:10px;margin:4px 0 8px}.pp-check{font-family:var(--f-struct);font-size:13px;color:var(--ink-muted);margin-top:8px}
+.pp details{margin-top:14px;font-family:var(--f-body);font-size:15.5px;line-height:1.6}
+.pp summary{cursor:pointer;font-family:var(--f-struct);font-size:14px;color:var(--teacher)}
+.pp-rate{font-family:var(--f-struct);font-size:14px;color:var(--ink-muted)}
+.pp-chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.pp-chip{border:1px solid #cfc4aa;border-radius:999px;padding:6px 13px;font-size:13.5px;color:var(--ink);background:transparent;cursor:pointer;font-family:var(--f-struct)}
+.pp-chip.on{background:#4a7c59;border-color:#4a7c59;color:#fff}.pp-chip.on.low{background:#9a8c70;border-color:#9a8c70}
+.pp-nav{display:flex;justify-content:space-between;gap:10px;margin-top:24px;font-family:var(--f-struct);font-size:13.5px}
+.pp-nav a{color:var(--ink-faint);text-decoration:none}.pp-nav a:hover{color:var(--ink)}
+.pp sub{font-size:.62em;vertical-align:-.25em;line-height:0}
+.frac{text-indent:0;display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;font-size:.9em;line-height:1.15;margin:0 2px}.frac>span{padding:0 3px;text-indent:0}.frac>span:first-child{border-bottom:1px solid currentColor}
+.pp-num{font-family:var(--f-struct);font-size:15px;font-weight:700;color:var(--ink);margin-right:10px}.pp-uid{margin-left:10px;font-family:var(--f-struct);font-size:11px;letter-spacing:0;color:#c9bea4}
+.pp-st.hl > p{color:#b3a68c}.pp-st.hl > p .pp-key{color:var(--ink)}
+.pp-key{white-space:nowrap;background:#f6e2ae;color:var(--ink);border-radius:5px;padding:1px 4px}
+.pp-sym{display:inline-block;text-indent:0;margin-left:6px;font-family:var(--f-struct);font-size:12.5px;font-weight:600;font-style:italic;color:#fdf6e8;background:var(--cocoa);border-radius:999px;padding:0 8px;vertical-align:2px;white-space:nowrap}
+.pp-what{margin-top:20px;padding-top:14px;border-top:1px dashed var(--border)}.pp-what .pp-sol{margin-bottom:10px}.pp-what .pp-btn{margin-top:4px}
+.pp-what-a{margin-top:12px;background:#f6f0e2;border-radius:10px;padding:12px 16px}
+@media (max-width:760px){.pp{padding:22px 18px}.pp-st{font-size:17px}}
+
+/* ---------- phone ---------- */
+@media (max-width: 760px){
+  .bar{flex-wrap:wrap;gap:8px;padding:10px 16px}
+  .bar .spacer{display:none}
+  .crumbs{order:9;width:100%;font-size:12.5px;overflow:hidden}
+  .btn{padding:5px 10px;font-size:12.5px}
+  #map{padding:22px 16px 60px}
+  .map-head h1{font-size:30px}
+  .legend{gap:10px;font-size:12px}
+  .maths{flex-wrap:wrap;gap:8px}
+  .maths .hand{margin-left:0}
+  .board{overflow-x:auto;padding-bottom:10px}
+  .cols{grid-template-columns:repeat(var(--n),230px);gap:20px}
+  .view{grid-template-columns:minmax(0,1fr)}
+  .stage iframe{height:calc(100vh - 110px)}
+  .side{position:static;height:auto;border-left:0;border-top:1px solid var(--border)}
+  .pwrap{padding:18px 12px 40px}
+  .pcard{padding:22px 18px 26px}
+  .pcard h2{font-size:24px}
+  #home{height:auto;min-height:calc(100vh - 96px);padding:0 0 16px}
+  #home > svg{height:62vh;bottom:auto}
+  .home-title{background:linear-gradient(rgba(239,232,216,.85),rgba(239,232,216,0));padding:0 8px 10px 0}
+  .home-title{left:16px;top:18px}
+  .home-title h1{font-size:54px}
+  .home-title .hand{font-size:21px}
+  .ycard{position:relative;right:auto;top:auto;width:auto;margin:58vh 16px 0}
+  .comic{padding:10px}
+  .comic .bubble{position:static;margin-top:10px;font-size:20px;padding:12px 14px}
+  .comic .bubble::after{display:none}
+}
+@media (prefers-reduced-motion: reduce){ .glow,.mist,.toast,.wag,.hop,.archik,.stride{animation:none} }
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <a class="brand" href="#home">Kedr</a>
+  <div class="crumbs" id="crumbs"></div>
+  <div class="spacer"></div>
+  <a class="btn" id="prevBtn" href="#home">← Prev</a>
+  <a class="btn" id="nextBtn" href="#home">Next →</a>
+  <a class="btn" id="mapBtn" href="#map">Map</a>
+  <a class="btn" id="homeBtn" href="#home">My cedar</a>
+</header>
+
+<main id="home"></main>
+
+<main id="map">
+  <div class="map-head">
+    <div>
+      <div class="kicker" id="mapKicker">Physics Course · Kinematics</div>
+      <h1>The map</h1>
+      <div class="units" id="unitTabs"></div>
+      <div class="hand">start on the left — every card leads somewhere · <a href="#home" style="color:inherit">back to your cedar</a></div>
+    </div>
+    <div class="legend">
+      <span><span class="chip styled" style="width:22px;height:22px;font-size:0"></span>problem card</span>
+      <span><span class="chip draft" style="width:22px;height:22px;font-size:0"></span>problem, text only (draft)</span>
+      <span>• • dots = difficulty</span>
+      <span><span style="display:inline-flex;width:17px;height:17px;border-radius:50%;background:var(--qty-time);color:#fff;font-size:11px;align-items:center;justify-content:center">✓</span>solved</span>
+      <span><span style="display:inline-block;width:16px;height:16px;border-radius:50%;border:1.5px solid var(--ink-faint)"></span>opened, not solved yet</span>
+    </div>
+  </div>
+  <div id="mathsRow"></div>
+  <div class="board" id="board">
+    <svg id="wires"></svg>
+    <div class="cols" id="cols"></div>
+  </div>
+  <p class="foot">Hover a problem to see what it builds on and where it leads. Click anything to open it.</p>
+</main>
+
+<section id="view"></section>
+<div class="tip" id="tip"></div>
+
+<script src="course.js"></script>
+<script src="home.js"></script>
+<script>
+(function(){
+const K = window.KEDR;
+const $ = s => document.querySelector(s);
+const esc = s => String(s==null?'':s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const BUST = '';  // site copy uses ?v=… to defeat caching; not needed for the local file
+
+/* ---------- index ---------- */
+const T = {}; K.theory.forEach(t => T[t.id] = t);
+const M = {}; (K.maths||[]).forEach(m => M[m.id] = m);
+/* ---------- units (Kinematics, Thermodynamics…): the map shows one unit at a time ---------- */
+const UNITS = K.units || [K.course || 'Kinematics'];
+const unitOf = t => (t && t.unit) || UNITS[0];
+const getUnit = () => { let u = window._kedrUnit; try { u = localStorage.getItem('kedr-unit') || u; } catch(e) {} return UNITS.includes(u) ? u : UNITS[0]; };
+const setUnit = u => { window._kedrUnit = u; try { localStorage.setItem('kedr-unit', u); } catch(e) {} };
+const P = {}; K.problems.forEach(p => P[p.id] = p);
+const anchorTitle = a => { const [c, id] = a.split('#'); const t = T[c]; const x = t && (t.anchors||[]).find(q => q.id === id); return x ? x.title : '#'+id; };
+const home = p => { const a = p.anchors[0] || ''; const c = a.split('#')[0]; return { card: c, anchor: p.linkLevel === 'card' ? '__syn' : a.split('#')[1] }; };
+// links both ways (buildsOn of one = leadsTo of the other)
+const prev = {}, next = {};
+K.problems.forEach(p => { prev[p.id] = new Set(); next[p.id] = new Set(); });
+K.problems.forEach(p => {
+  (p.buildsOn||[]).forEach(q => { if (P[q]) { prev[p.id].add(q); next[q].add(p.id); } });
+  (p.leadsTo||[]).forEach(q => { if (P[q]) { next[p.id].add(q); prev[q].add(p.id); } });
+});
+const byId = (a,b) => a.localeCompare(b, undefined, {numeric:true});
+const ladder = (a,b) => (P[a].difficulty||0)-(P[b].difficulty||0) || byId(a,b);
+
+/* ---------- visited (per browser, optional) ---------- */
+let seen = {};
+try { seen = JSON.parse(localStorage.getItem('kedr-seen') || '{}'); } catch(e) {}
+let solved = {};
+try { solved = JSON.parse(localStorage.getItem('kedr-solved') || '{}'); } catch(e) {}
+let rating = {};
+try { rating = JSON.parse(localStorage.getItem('kedr-rating') || '{}'); } catch(e) {}
+const RATES = ['not at all', 'poorly', 'so-so', 'well', 'perfectly'];
+const setRating = (id, r) => { rating[id] = r; try { localStorage.setItem('kedr-rating', JSON.stringify(rating)); } catch(e) {} setSolved(id, r >= 3); };
+const setSolved = (id, v) => { if (v) solved[id] = 1; else delete solved[id]; try { localStorage.setItem('kedr-solved', JSON.stringify(solved)); } catch(e) {} };
+const markSeen = id => { seen[id] = 1; try { localStorage.setItem('kedr-seen', JSON.stringify(seen)); } catch(e) {} };
+
+/* ---------- reading order for Prev / Next ---------- */
+const order = [];
+K.theory.forEach(t => {
+  order.push(t.id);
+  const mine = K.problems.filter(p => home(p).card === t.id);
+  (t.anchors||[]).forEach(a => mine.filter(p => home(p).anchor === a.id).sort((x,y)=>ladder(x.id,y.id)).forEach(p => order.push(p.id)));
+  mine.filter(p => home(p).anchor === '__syn').sort((x,y)=>ladder(x.id,y.id)).forEach(p => order.push(p.id));
+});
+(K.maths||[]).forEach(m => order.push(m.id));
+K.problems.forEach(p => { if (!order.includes(p.id)) order.push(p.id); });
+/* Card numbers for students (Pavel, 04.11.2026): "1.4" = theory card T01, 4th problem of its ladder on the map.
+   Internal ids (P108) stay in the database and in file names; #1.4 in the address also works. */
+const LBL = {}; K.theory.forEach(t => { const n = /^T\d+$/.test(t.id) ? parseInt(t.id.slice(1), 10) : t.id; let k = 0; order.forEach(id => { if (P[id] && home(P[id]).card === t.id) LBL[id] = n + '.' + (++k); }); });
+const lbl = id => LBL[id] || id;
+const BYLBL = {}; Object.keys(LBL).forEach(id => BYLBL[LBL[id]] = id);
+
+/* ---------- chips ---------- */
+function chip(p){
+  const dots = '<span class="d">' + '<i></i>'.repeat(p.difficulty||0) + '</span>';
+  const st = solved[p.id] ? ' solved' : (seen[p.id] ? ' opened' : '');
+  const bk = p.source === 'booklet' ? ' booklet' : '';
+  return `<a class="chip ${p.images && p.images.length ? 'styled' : 'draft'}${st}${bk}" href="#${p.id}" data-p="${p.id}"${bk ? ' title="From the school booklet"' : ''}>${lbl(p.id)}${dots}${solved[p.id]?'<span class="ok">✓</span>':''}</a>`;
+}
+
+/* ---------- map ---------- */
+function renderMap(){
+  $('#mathsRow').innerHTML = (K.maths||[]).map(m =>
+    `<a class="maths" href="#${m.id}"><span class="tag">${m.id}</span><span class="t">${esc(m.title)}</span>
+     <span class="small" style="font-family:var(--f-struct);font-size:13px;color:var(--ink-muted)">maths toolkit — use it with any card</span>
+     <span class="hand">${seen[m.id]?'✓ opened':'stuck on the maths? start here'}</span></a>`).join('');
+  const cols = $('#cols');
+  const unit = getUnit(), TH = K.theory.filter(t => unitOf(t) === unit);
+  $('#mapKicker').textContent = 'Physics Course · ' + unit;
+  $('#unitTabs').innerHTML = UNITS.length > 1 ? UNITS.map(u => `<a class="${u === unit ? 'on' : ''}" data-u="${esc(u)}">${esc(u)}</a>`).join('') : '';
+  if (K.problems.some(p => p.source === 'booklet' && TH.some(t => t.id === home(p).card))) $('#unitTabs').insertAdjacentHTML('beforeend', '<span class="booklet-legend"><i></i>school booklet</span>');
+  $('#unitTabs').querySelectorAll('a').forEach(a => a.onclick = () => { setUnit(a.dataset.u); $('#crumbs').innerHTML = '<b>' + esc(a.dataset.u) + '</b>'; renderMap(); });
+  cols.style.setProperty('--n', TH.length);
+  cols.innerHTML = TH.map(t => {
+    const mine = K.problems.filter(p => home(p).card === t.id);
+    const groups = (t.anchors||[]).map(a => {
+      const ps = mine.filter(p => home(p).anchor === a.id).sort((x,y)=>ladder(x.id,y.id));
+      return `<div class="anchor" data-a="${t.id}#${a.id}"><h3>${esc(a.title)}</h3>
+        ${ps.length ? '<div class="chips">'+ps.map(chip).join('')+'</div>' : '<div class="empty">no problems yet</div>'}</div>`;
+    });
+    const syn = mine.filter(p => home(p).anchor === '__syn').sort((x,y)=>ladder(x.id,y.id));
+    if (syn.length) groups.push(`<div class="anchor syn"><h3>Whole-card challenges</h3><div class="chips">${syn.map(chip).join('')}</div></div>`);
+    if (!groups.length) groups.push(`<div class="anchor"><div class="empty">problems coming soon</div></div>`);
+    return `<div class="col">
+      <a class="tnode" href="#${t.id}" id="node-${t.id}">
+        ${seen[t.id]?'<span class="seen">✓</span>':''}
+        <span class="num">${t.id}</span>
+        <h2>${esc(t.title)}</h2>
+        <div class="meta">${mine.length} problem${mine.length===1?'':'s'}${t.after && t.after.length ? ' · after '+t.after.join(', ') : ' · start here'}</div>
+      </a>
+      <div class="anchors">${groups.join('')}</div>
+    </div>`;
+  }).join('');
+  bindChips(cols);
+  requestAnimationFrame(drawSpine);
+}
+
+const svgNS = 'http://www.w3.org/2000/svg';
+function rel(el){ const b = $('#board').getBoundingClientRect(), r = el.getBoundingClientRect();
+  return { x: r.left-b.left, y: r.top-b.top, w: r.width, h: r.height, cx: r.left-b.left+r.width/2, cy: r.top-b.top+r.height/2 }; }
+function path(d, color, width, dash, cls){
+  const p = document.createElementNS(svgNS,'path'); p.setAttribute('d', d); p.setAttribute('fill','none');
+  p.setAttribute('stroke', color); p.setAttribute('stroke-width', width); if (dash) p.setAttribute('stroke-dasharray', dash);
+  p.setAttribute('stroke-linecap','round'); if (cls) p.setAttribute('class', cls); $('#wires').appendChild(p); return p;
+}
+function arrowHead(x, y, color, cls){
+  const p = document.createElementNS(svgNS,'path'); p.setAttribute('d', `M${x-8},${y-5} L${x},${y} L${x-8},${y+5}`);
+  p.setAttribute('fill','none'); p.setAttribute('stroke',color); p.setAttribute('stroke-width',2); p.setAttribute('stroke-linecap','round');
+  if (cls) p.setAttribute('class', cls); $('#wires').appendChild(p);
+}
+function drawSpine(){
+  const w = $('#wires'); w.innerHTML = '';
+  K.theory.forEach(t => (t.after||[]).forEach(a => {
+    const A = document.getElementById('node-'+a), B = document.getElementById('node-'+t.id); if (!A || !B) return;
+    const r1 = rel(A), r2 = rel(B);
+    if (Math.abs((r1.x+r1.w) - r2.x) < 60) {               // neighbours: short arrow
+      const y = r1.y + 30, x1 = r1.x + r1.w + 4, x2 = r2.x - 4;
+      path(`M${x1},${y} L${x2},${y}`, '#9a8c70', 1.6); arrowHead(x2, y, '#9a8c70');
+    } else {                                               // skipping columns: arc above
+      const x1 = r1.cx, x2 = r2.cx, y = r1.y - 2, top = y - 26;
+      path(`M${x1},${y} C${x1},${top} ${x2},${top} ${x2},${y-6}`, '#9a8c70', 1.6, '5 5');
+      const p = document.createElementNS(svgNS,'path'); p.setAttribute('d', `M${x2-5},${y-13} L${x2},${y-5} L${x2+5},${y-13}`);
+      p.setAttribute('fill','none'); p.setAttribute('stroke','#9a8c70'); p.setAttribute('stroke-width',2); w.appendChild(p);
+    }
+  }));
+}
+function clearHot(){
+  document.querySelectorAll('.wire').forEach(e => e.remove());
+  document.querySelectorAll('.chip.hot,.chip.dim').forEach(e => e.classList.remove('hot','dim'));
+  document.querySelectorAll('.anchor.hot').forEach(e => e.classList.remove('hot'));
+}
+function bindChips(root){
+  const tip = $('#tip');
+  root.querySelectorAll('.chip').forEach(c => {
+    const p = P[c.dataset.p];
+    c.addEventListener('mouseenter', e => {
+      const linked = new Set([...prev[p.id], ...next[p.id], p.id]);
+      if (root.id === 'cols') {
+        root.querySelectorAll('.chip').forEach(o => { if (!linked.has(o.dataset.p)) o.classList.add('dim'); else o.classList.add('hot'); });
+        p.anchors.forEach(a => { const el = root.querySelector(`.anchor[data-a="${a}"]`); if (el) el.classList.add('hot'); });
+        const me = rel(c);
+        const line = (fromEl, toEl, col) => { const a = rel(fromEl), b = rel(toEl);
+          const mx = (a.cx+b.cx)/2, bend = Math.min(80, Math.abs(a.cx-b.cx)/3 + 20);
+          path(`M${a.cx},${a.cy} Q${mx},${Math.min(a.cy,b.cy)-bend} ${b.cx},${b.cy}`, col, 2.2, null, 'wire'); };
+        prev[p.id].forEach(q => { const el = root.querySelector(`.chip[data-p="${q}"]`); if (el) line(el, c, '#3d6bb3'); });
+        next[p.id].forEach(q => { const el = root.querySelector(`.chip[data-p="${q}"]`); if (el) line(c, el, '#c15b38'); });
+      }
+      const pre = [...prev[p.id]].sort(byId), nx = [...next[p.id]].sort(byId);
+      tip.innerHTML = `<b>${lbl(p.id)}</b> <span style="opacity:.55">${p.id}</span> · ${esc(p.concept)}<div class="s">${p.anchors.map(anchorTitle).join(' + ')}${pre.length?'<br><span style="color:#9fb8e6">builds on</span> '+pre.map(lbl).join(', '):''}${nx.length?'<br><span style="color:#f0a184">leads to</span> '+nx.map(lbl).join(', '):''}${p.images&&p.images.length?'':'<br>text-only draft'}</div>`;
+      tip.style.display = 'block';
+    });
+    c.addEventListener('mousemove', e => { tip.style.left = Math.min(e.clientX+16, innerWidth-310)+'px'; tip.style.top = (e.clientY+18)+'px'; });
+    c.addEventListener('mouseleave', () => { tip.style.display = 'none'; clearHot(); });
+  });
+}
+
+/* ---------- light markdown for draft text ---------- */
+function md(s){
+  if (!s) return '';
+  const lines = String(s).split('\n'); let out = '', tbl = [];
+  const inline = t => subs(esc(t)).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/(^|[^*])\*([^*\n]+)\*/g,'$1<i>$2</i>');
+  const flush = () => { if (!tbl.length) return;
+    const rows = tbl.filter(r => !/^\|\s*-+/.test(r)).map(r => r.replace(/^\||\|$/g,'').split('|'));
+    out += '<table>' + rows.map((r,i) => '<tr>' + r.map(c => (i?'<td>':'<th>') + inline(c.trim()) + (i?'</td>':'</th>')).join('') + '</tr>').join('') + '</table>'; tbl = []; };
+  lines.forEach(l => { if (/^\s*\|/.test(l)) tbl.push(l.trim()); else { flush(); out += l.trim() ? '<p style="margin:0 0 10px">'+inline(l)+'</p>' : ''; } });
+  flush(); return out;
+}
+
+/* ---------- side panel ---------- */
+function sideTheory(t){
+  const mine = K.problems.filter(p => p.anchors.some(a => a.split('#')[0] === t.id));
+  let h = `<h4>Theory card</h4><div class="big">${esc(t.title)}</div>
+    <div class="small">${t.after&&t.after.length ? 'Read after '+t.after.map(a=>`<a href="#${a}">${a}</a>`).join(', ') : 'The starting point of ' + unitOf(t).toLowerCase() + '.'}</div>`;
+  h += `<h4>Practise this card</h4>`;
+  if (!mine.length) h += `<div class="small">No problems linked yet — they are on the way.</div>`;
+  (t.anchors||[]).forEach(a => {
+    const ps = mine.filter(p => p.anchors.includes(t.id+'#'+a.id) && p.linkLevel !== 'card').sort((x,y)=>ladder(x.id,y.id));
+    if (ps.length) h += `<div class="group"><div class="lbl">${esc(a.title)}</div><div class="chips">${ps.map(chip).join('')}</div></div>`;
+  });
+  const syn = mine.filter(p => p.linkLevel === 'card').sort((x,y)=>ladder(x.id,y.id));
+  if (syn.length) h += `<div class="group"><div class="lbl">Whole-card challenges</div><div class="chips">${syn.map(chip).join('')}</div></div>`;
+  const after = K.theory.filter(x => (x.after||[]).includes(t.id));
+  if (after.length) h += `<h4>Next theory</h4>` + after.map(x => `<a class="link" href="#${x.id}"><span class="tg">${x.id}</span>${esc(x.title)}</a>`).join('');
+  h += `<h4>Maths help</h4>` + (K.maths||[]).map(m => `<a class="link" href="#${m.id}"><span class="tg">${m.id}</span>${esc(m.title)}</a>`).join('');
+  return h;
+}
+function sideProblem(p){
+  let h = `<h4>Problem ${lbl(p.id)}</h4><div class="big">${esc(p.concept)}</div>
+    <div class="small">Difficulty ${p.difficulty||'—'} of 4 · ${p.images&&p.images.length?'styled card':'text-only draft'}</div>
+    <span class="status ${solved[p.id]?'s':'o'}">${solved[p.id]?'✓ Solved':'Not solved yet'}</span>`;
+  h += `<h4>Theory you need</h4>` + p.anchors.map(a => { const c = a.split('#')[0]; const t = T[c];
+      return `<a class="link" href="#${c}"><span class="tg">${c}</span><span>${esc(anchorTitle(a))}<br><span class="an">${t?esc(t.title):''}</span></span></a>`; }).join('');
+  const pre = [...prev[p.id]].sort(byId), nx = [...next[p.id]].sort(byId);
+  if (pre.length) h += `<h4>Builds on</h4><div class="chips">${pre.map(id=>chip(P[id])).join('')}</div>`;
+  if (nx.length) h += `<h4>Leads to</h4><div class="chips">${nx.map(id=>chip(P[id])).join('')}</div>`;
+  return h;
+}
+
+/* ---------- pages ---------- */
+function stageProblem(p){
+  if (p.images && p.images.length)
+    return `<div class="pwrap">${p.images.map((src,i) => p.solutionAt && i === 0
+      ? `<div class="clip" id="clip" data-cut="${p.solutionAt}"><img src="${esc(src)}" alt="Problem ${p.id}"><div class="veil"><button class="reveal2" id="reveal2">Show solution</button></div></div>`
+      : `<img src="${esc(src)}" alt="Problem ${p.id}">`).join('')}${solvedBar(p)}</div>`;
+  return `<div class="pwrap"><div class="pcard">
+    <span class="ribbon">Draft · text only — card not styled yet</span>
+    <h2>Problem ${p.id}</h2><div class="concept">${esc(p.concept)}</div>
+    <div class="txt">${md(p.statement)}</div>
+    <div class="turn"><span class="w">YOUR TURN</span><span class="h">give it a try before you look</span>
+      <button id="reveal">Show solution</button></div>
+    <div id="sol" class="hidden">
+      <div class="lab">Solution</div><div class="txt">${md(p.solution)}</div>
+      <div class="lab">Final answer</div><div class="ans">${md(p.answer).replace(/<\/?p[^>]*>/g,'')}</div>
+      ${p.meaning?`<div class="lab">Meaning of the answer</div><div class="txt">${md(p.meaning)}</div>`:''}
+      ${p.whatIf?`<div class="lab">What if…?</div><div class="txt">${md(p.whatIf)}</div>`:''}
+    </div></div>${solvedBar(p)}</div>`;
+}
+function solvedBar(p){
+  return solved[p.id]
+    ? `<div class="solvedbar done"><span class="msg"><b>Solved ✓</b> <span class="hand">— your cedar grew a little.</span></span><button class="undo" id="untick">undo</button></div>`
+    : `<div class="solvedbar"><span class="msg"><b>Solved it — and you understand why?</b><br><span class="hand">tick it: your cedar grows only from solved problems</span></span><button class="tick" id="tick">✓ I solved it</button></div>`;
+}
+/* ---------- minimal problem page (01.11.2026): statement → sketch → answer → solution → rating ---------- */
+function splitParts(st){
+  st = String(st || '').trim();
+  if (/(^|\n)\s*\(a\)/.test(st)) {                       // parts on their own lines
+    const lines = st.split('\n'); let lead = [], parts = [];
+    lines.forEach(l => { if (/^\s*\([a-h]\)/.test(l)) parts.push(l.trim()); else if (parts.length && l.trim() && !/^\s*\|/.test(l)) parts[parts.length - 1] += '\n' + l.trim(); else if (!parts.length) lead.push(l); else parts.push(l); });
+    return { lead: lead.join('\n').trim(), parts: parts.filter(x => /^\([a-h]\)/.test(x)), tail: parts.filter(x => !/^\([a-h]\)/.test(x)).join('\n') };
+  }
+  if (!/\(a\)\s/.test(st) || !/\(b\)\s/.test(st)) return { lead: st, parts: [] };
+  const k = st.search(/\(a\)\s/);
+  const parts = st.slice(k).split(/\s*(?=\([b-h]\)\s)/).map(x => x.trim().replace(/[,;]\s*(and)?$/, '')).filter(Boolean);
+  return { lead: st.slice(0, k).trim(), parts };
+}
+function partsHtml(text, fig){
+  const { lead, parts, tail } = splitParts(text);
+  const li = parts.length ? '<ol class="pp-parts">' + parts.map(x => { const m = x.match(/^\(([a-h])\)\s*([\s\S]*)$/); return `<li><b>(${m ? m[1] : ''})</b>${md(m ? m[2] : x).replace(/<\/p>\s*<p[^>]*>/g, '<br>').replace(/<\/?p[^>]*>/g, '')}</li>`; }).join('') + '</ol>' : '';
+  return marksHtml(md(lead) + (fig || '') + li + (tail ? md(tail) : ''));
+}
+/* exam marks at the end of a part, e.g. "… [2]" → small grey [2] on the right (booklet problems, 17.11.2026) */
+function marksHtml(h){ return h.replace(/\s*\[(\d{1,2})\](?=\s*(?:<br>|<\/p>|<\/li>|$))/g, ' <span class="pp-mark">[$1]</span>'); }
+/* What if…? — the question is shown, the answer waits behind a button (Pavel, 04.11.2026) */
+function whatIfHtml(w, fig){
+  w = String(w || '').trim(); if (!w) return '';
+  const k = w.indexOf('?');
+  // no question mark yet (text not rewritten as "question? answer"): hide the whole text behind the button
+  const q = k > 0 ? w.slice(0, k + 1) : 'Change one thing in this problem — what happens? Predict first.', a = k > 0 ? w.slice(k + 1).trim() : w;
+  return `<div class="pp-what"><div class="pp-h">What if…?</div><div class="pp-sol">${md(q)}</div>${a ? `<button class="pp-btn g" id="bWhat">Think first — then show</button><div class="pp-sol pp-what-a" id="xWhat" hidden>${fig ? `<img class="pp-whatfig" src="${esc(fig)}" alt="what if">` : ''}${md(a)}</div>` : ''}</div>`;
+}
+/* Highlight what matters (Pavel, 04.11.2026): the story fades, the key phrases light up with their physics symbol.
+   Database field "Key info": one line per phrase — exact words from the statement → symbol, e.g.  dropped → u = 0 */
+/* v_A → v with subscript A, v_avg → v with subscript avg; a/b → a stacked fraction (Pavel, 04.11.2026).
+   Database text stays plain. Units like m/s, km/h, m/s² stay as they are. */
+const UNIT_NUM = /^(m|km|cm|mm|rad|rev)$/, UNIT_DEN = /^(s|h|min|s²|s\^2)$/;
+function fracs(h){
+  const tok = '(\\([^()]*\\)|(?:[A-Za-z0-9πωθ√²³ₓ_·Δ|]|\\.(?=[0-9]))+)';
+  const re = new RegExp(tok + '\\s?/\\s?' + tok, 'g');
+  return String(h).replace(re, (all, a, b) => {
+    if (UNIT_NUM.test(a) && UNIT_DEN.test(b)) return all;
+    const strip = x => /^\(.*\)$/.test(x) ? x.slice(1, -1) : x;
+    const nd = /^\d+$/.test(a) && /^(\d+)·(.*)$/.exec(b);   // 3/2·nRΔT → (3/2)·nRΔT, not 3 over 2·nRΔT (17.11.2026)
+    if (nd) return `<span class="frac"><span>${a}</span><span>${nd[1]}</span></span>·${nd[2]}`;
+    return `<span class="frac"><span>${strip(a)}</span><span>${strip(b)}</span></span>`;
+  });
+}
+function subs(h){ return fracs(String(h).replace(/\^\(([^()]+)\)/g, (m, x) => '<sup>' + x.replace(/\//g, '\u2044') + '</sup>')).replace(/(\d)·(?=\d)/g, '$1\u2009×\u2009').replace(/([A-Za-zΑ-Ωα-ω])_([A-Za-z0-9]{1,3})(?![A-Za-z0-9])/g, '$1<sub>$2</sub>').replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹⁻]*⁰[⁰¹²³⁴⁵⁶⁷⁸⁹⁻]*/g, m => '<sup>' + [...m].map(c => '0123456789−'['⁰¹²³⁴⁵⁶⁷⁸⁹⁻'.indexOf(c)]).join('') + '</sup>'); } // ⁰ has no good glyph in the page fonts (05.11.2026)
+function markKeys(html, spec){
+  String(spec || '').split('\n').forEach(line => {
+    const k = line.indexOf('→'); if (k < 0) return;
+    const phrase = esc(line.slice(0, k).trim()).replace(/(\d)·(?=\d)/g, '$1\u2009×\u2009'), sym = line.slice(k + 1).trim(); if (!phrase) return;
+    const i = html.indexOf(phrase); if (i < 0) return;
+    html = html.slice(0, i) + `<mark class="pp-key">${phrase}<span class="pp-sym">${subs(esc(sym))}</span></mark>` + html.slice(i + phrase.length);
+  });
+  return html;
+}
+function problemPage(p, pv, nx){
+  const a = (p.anchors[0] || ''), card = a.split('#')[0], T0 = T[card];
+  const atitle = a ? anchorTitle(a) : '';
+  const d = p.difficulty || 0;
+  const fam = p.family ? K.problems.filter(q => q.family === p.family && q.id !== p.id) : [];
+  const twin = fam.find(q => !solved[q.id]) || fam[0];
+  const r = rating[p.id];
+  return `<div class="pp">
+  <div class="pp-top"><span><b class="pp-num">${lbl(p.id)}</b>${p.source === 'booklet' ? '<span class="pp-bk">school booklet</span>' : ''}${card ? `<a href="#${card}">${esc(card)} · ${esc(atitle)}</a>` : ''}</span><span class="pp-dots" title="difficulty ${d} of 4">${'●'.repeat(d)}<i>${'●'.repeat(Math.max(0, 4 - d))}</i><span class="pp-uid">${esc(p.id)}</span></span></div>
+  <div class="pp-st" id="xSt">${partsHtml(p.statement, p.figure ? `<figure class="pp-fig"><img src="${esc(p.figure)}" alt="figure for problem ${esc(p.id)}"></figure>` : '').replace(/(?:<p[^>]*>)?\[Figure (\d)\](?:<\/p>)?/g, (m, n) => p.figures && p.figures[n - 1] ? `<figure class="pp-fig"><img src="${esc(p.figures[n - 1])}" alt="figure ${n}"></figure>` : '')}</div>
+  <div class="pp-btns">
+    ${p.keyInfo ? '<button class="pp-btn g" id="bKey">Highlight what matters</button>' : ''}
+    ${p.sketch ? '<button class="pp-btn g" id="bSketch">Show my sketch</button>' : ''}
+    <button class="pp-btn g" id="bAns">Show answer</button>
+    <button class="pp-btn" id="bSol">Show solution</button>
+  </div>
+  ${p.sketch ? `<div class="pp-block pp-sketch" id="xSketch" hidden><div class="pp-h">How I would sketch it</div><img src="${esc(p.sketch)}" alt="sketch"><div class="pp-check">Compare it with yours: is the start and the end there? what is given, what is asked? and what did you draw that isn’t needed?</div></div>` : ''}
+  <div class="pp-block" id="xAns" hidden><div class="pp-h">Answer</div><div class="pp-ans">${md(p.answer)}</div></div>
+  <div class="pp-block" id="xSol" hidden><div class="pp-h">Solution</div>${p.solutionFig ? `<figure class="pp-fig"><img src="${esc(p.solutionFig + BUST)}" alt="solution picture for problem ${esc(p.id)}"></figure>` : ''}<div class="pp-sol">${partsHtml(p.solution)}</div>
+    ${p.meaning ? `<details><summary>Think further</summary>${md(p.meaning)}</details>` : ''}
+    ${whatIfHtml(p.whatIf, p.whatFig)}
+  </div>
+  <div class="pp-block pp-rate" id="xRate" ${r == null ? 'hidden' : ''}>How well did you understand it?
+    <div class="pp-chips">${RATES.map((t, k) => `<button class="pp-chip${r === k ? ' on' + (k < 3 ? ' low' : '') : ''}" data-r="${k}">${t}</button>`).join('')}</div></div>
+  <div class="pp-nav"><a href="${pv ? '#' + pv : '#map'}">← previous</a>${twin ? `<a href="#${twin.id}">similar problem ↻</a>` : '<span></span>'}<a href="${nx ? '#' + nx : '#map'}">next →</a></div>
+</div>`;
+}
+function bindProblemPage(p){
+  // each button is a switch: first click shows its block, second click hides it again; the button stays
+  const St = document.getElementById('xSt'), bK = document.getElementById('bKey');
+  if (St && bK) { const plain = St.innerHTML, marked = markKeys(plain, p.keyInfo);
+    bK.onclick = () => { const on = !St.classList.contains('hl'); St.classList.toggle('hl', on); St.innerHTML = on ? marked : plain;
+      bK.classList.toggle('on', on); bK.textContent = on ? 'Hide highlights' : 'Highlight what matters'; }; }
+  const pairs = [['bSketch', 'xSketch', 'my sketch'], ['bAns', 'xAns', 'answer'], ['bSol', 'xSol', 'solution']];
+  const sync = () => {
+    pairs.forEach(([b, x, name]) => { const B = document.getElementById(b), X = document.getElementById(x); if (!B || !X) return;
+      B.classList.toggle('on', !X.hidden); B.textContent = (X.hidden ? 'Show ' : 'Hide ') + name; });
+    const R = document.getElementById('xRate'); if (R) R.hidden = !(rating[p.id] != null || !document.getElementById('xSol').hidden);
+  };
+  pairs.forEach(([b, x]) => { const B = document.getElementById(b), X = document.getElementById(x); if (B && X) B.onclick = () => { X.hidden = !X.hidden; sync(); }; });
+  document.querySelectorAll('.pp-chip').forEach(c => c.onclick = () => {
+    const k = +c.dataset.r; setRating(p.id, k);
+    document.querySelectorAll('.pp-chip').forEach(o => o.className = 'pp-chip' + (+o.dataset.r === k ? ' on' + (k < 3 ? ' low' : '') : ''));
+  });
+  const bW = document.getElementById('bWhat'), xW = document.getElementById('xWhat');
+  if (bW && xW) bW.onclick = () => { xW.hidden = !xW.hidden; bW.classList.toggle('on', !xW.hidden); bW.textContent = xW.hidden ? 'Think first — then show' : 'Hide'; };
+  sync();
+}
+function show(id){
+  const item = T[id] || M[id] || P[id];
+  const tip = $('#tip'); tip.style.display = 'none';
+  if ($('#map').style.display !== 'none') window._mapY = window.scrollY;
+  ['#home','#map','#view'].forEach(s => $(s).style.display = 'none');
+  if (!item && id !== 'MAP'){ $('#home').style.display = 'block';
+    $('#crumbs').innerHTML = ''; ['#prevBtn','#nextBtn','#homeBtn'].forEach(s => $(s).style.display = 'none'); $('#mapBtn').style.display = '';
+    HOME.render(false); window.scrollTo(0,0); return; }
+  if (!item){ $('#map').style.display = '';
+    $('#crumbs').innerHTML = '<b>' + esc(getUnit()) + '</b>'; ['#prevBtn','#nextBtn','#mapBtn'].forEach(s => $(s).style.display = 'none'); $('#homeBtn').style.display = '';
+    renderMap(); window.scrollTo(0, window._mapY || 0); return; }
+  markSeen(id);
+  const U = T[id] ? unitOf(T[id]) : P[id] ? unitOf(T[home(P[id]).card]) : getUnit();
+  if (T[id] || P[id]) setUnit(U);
+  const v = $('#view'); v.style.display = 'block';
+  ['#prevBtn','#nextBtn','#mapBtn','#homeBtn'].forEach(s => $(s).style.display = '');
+  const i = order.indexOf(id);
+  const pv = order[i-1], nx = order[i+1];
+  $('#prevBtn').href = pv ? '#'+pv : '#home'; $('#prevBtn').toggleAttribute('disabled', !pv); $('#prevBtn').textContent = '← ' + (pv ? lbl(pv) : 'Prev');
+  $('#nextBtn').href = nx ? '#'+nx : '#home'; $('#nextBtn').toggleAttribute('disabled', !nx); $('#nextBtn').textContent = (nx ? lbl(nx) : 'Next') + ' →';
+  let crumbs, stage, side;
+  if (T[id] || M[id]) {
+    crumbs = `<a href="#map">${esc(U)}</a><span>›</span><b>${id} · ${esc(item.title)}</b>`;
+    stage = `<iframe src="${esc(item.file)}" title="${esc(item.title)}"></iframe>`;
+    side = T[id] ? sideTheory(item) : `<h4>Maths card</h4><div class="big">${esc(item.title)}</div><div class="small">The maths machinery behind every theory card — come back here whenever an equation gets in the way.</div><h4>Theory cards</h4>` + K.theory.map(x => `<a class="link" href="#${x.id}"><span class="tg">${x.id}</span>${esc(x.title)}</a>`).join('');
+  } else {
+    const c = item.anchors[0] ? item.anchors[0].split('#')[0] : '';
+    $('#crumbs').innerHTML = `<a href="#map">${esc(U)}</a><span>›</span>${c?`<a href="#${c}">${c}</a><span>›</span>`:''}<b>Problem ${lbl(id)}</b>`;
+    v.innerHTML = `<div class="pview">${problemPage(item, pv, nx)}</div>`;
+    bindProblemPage(item); window.scrollTo(0,0); return;
+  }
+  $('#crumbs').innerHTML = crumbs;
+  v.innerHTML = `<div class="view"><div class="stage">${stage}</div><aside class="side">${side}</aside></div>`;
+  bindChips(v);
+  const r = $('#reveal'); if (r) r.onclick = () => { $('#sol').classList.remove('hidden'); r.remove(); };
+  const clip = $('#clip');
+  if (clip){ const img = clip.querySelector('img'); const fit = () => { if (!clip.classList.contains('open')) clip.style.height = (img.clientHeight * +clip.dataset.cut) + 'px'; };
+    img.complete ? fit() : img.addEventListener('load', fit); addEventListener('resize', fit);
+    $('#reveal2').onclick = () => { clip.classList.add('open'); clip.style.height = ''; }; }
+  const tk = $('#tick'), ut = $('#untick');
+  const rerender = v => { const y = scrollY, wasOpen = (clip && clip.classList.contains('open')) || ($('#sol') && !$('#sol').classList.contains('hidden'));
+    setSolved(id, v); show(id); if (wasOpen) { const a = $('#reveal2') || $('#reveal'); if (a) a.click(); } scrollTo(0, y); };
+  if (tk) tk.onclick = () => rerender(true);
+  if (ut) ut.onclick = () => rerender(false);
+  window.scrollTo(0,0);
+}
+const HOME = window.KedrHome({ K, order, seenMap: () => seen, solvedMap: () => solved });
+const route = () => { let id = (location.hash.replace(/^#\/?/,'') || '').toUpperCase(); if (BYLBL[id]) id = BYLBL[id];
+  if (id === 'RESET') { try { ['kedr-seen','kedr-solved','kedr-planted','kedr-welcomed','kedr-last-stage','kedr-heard','kedr-rating'].forEach(k => localStorage.removeItem(k)); } catch(e) {}
+    seen = {}; solved = {}; location.hash = '#home'; return; }
+  show(id); };
+addEventListener('hashchange', route);
+addEventListener('resize', () => { if ($('#map').style.display !== 'none') drawSpine(); });
+document.fonts && document.fonts.ready.then(() => { if ($('#map').style.display !== 'none') drawSpine(); });
+route();
+})();
+</script>
+</body>
+</html>

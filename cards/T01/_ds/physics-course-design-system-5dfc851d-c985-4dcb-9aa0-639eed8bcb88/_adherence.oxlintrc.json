@@ -1,0 +1,277 @@
+{
+  "plugins": [
+    "react",
+    "import"
+  ],
+  "rules": {
+    "react/forbid-elements": [
+      "warn",
+      {
+        "forbid": []
+      }
+    ],
+    "no-restricted-imports": [
+      "warn",
+      {
+        "patterns": [
+          {
+            "group": [
+              "components/math/**",
+              "components/structure/**",
+              "components/voice/**",
+              "ui_kits/lesson/**"
+            ],
+            "message": "Import design-system components from 'index.js', not component internals."
+          }
+        ]
+      }
+    ],
+    "no-restricted-syntax": [
+      "warn",
+      {
+        "selector": "Literal[value=/#[0-9a-fA-F]{3,8}\\b/]",
+        "message": "Raw hex color — use a design-system color token via var()."
+      },
+      {
+        "selector": "Literal[value=/\\b\\d+px\\b/]",
+        "message": "Raw px value — use a design-system spacing token via var()."
+      },
+      {
+        "selector": "Literal[value=/font-family\\s*:\\s*(?!['\\\"]?(?:Bricolage Grotesque|Source Serif 4|Caveat))/i]",
+        "message": "Font not provided by the design system. Available: Bricolage Grotesque, Source Serif 4, Caveat."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='DefinitionItem'] > JSXAttribute > JSXIdentifier[name!=/^(?:term|def|note|key|ref|className|style|children)$/]",
+        "message": "<DefinitionItem> doesn't accept that prop. Declared props: term, def, note."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='DiagramPanel'] > JSXAttribute > JSXIdentifier[name!=/^(?:children|style|key|ref|className|style|children)$/]",
+        "message": "<DiagramPanel> doesn't accept that prop. Declared props: children, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='FormulaPill'] > JSXAttribute > JSXIdentifier[name!=/^(?:children|style|key|ref|className|style|children)$/]",
+        "message": "<FormulaPill> doesn't accept that prop. Declared props: children, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Fraction'] > JSXAttribute > JSXIdentifier[name!=/^(?:num|den|style|key|ref|className|style|children)$/]",
+        "message": "<Fraction> doesn't accept that prop. Declared props: num, den, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='HoneyHighlight'] > JSXAttribute > JSXIdentifier[name!=/^(?:children|key|ref|className|style|children)$/]",
+        "message": "<HoneyHighlight> doesn't accept that prop. Declared props: children."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='KickerBar'] > JSXAttribute > JSXIdentifier[name!=/^(?:title|note|style|key|ref|className|style|children)$/]",
+        "message": "<KickerBar> doesn't accept that prop. Declared props: title, note, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='LessonCard'] > JSXAttribute > JSXIdentifier[name!=/^(?:children|style|key|ref|className|style|children)$/]",
+        "message": "<LessonCard> doesn't accept that prop. Declared props: children, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Qty'] > JSXAttribute > JSXIdentifier[name!=/^(?:kind|children|style|key|ref|className|style|children)$/]",
+        "message": "<Qty> doesn't accept that prop. Declared props: kind, children, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Qty'] > JSXAttribute[name.name='kind'] > Literal[value!=/^(?:time|position|distance|velocity|speed)$/]",
+        "message": "<Qty> kind must be one of 'time' | 'position' | 'distance' | 'velocity' | 'speed'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='SectionHeading'] > JSXAttribute > JSXIdentifier[name!=/^(?:number|children|style|key|ref|className|style|children)$/]",
+        "message": "<SectionHeading> doesn't accept that prop. Declared props: number, children, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='TeacherAside'] > JSXAttribute > JSXIdentifier[name!=/^(?:children|size|style|key|ref|className|style|children)$/]",
+        "message": "<TeacherAside> doesn't accept that prop. Declared props: children, size, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='TeacherAside'] > JSXAttribute[name.name='size'] > Literal[value!=/^(?:lg|md|sm)$/]",
+        "message": "<TeacherAside> size must be one of 'lg' | 'md' | 'sm'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='TeacherBubble'] > JSXAttribute > JSXIdentifier[name!=/^(?:children|style|key|ref|className|style|children)$/]",
+        "message": "<TeacherBubble> doesn't accept that prop. Declared props: children, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='WatchOut'] > JSXAttribute > JSXIdentifier[name!=/^(?:label|children|style|key|ref|className|style|children)$/]",
+        "message": "<WatchOut> doesn't accept that prop. Declared props: label, children, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='WayCard'] > JSXAttribute > JSXIdentifier[name!=/^(?:label|children|style|key|ref|className|style|children)$/]",
+        "message": "<WayCard> doesn't accept that prop. Declared props: label, children, style."
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/index.js"
+      ],
+      "rules": {
+        "no-restricted-imports": "off"
+      }
+    }
+  ],
+  "x-omelette": {
+    "components": {
+      "DefinitionItem": {
+        "replaces": []
+      },
+      "DiagramPanel": {
+        "replaces": []
+      },
+      "FormulaPill": {
+        "replaces": []
+      },
+      "Fraction": {
+        "replaces": []
+      },
+      "HoneyHighlight": {
+        "replaces": []
+      },
+      "KickerBar": {
+        "replaces": []
+      },
+      "LessonCard": {
+        "replaces": []
+      },
+      "Qty": {
+        "replaces": []
+      },
+      "SectionHeading": {
+        "replaces": []
+      },
+      "TeacherAside": {
+        "replaces": []
+      },
+      "TeacherBubble": {
+        "replaces": []
+      },
+      "WatchOut": {
+        "replaces": []
+      },
+      "WayCard": {
+        "replaces": []
+      }
+    },
+    "tokens": [
+      "--border",
+      "--border-inner",
+      "--card",
+      "--card-inner",
+      "--diagram-bg",
+      "--font-body",
+      "--font-hand",
+      "--font-structure",
+      "--honey",
+      "--honey-wash",
+      "--ink",
+      "--ink-muted",
+      "--misconception",
+      "--misconception-bg",
+      "--pad-bubble",
+      "--pad-card",
+      "--pad-diagram",
+      "--pad-formula-pill",
+      "--pad-page",
+      "--pad-panel",
+      "--pad-watchout",
+      "--page",
+      "--page-max-width",
+      "--qty-position",
+      "--qty-time",
+      "--qty-velocity",
+      "--radius-bubble",
+      "--radius-card",
+      "--radius-panel",
+      "--shadow-card",
+      "--space-beat",
+      "--space-block",
+      "--space-inner",
+      "--surface-card",
+      "--surface-page",
+      "--surface-panel",
+      "--teacher",
+      "--teacher-bubble-border",
+      "--text-body",
+      "--text-body-lg",
+      "--text-body-md",
+      "--text-formula",
+      "--text-formula-unit",
+      "--text-h2",
+      "--text-h3",
+      "--text-hand-lg",
+      "--text-hand-md",
+      "--text-hand-sm",
+      "--text-kicker",
+      "--text-panel-label",
+      "--text-small-note",
+      "--tilt-aside",
+      "--tilt-bubble",
+      "--tracking-kicker",
+      "--tracking-label"
+    ],
+    "tokenKinds": {
+      "--font-structure": "font",
+      "--font-body": "font",
+      "--font-hand": "font",
+      "--text-kicker": "font",
+      "--text-h2": "font",
+      "--text-h3": "font",
+      "--text-panel-label": "font",
+      "--text-body-lg": "font",
+      "--text-body-md": "font",
+      "--text-small-note": "font",
+      "--text-formula": "font",
+      "--text-formula-unit": "font",
+      "--text-hand-lg": "font",
+      "--text-hand-md": "font",
+      "--text-hand-sm": "font",
+      "--tracking-kicker": "font",
+      "--tracking-label": "font",
+      "--page": "color",
+      "--card": "color",
+      "--card-inner": "color",
+      "--border": "color",
+      "--border-inner": "color",
+      "--shadow-card": "shadow",
+      "--ink": "color",
+      "--ink-muted": "color",
+      "--qty-time": "color",
+      "--qty-position": "color",
+      "--qty-velocity": "color",
+      "--diagram-bg": "color",
+      "--misconception": "color",
+      "--misconception-bg": "color",
+      "--honey": "color",
+      "--honey-wash": "color",
+      "--teacher": "color",
+      "--teacher-bubble-border": "color",
+      "--text-body": "font",
+      "--surface-page": "color",
+      "--surface-card": "color",
+      "--surface-panel": "color",
+      "--radius-card": "radius",
+      "--radius-panel": "radius",
+      "--radius-bubble": "radius",
+      "--pad-card": "spacing",
+      "--pad-panel": "spacing",
+      "--pad-diagram": "spacing",
+      "--pad-watchout": "spacing",
+      "--pad-bubble": "spacing",
+      "--pad-formula-pill": "spacing",
+      "--page-max-width": "spacing",
+      "--pad-page": "spacing",
+      "--space-beat": "spacing",
+      "--space-block": "spacing",
+      "--space-inner": "spacing",
+      "--tilt-bubble": "other",
+      "--tilt-aside": "other"
+    },
+    "fontFamilies": [
+      "Bricolage Grotesque",
+      "Caveat",
+      "Source Serif 4"
+    ]
+  }
+}
