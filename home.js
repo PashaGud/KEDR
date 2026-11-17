@@ -305,7 +305,7 @@ window.KedrHome = function(ctx){
     const trail = el('path', { d: TRAIL, fill: 'none', stroke: '#efe3c8', 'stroke-width': 5, 'stroke-dasharray': '2 12', 'stroke-linecap': 'round' }, svg);
     const L = trail.getTotalLength();
     const units = [{ n: 'Kinematics', ready: true, unit: 'Kinematics' }, { n: 'Forces & momentum' }, { n: 'Energy' }, { n: 'Thermodynamics', ready: true, unit: 'Thermodynamics' }, { n: 'Waves' }, { n: 'Fields' }, { n: 'Quantum & nuclear' }];
-    const UNIT_AT = PHONE ? [.15, .27, .39, .51, .63, .75, .87] : [.08, .24, .40, .55, .69, .82, .94];   // places along the trail, away from the bends
+    const UNIT_AT = PHONE ? [.15, .27, .39, .51, .63, .75, .87] : [.08, .24, .40, .55, .635, .82, .94];   // places along the trail, away from the bends
     units.forEach((u, i) => {
       const p = trail.getPointAtLength(L * UNIT_AT[i]), s = el('g', { transform: `translate(${p.x} ${p.y})`, opacity: u.ready ? 1 : .55, class: u.ready ? 'hot' : '' }, svg);
       el('line', { x1: 0, y1: 0, x2: 0, y2: -34, stroke: '#33291f', 'stroke-width': 2 }, s);
