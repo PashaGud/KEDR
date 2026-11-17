@@ -2299,7 +2299,7 @@ window.KEDR = {
     {
       id: "B4-P031", status: "draft", difficulty: 2, linkLevel: "point",
       anchors: ["B4.2#isothermal"],
-      buildsOn: ["B4-P028"], leadsTo: ["B4-P035"],
+      buildsOn: ["B4-P028"], leadsTo: ["B4-P035", "B4-P059"],
       concept: "Constant temperature: ΔU = 0, so Q = W; why isothermal means slow",
       images: [], keyInfo: "stays at the temperature of the water → T = const\ndoes 30 J of work → W = +30 J\nideal gas → U depends only on T\nchange in internal energy → find ΔU\nthermal energy exchanged → find Q\nits direction → into or out of the air?\nrise slowly → explain: why slow",
       statement: "A diver breathes out, and an air bubble rises slowly through water whose temperature is the same at every depth. The air in the bubble stays at the temperature of the water. As it rises, the bubble expands and does 30 J of work on the water around it. Treat the air as an ideal gas.\n(a) State the change in internal energy of the air in the bubble.\n(b) Determine the thermal energy exchanged between the air and the water, and state its direction.\n(c) Suggest why the bubble must rise slowly for this to be true.",
@@ -2311,7 +2311,7 @@ window.KEDR = {
     {
       id: "B4-P032", status: "draft", difficulty: 2, linkLevel: "point",
       anchors: ["B4.2#adiabatic"],
-      buildsOn: ["B4-P023"], leadsTo: ["B4-P034", "B4-P035"],
+      buildsOn: ["B4-P023"], leadsTo: ["B4-P034", "B4-P035", "B4-P058"],
       concept: "Adiabatic expansion: new pressure from pV^(5/3) = const, temperature ratio from pV",
       images: [], keyInfo: "monatomic ideal gas → pV^(5/3) = const\ninsulated → Q = 0\n4.86 × 10⁵ Pa → p_1\n2.0 × 10⁻⁴ m³ → V_1\nexpands adiabatically → Q = 0, the gas cools\n5.4 × 10⁻³ m³ → V_2\nfinal pressure → find p_2\nratio of the final temperature to the initial temperature → find T_2 ÷ T_1",
       statement: "Argon, a monatomic ideal gas, is held in an insulated cylinder at a pressure of 4.86 × 10⁵ Pa and a volume of 2.0 × 10⁻⁴ m³. The gas expands adiabatically to a volume of 5.4 × 10⁻³ m³.\n(a) Calculate the final pressure of the gas.\n(b) Determine the ratio of the final temperature to the initial temperature.",
@@ -2347,7 +2347,7 @@ window.KEDR = {
     {
       id: "B4-P035", status: "draft", difficulty: 2, linkLevel: "point",
       anchors: ["B4.2#isotherm-vs-adiabat"],
-      buildsOn: ["B4-P031", "B4-P032"], leadsTo: ["B4-P055"],
+      buildsOn: ["B4-P031", "B4-P032"], leadsTo: ["B4-P055", "B4-P060"],
       concept: "Isothermal against adiabatic compression from the same state",
       images: [], keyInfo: "same pressure, volume and temperature → same starting point on the pV diagram\nhalf of its volume → same final V\ncompressed isothermally → X: T = const\ncompressed adiabatically → Y: Q = 0, T rises\nWhich statement is correct → find: compare final p and work",
       statement: "Two identical samples of an ideal gas, X and Y, start at the same pressure, volume and temperature. Each is compressed to half of its volume. X is compressed isothermally, Y is compressed adiabatically.\nWhich statement is correct?\nA. X and Y end at the same pressure.\nB. Y ends at a higher pressure, and more work is done on Y.\nC. X ends at a higher pressure, and more work is done on X.\nD. Y ends at a higher pressure, but the same work is done on both.",
@@ -2371,7 +2371,7 @@ window.KEDR = {
     {
       id: "B4-P037", status: "draft", difficulty: 2, linkLevel: "point",
       anchors: ["B4.3#heat-engine"],
-      buildsOn: ["B4-P014"], leadsTo: ["B4-P038"],
+      buildsOn: ["B4-P014"], leadsTo: ["B4-P038", "B4-P063"],
       concept: "Heat-engine bookkeeping: Q_H = W + Q_C, η = W/Q_H, energy per cycle → power",
       images: [], keyInfo: "takes in 2.4 kJ → Q_H = 2.4 kJ per cycle\nefficiency is 0.35 → η = W/Q_H\ncooling water → cold reservoir: gets Q_C\n20 cycles every second → power = energy per cycle × 20\nrejects 1.5 kJ → Q_C = 1.5 kJ\n0.50 kJ of useful work → W",
       statement: "A ship's generator is driven by a heat engine. In each cycle the engine takes in 2.4 kJ of thermal energy from the burning fuel. Its efficiency is 0.35.\n(a) Calculate the useful work done by the engine in one cycle.\n(b) Calculate the thermal energy given to the cooling water in one cycle.\n(c) The engine completes 20 cycles every second. Calculate\n(i) the useful power output,\n(ii) the rate at which thermal energy is given to the cooling water.\n(d) A second engine rejects 1.5 kJ to its cooling water in each cycle while doing 0.50 kJ of useful work. Calculate its efficiency.",
@@ -2515,7 +2515,7 @@ window.KEDR = {
     {
       id: "B4-P049", status: "draft", difficulty: 2, linkLevel: "card",
       anchors: ["B4.4#second-law-entropy"],
-      buildsOn: ["B4-P047"], leadsTo: ["B4-P050"],
+      buildsOn: ["B4-P047", "B4-P060"], leadsTo: ["B4-P050"],
       concept: "Entropy of a gas in isothermal and adiabatic processes; why a decrease for the gas does not break the second law; reversible → ΔS_total = 0",
       images: [], keyInfo: "temperature stays constant → isothermal: ΔU = 0\ncompressed → work done on the gas: W < 0, so heat leaves: Q < 0\nlarge water bath → the surroundings take in the heat\nreversible → ΔS_total = 0\nno heat is exchanged → adiabatic: Q = 0",
       statement: "A fixed mass of ideal gas is held in a cylinder with a piston.\nFirst, the gas is compressed very slowly while the cylinder stands in a large water bath, so that its temperature stays constant.\n(a) Explain why the entropy of the gas decreases during this compression.\n(b) Explain why this decrease does not violate the second law of thermodynamics.\n(c) The compression is ideal (reversible). State the total change in entropy of the gas and the water bath.\nNext, the cylinder is wrapped in thick insulation and the gas is allowed to expand slowly, so that no heat is exchanged.\n(d) A student argues: \"The volume grows, so the molecules have more room — the entropy of the gas must increase.\" State and explain the actual change in the entropy of the gas.",
@@ -2619,6 +2619,102 @@ window.KEDR = {
       answer: "(a) m_w = m_ice·c·ΔT/L ≈ 0.045 kg ≈ 45 g\n(b)(i) wrong: the potential energy of the molecules decreases, U falls by ≈ 1.5 × 10⁴ J\n(ii) ΔS = Q/T ≈ 55 J K⁻¹ decrease\n(iii) the colder ice gains more entropy than the water loses → total increases",
       meaning: "Ice straight from the freezer is a heat sponge: it can freeze about a tenth of its own mass of water around it. This is why ice cubes from a very cold freezer stick to each other in a glass.",
       whatIf: "What if the freezer were at −36 °C? The block would take twice as much heat, and about 90 g of water would freeze onto it."
+    },
+    {
+      id: "B4-P058", status: "draft", difficulty: 3, linkLevel: "point",
+      anchors: ["B4.2#adiabatic"],
+      buildsOn: ["B4-P032"], leadsTo: ["B4-P061"],
+      concept: "Full bookkeeping of one adiabatic expansion: p₂ from pV^(5/3) = const, T₁ and T₂ from pV = nRT, ΔU = 3/2·Δ(pV), W = −ΔU, Q = 0",
+      images: [], keyInfo: "0.0200 mol → n\nmonatomic ideal gas → U = 3/2·nRT = 3/2·pV\n250 kPa … 200 cm³ → p₁, V₁ = 2.00 × 10⁻⁴ m³\nwrapped in insulation … slowly → reversible adiabatic: Q = 0, pV^(5/3) = const\n500 cm³ → V₂ = 5.00 × 10⁻⁴ m³\nwork done by the gas → W",
+      statement: "A cylinder fitted with a light piston contains 0.0200 mol of helium, a monatomic ideal gas, at a pressure of 250 kPa and a volume of 200 cm³. The cylinder is wrapped in insulation and the gas expands slowly until its volume is 500 cm³.\n(a) Calculate the pressure of the gas after the expansion.\n(b) Calculate the temperature of the gas\n(i) before the expansion,\n(ii) after the expansion.\n(c) Calculate the change in internal energy of the gas.\n(d) State the work done by the gas and the thermal energy transferred to it.\n(e) Explain, using the first law of thermodynamics, why the temperature of the gas falls.",
+      solution: "(a) Adiabat: p₁·V₁^(5/3) = p₂·V₂^(5/3) →\np₂ = p₁·(V₁/V₂)^(5/3) = 250 · (200/500)^(5/3) = 250 · 0.217 ≈ 54.3 kPa\n(b)(i) T₁ = p₁V₁/(nR) = 250 × 10³ · 2.00 × 10⁻⁴/(0.0200 · 8.31) = 50.0/0.166 ≈ 301 K\n(ii) T₂ = p₂V₂/(nR) = 54.3 × 10³ · 5.00 × 10⁻⁴/(0.0200 · 8.31) = 27.2/0.166 ≈ 163 K\n(Check with T·V^(2/3) = const: T₂ = 301/2.5^(2/3) = 301/1.84 ≈ 163 K ✓)\n(c) ΔU = 3/2·(p₂V₂ − p₁V₁) = 3/2 · (27.2 − 50.0) ≈ −34 J\n(d) Q = 0 (insulated). First law Q = ΔU + W → W = −ΔU ≈ +34 J (work done BY the gas).\n(e) No heat comes in, Q = 0, but the gas does work pushing the piston out, W > 0. From Q = ΔU + W: ΔU = −W < 0. The internal energy of an ideal gas is the kinetic energy of its particles, so they slow down: the temperature falls.",
+      answer: "(a) p₂ = p₁·(V₁/V₂)^(5/3) ≈ 54 kPa\n(b)(i) T₁ = p₁V₁/(nR) ≈ 301 K (ii) T₂ ≈ 163 K\n(c) ΔU = 3/2·(p₂V₂ − p₁V₁) ≈ −34 J\n(d) W ≈ +34 J, Q = 0\n(e) Q = 0 and W > 0 → ΔU = −W < 0 → T falls",
+      meaning: "Every joule of work the gas does comes out of its own internal energy. Expanding by a factor of 2.5 without heat almost halves its kelvin temperature.",
+      whatIf: "What if the same expansion were isothermal instead? Then T stays 301 K, ΔU = 0, the final pressure is only divided by 2.5 (100 kPa), and the gas must take in heat Q = W from outside."
+    },
+    {
+      id: "B4-P059", status: "draft", difficulty: 2, linkLevel: "point",
+      anchors: ["B4.2#isothermal"],
+      buildsOn: ["B4-P031"], leadsTo: [],
+      concept: "Recognise an isotherm on a pV graph (pV = const at several points), work as the area under a curve by counting squares, Q = W when ΔU = 0",
+      images: [], figures: ["cards/figures/B4-P059_1.svg"], keyInfo: "1.50 mol → n\nstate X to state Y → read p and V from the graph\nisothermal → check pV = nRT = const\nwork done by the gas → area under the curve, V increases: W > 0\ntakes in … or gives out → sign of Q",
+      statement: "The graph shows how the pressure p of 1.50 mol of an ideal gas varies with its volume V as the gas changes from state X to state Y.\n[Figure 1]\n(a) Show that the change from X to Y is isothermal.\n(b) Calculate the temperature of the gas.\n(c) Estimate the work done by the gas as it changes from X to Y.\n(d) State and explain whether the gas takes in thermal energy from its surroundings or gives it out.",
+      solution: "(a) Read three points from the graph and multiply:\nX: 5.0 × 10⁵ · 10 × 10⁻³ = 5.0 × 10³ J\nmiddle: 2.5 × 10⁵ · 20 × 10⁻³ = 5.0 × 10³ J\nY: 1.25 × 10⁵ · 40 × 10⁻³ = 5.0 × 10³ J\npV is the same everywhere, and pV = nRT with n fixed, so T is the same: the change is isothermal.\n(b) T = pV/(nR) = 5.0 × 10³/(1.50 · 8.31) ≈ 401 K\n(c) Work = area under the curve between V = 10 × 10⁻³ and 40 × 10⁻³ m³.\nOne small square is 0.5 × 10⁵ Pa × 5 × 10⁻³ m³ = 250 J.\nThere are about 28 small squares under the curve (count whole squares, pair up the part-squares) → W ≈ 28 · 250 ≈ 7 × 10³ J.\n(Exact value for an isotherm: W = pV·ln(V_Y/V_X) = 5.0 × 10³ · ln 4 ≈ 6.9 × 10³ J — not needed in IB, but a good check.)\n(d) It takes in thermal energy. The temperature is constant, so ΔU = 0, and the first law gives Q = ΔU + W = W ≈ 7 × 10³ J > 0.",
+      answer: "(a) pV = 5.0 × 10³ J at X, in the middle and at Y → T constant\n(b) T = pV/(nR) ≈ 401 K\n(c) W ≈ area ≈ 7 × 10³ J\n(d) takes in: ΔU = 0 → Q = W > 0",
+      meaning: "To keep its temperature while it pushes outwards, the gas has to be \"fed\" exactly as much heat as the work it does — about 7 kJ here.",
+      whatIf: "What if the gas went from Y back to X along the same curve? The same area, but now work is done ON the gas: W ≈ −7 × 10³ J, and Q ≈ −7 × 10³ J — the heat goes out."
+    },
+    {
+      id: "B4-P060", status: "draft", difficulty: 2, linkLevel: "point",
+      anchors: ["B4.4#entropy-change"],
+      buildsOn: ["B4-P035"], leadsTo: ["B4-P049"],
+      concept: "Complete a cycle on a pV sketch (isochore, adiabat steeper than isotherm) and find where the entropy of the gas is largest from the sign of Q in each step",
+      images: [], figures: ["cards/figures/B4-P060_1.svg"], solutionFig: "cards/solutions/B4-P060.svg", keyInfo: "isothermal expansion → T constant, heat goes IN: Q > 0\nconstant volume from B to C → vertical line\nadiabatic compression from C back to A → Q = 0, steeper than the isotherm\nentropy … largest → ΔS = Q/T: follow the sign of Q",
+      statement: "A heat engine works with an ideal gas. One step of its cycle is an isothermal expansion from state A, of volume V, to state B, of volume 3V, shown on the pV diagram.\n[Figure 1]\n(a) Complete the cycle ABCA on the diagram by sketching\n(i) a change at constant volume from B to C,\n(ii) an adiabatic compression from C back to A.\n(b) State and explain at which point of the cycle the entropy of the gas is largest.",
+      solution: "(a) First find where C is. C must lie on the adiabat through A, at volume 3V. Through the same point the adiabat falls more steeply than the isotherm, so at 3V the adiabat is below B. So:\n(i) from B a vertical line DOWN to C (the pressure falls at constant volume — the gas cools);\n(ii) from C a curve back up to A, steeper than AB, lying below it everywhere between V and 3V.\n(b) At B. Follow the heat:\nA → B: isothermal expansion, ΔU = 0, Q = W > 0: heat goes in → S increases.\nB → C: constant volume, the gas cools: Q = ΔU < 0: heat goes out → S decreases.\nC → A: adiabatic, Q = 0 → S stays the same.\nSo S rises all the way to B and then only falls or stays: it is largest at B. (Over the whole cycle ΔS = 0, so it falls back exactly to its value at A.)",
+      answer: "(a) B → C vertical line down; C → A curve up to A, steeper than (below) the isotherm\n(b) at B: heat in on AB (S ↑), heat out on BC (S ↓), Q = 0 on CA (S const)",
+      meaning: "You do not need any numbers to track entropy: the arrow of heat tells you everything. Heat in — S up, heat out — S down, no heat — S stays.",
+      whatIf: "What if the cycle were run backwards (A → C → B → A)? Then heat goes out on the isotherm and in on the isochore, and the entropy is smallest at B."
+    },
+    {
+      id: "B4-P061", status: "draft", difficulty: 3, linkLevel: "point",
+      anchors: ["B4.3#net-work"],
+      buildsOn: ["B4-P058"], leadsTo: ["B4-P062"],
+      concept: "Cycle adiabat + isobar + isochore: why T rises in adiabatic compression, W = pΔV on the isobar, net work, and the heat in from the energy balance of the cycle",
+      images: [], figures: ["cards/figures/B4-P061_1.svg"], keyInfo: "adiabatic compression AB → Q = 0, work done on the gas\nconstant pressure BC → W = pΔV\nconstant volume CA → W = 0\nwork done on the gas during AB is 445 J → W_AB = −445 J\n1800 J … leaves the gas → Q_CA = −1800 J\none cycle → ΔU = 0, Q_net = W_net",
+      statement: "A monatomic ideal gas is taken round the cycle ABCA: an adiabatic compression AB, an expansion at constant pressure BC and a change at constant volume CA.\n[Figure 1]\nAt A the volume is 4.00 × 10⁻³ m³ and the pressure is 1.00 × 10⁵ Pa. At B the pressure is 4.00 × 10⁵ Pa and the volume is 1.74 × 10⁻³ m³.\n(a) Explain why the temperature of the gas at B is higher than at A.\n(b) Calculate the work done by the gas during BC.\n(c) The work done on the gas during AB is 445 J. Calculate the net work done by the gas in one cycle.\n(d) During CA, 1800 J of thermal energy leaves the gas. Determine the thermal energy transferred to the gas during BC.",
+      solution: "(a) AB is adiabatic: Q = 0. The gas is compressed, so work is done on it: W < 0. First law: ΔU = Q − W = −W > 0. The internal energy of an ideal gas rises only if its temperature rises, so T_B > T_A.\n(b) W_BC = p·ΔV = 4.00 × 10⁵ · (4.00 − 1.74) × 10⁻³ ≈ 904 J\n(c) W_net = W_AB + W_BC + W_CA = −445 + 904 + 0 ≈ 459 J\n(d) Over a cycle ΔU = 0, so Q_net = W_net. Only BC and CA exchange heat (AB is adiabatic):\nQ_BC + Q_CA = W_net → Q_BC = W_net − Q_CA = 459 − (−1800) ≈ 2.26 × 10³ J\n(Check: Q_BC = ΔU + W = 3/2·p·ΔV + p·ΔV = 5/2 · 4.00 × 10⁵ · 2.26 × 10⁻³ ≈ 2.26 × 10³ J ✓)",
+      answer: "(a) Q = 0, work done on the gas → ΔU > 0 → T rises\n(b) W_BC = pΔV ≈ 904 J\n(c) W_net ≈ 459 J\n(d) Q_BC = W_net − Q_CA ≈ 2.26 × 10³ J",
+      meaning: "The engine takes in about 2.26 kJ, turns 0.46 kJ into work and throws 1.8 kJ away: an efficiency of only about 20 %.",
+      whatIf: "What if you were asked for the efficiency? η = W_net/Q_in = 459/2260 ≈ 0.20. Only BC counts as heat in — CA gives heat out, AB none."
+    },
+    {
+      id: "B4-P062", status: "draft", difficulty: 3, linkLevel: "point",
+      anchors: ["B4.3#cycles"],
+      buildsOn: ["B4-P061"], leadsTo: [],
+      concept: "Table of W, ΔU and Q with signs for each step of a cycle; ΔU_cycle = 0; an anticlockwise cycle gives out net energy",
+      images: [], figures: ["cards/figures/B4-P062_1.svg"], keyInfo: "adiabatic compression AB → Q = 0\nwork done on the gas during AB is 972 J → W_AB = −972 J\nconstant volume BC → W = 0\nconstant pressure CA → W = pΔV, p = 1.00 × 10⁵ Pa\nmonatomic → ΔU = 3/2·pΔV at constant p\none cycle → ΔU_total = 0",
+      statement: "A monatomic ideal gas is taken round the cycle ABCA: an adiabatic compression AB, a change at constant volume BC and an expansion at constant pressure CA.\n[Figure 1]\nAt A the pressure is 1.00 × 10⁵ Pa and the volume is 6.00 × 10⁻³ m³. At B and C the volume is 2.00 × 10⁻³ m³.\nThe work done on the gas during AB is 972 J. The change in internal energy of the gas during BC is −1572 J.\n(a) Copy and complete the table. W is the work done by the gas, ΔU the change in internal energy of the gas and Q the thermal energy transferred to the gas. Include the signs.\n| Change | W / J | ΔU / J | Q / J |\n| AB | | | |\n| BC | | −1572 | |\n| CA | | | |\n(b) Determine the net thermal energy that leaves the gas during one cycle.",
+      solution: "(a) AB: Q = 0, W = −972 J. First law ΔU = Q − W = 0 − (−972) = +972 J.\nBC: constant volume → W = 0; Q = ΔU + W = −1572 J.\nCA: constant pressure, V from 2.00 to 6.00 × 10⁻³ m³:\nW = p·ΔV = 1.00 × 10⁵ · 4.00 × 10⁻³ = +400 J\nΔU = 3/2·p·ΔV = +600 J (check: ΔU over the cycle = 972 − 1572 + 600 = 0 ✓)\nQ = ΔU + W = 600 + 400 = +1000 J\n| Change | W / J | ΔU / J | Q / J |\n| AB | −972 | +972 | 0 |\n| BC | 0 | −1572 | −1572 |\n| CA | +400 | +600 | +1000 |\n(b) Q_net = 0 − 1572 + 1000 = −572 J: 572 J leaves the gas per cycle.\n(It equals the net work done ON the gas: W_net = −972 + 400 = −572 J.)",
+      answer: "(a) AB: W = −972, ΔU = +972, Q = 0; BC: W = 0, ΔU = −1572, Q = −1572; CA: W = +400, ΔU = +600, Q = +1000 (all in J)\n(b) 572 J leaves the gas",
+      meaning: "The cycle runs anticlockwise: more work is done on the gas than by it, and the difference comes out as heat. This is the energy pattern of a heat pump or a refrigerator, not of an engine.",
+      whatIf: "What if the same cycle ran clockwise (A → C → B → A)? Every number changes sign: the gas takes in a net 572 J of heat and does 572 J of net work — an engine."
+    },
+    {
+      id: "B4-P063", status: "draft", difficulty: 3, linkLevel: "point",
+      anchors: ["B4.3#efficiency"],
+      buildsOn: ["B4-P037"], leadsTo: ["B4-P064"],
+      concept: "Model of a petrol engine (two adiabats, two isochores): where heat enters, heat out at constant volume Q = 3/2·VΔp, heat in from η, net work = loop area",
+      images: [], figures: ["cards/figures/B4-P063_1.svg"], keyInfo: "AB and CD are adiabatic → Q = 0 on these steps\nBC, DA vertical → constant volume: W = 0, Q = ΔU\npressure falls from 3.0 × 10⁵ Pa to 1.0 × 10⁵ Pa → Δp = −2.0 × 10⁵ Pa on DA\n5.0 × 10⁻³ m³ → V on DA\nefficiency of the engine is 0.40 → η = W/Q_in\narea enclosed by the loop → W_net",
+      statement: "The cycle ABCDA models the engine of a car. The working substance is a monatomic ideal gas. AB and CD are adiabatic curves.\n[Figure 1]\n(a) State what is meant by an adiabatic curve.\n(b) Name the type of change BC and DA.\n(c) Identify the stage of the cycle during which thermal energy is given to the gas.\n(d) Along DA the pressure falls from 3.0 × 10⁵ Pa to 1.0 × 10⁵ Pa. The volume along DA is 5.0 × 10⁻³ m³. The efficiency of the engine is 0.40. Calculate\n(i) the thermal energy removed from the gas,\n(ii) the thermal energy given to the gas,\n(iii) the area enclosed by the loop ABCDA.",
+      solution: "(a) A curve on the pV diagram showing a change in which no thermal energy enters or leaves the gas (Q = 0); for a monatomic ideal gas pV^(5/3) = const.\n(b) Both are isovolumetric (constant volume) changes.\n(c) BC: at constant volume the pressure — and so the temperature — rises, so ΔU > 0 with W = 0: Q = ΔU > 0. (On DA, Q < 0; on AB and CD, Q = 0.)\n(d)(i) DA: W = 0, so Q = ΔU = 3/2·V·Δp = 3/2 · 5.0 × 10⁻³ · (−2.0 × 10⁵) = −1.5 × 10³ J → 1.5 × 10³ J removed.\n(ii) η = W/Q_in and W = Q_in − Q_out → η = 1 − Q_out/Q_in:\nQ_in = Q_out/(1 − η) = 1.5 × 10³/0.60 = 2.5 × 10³ J\n(iii) Area = W_net = η·Q_in = 0.40 · 2.5 × 10³ = 1.0 × 10³ J",
+      answer: "(a) a change with Q = 0 (pV^(5/3) = const)\n(b) isovolumetric (constant volume)\n(c) BC\n(d)(i) Q_out = 3/2·V·|Δp| = 1.5 × 10³ J (ii) Q_in = Q_out/(1 − η) = 2.5 × 10³ J (iii) W = 1.0 × 10³ J",
+      meaning: "In a car engine the \"heating at constant volume\" is the spark: fuel burns so fast that the piston has no time to move. The exhaust is the cooling DA — and it carries away 60 % of the energy.",
+      whatIf: "What if the engine became more efficient, η = 0.50, with the same exhaust heat? Q_in = 1.5 × 10³/0.50 = 3.0 × 10³ J and the loop area grows to 1.5 × 10³ J."
+    },
+    {
+      id: "B4-P064", status: "draft", difficulty: 4, linkLevel: "card",
+      anchors: ["B4.3#efficiency"],
+      buildsOn: ["B4-P063"], leadsTo: [],
+      concept: "Engine cycle isotherm + isochore + adiabat with numbers: p after the isotherm, T at the end of the isochore from the adiabat, heat in, net work and efficiency",
+      images: [], figures: ["cards/figures/B4-P064_1.svg"], keyInfo: "isothermal compression AB → T_B = T_A = 300 K, pV = const\none third of the volume → V_B = V_A/3 = 5.00 × 10⁻⁴ m³\nconstant volume BC → W = 0, Q = ΔU\nadiabatic expansion CA → C and A lie on one adiabat: T·V^(2/3) = const\nwork done on the gas … 165 J → W_AB = −165 J, Q_AB = −165 J\nefficiency → η = W_net/Q_in",
+      statement: "A heat engine uses a monatomic ideal gas. Its reversible cycle ABCA consists of an isothermal compression AB, a heating at constant volume BC and an adiabatic expansion CA.\n[Figure 1]\nAt A the pressure is 1.00 × 10⁵ Pa, the volume is 1.50 × 10⁻³ m³ and the temperature is 300 K. The volume at B is one third of the volume at A.\n(a) Calculate\n(i) the pressure at B,\n(ii) the temperature at C,\n(iii) the thermal energy given to the gas during BC.\n(b) The work done on the gas during the isothermal compression is 165 J. Determine\n(i) the net work done by the gas in one cycle,\n(ii) the efficiency of the engine.",
+      solution: "(a)(i) Isotherm: p_B = p_A·V_A/V_B = 3 · 1.00 × 10⁵ = 3.00 × 10⁵ Pa\n(ii) C and A are on the same adiabat, and V_C = V_B = V_A/3:\nT_C·V_C^(2/3) = T_A·V_A^(2/3) → T_C = T_A·3^(2/3) = 300 · 2.08 ≈ 624 K\n(iii) BC, constant volume: Q = ΔU = 3/2·nRΔT. With nR = p_A·V_A/T_A = 150/300 = 0.500 J K⁻¹:\nQ_BC = 3/2 · 0.500 · (624 − 300) ≈ 243 J\n(b)(i) Heat is exchanged only on AB and BC: Q_AB = W_AB = −165 J (isothermal: ΔU = 0), Q_BC = +243 J.\nOver the cycle ΔU = 0 → W_net = Q_net = 243 − 165 = 78 J\n(Check through CA: W_CA = −ΔU_CA = 3/2·nR·(T_C − T_A) = 243 J, and W_net = −165 + 0 + 243 = 78 J ✓)\n(ii) Only BC gives heat to the gas: η = W_net/Q_in = 78/243 ≈ 0.32",
+      answer: "(a)(i) p_B = 3p_A = 3.00 × 10⁵ Pa (ii) T_C = T_A·3^(2/3) ≈ 624 K (iii) Q_BC = 3/2·nR(T_C − T_A) ≈ 243 J\n(b)(i) W_net = Q_BC − 165 ≈ 78 J (ii) η = W_net/Q_BC ≈ 0.32",
+      meaning: "Of 243 J put in during the heating, only 78 J become work; 165 J must be pushed out during the isothermal compression to bring the gas back. Compare with Carnot between 624 K and 300 K: 1 − 300/624 ≈ 0.52 — this cycle is well below the limit.",
+      whatIf: "What if the volume at B were half the volume at A? T_C = 300 · 2^(2/3) ≈ 476 K, Q_BC = 3/2 · 0.500 · 176 ≈ 132 J, and the work of the isothermal compression would be smaller too (≈ 104 J): η ≈ 0.21."
+    },
+    {
+      id: "B4-P065", status: "draft", difficulty: 3, linkLevel: "card",
+      anchors: ["B4.3#net-work"],
+      buildsOn: ["B4-P063"], leadsTo: [],
+      concept: "Build a four-step cycle (diesel-type) from words: p at each corner, sketch to scale, where work is done on the gas, net work estimated from the loop area",
+      images: [], solutionFig: "cards/solutions/B4-P065.svg", keyInfo: "30 cm³ … 4.0 × 10⁶ Pa → V_A = 3.0 × 10⁻⁵ m³, p_A\nconstant pressure until the volume doubles → V_B = 60 cm³, p_B = p_A\nadiabatic … doubles again → V_C = 120 cm³, pV^(5/3) = const\nconstant volume CD → V_D = 120 cm³\nadiabatic compression back to A → D lies on the adiabat through A\nwork done on the gas → the step where V decreases\nnet work → area of the loop",
+      statement: "The cycle of a model diesel engine works with a monatomic ideal gas. It starts at state A, with volume 30 cm³ and pressure 4.0 × 10⁶ Pa, and has four steps:\nAB — expansion at constant pressure until the volume doubles;\nBC — adiabatic expansion until the volume doubles again;\nCD — reduction of pressure at constant volume;\nDA — adiabatic compression back to A.\n(a) Show that the pressure at C is about 1.3 × 10⁶ Pa.\n(b) Calculate the pressure at D.\n(c) Sketch the cycle on a pV diagram with scales: p from 0 to 4.5 × 10⁶ Pa, V from 0 to 130 cm³.\n(d) On your sketch, mark the step during which work is done on the gas.\n(e) Estimate the net work done by the gas during one cycle.",
+      solution: "(a) Adiabat BC: p_C = p_B·(V_B/V_C)^(5/3) = 4.0 × 10⁶ · (1/2)^(5/3) = 4.0 × 10⁶/3.17 ≈ 1.26 × 10⁶ Pa ≈ 1.3 × 10⁶ Pa ✓\n(b) D and A lie on the same adiabat, V_D = 4·V_A:\np_D = p_A·(V_A/V_D)^(5/3) = 4.0 × 10⁶ · (1/4)^(5/3) = 4.0 × 10⁶/10.1 ≈ 0.40 × 10⁶ Pa\n(c) A (30, 4.0) → B (60, 4.0): horizontal line; B → C (120, 1.26): adiabat, curving down; C → D (120, 0.40): vertical line down; D → A: steeper adiabat curving up to A. (See the solution picture.)\n(d) Work is done on the gas only where the volume decreases: DA.\n(e) Net work = area of the loop. Count squares, or add up the steps:\nW_AB = p·ΔV = 4.0 × 10⁶ · 3.0 × 10⁻⁵ = 120 J\nW_BC = −ΔU = 3/2·(p_B·V_B − p_C·V_C) = 3/2 · (240 − 151) ≈ 133 J\nW_DA = −3/2·(p_A·V_A − p_D·V_D) = −3/2 · (120 − 48) ≈ −109 J\nW_net = 120 + 133 + 0 − 109 ≈ 1.4 × 10² J",
+      answer: "(a) p_C = p_B·(1/2)^(5/3) ≈ 1.26 × 10⁶ Pa\n(b) p_D = p_A·(1/4)^(5/3) ≈ 0.40 × 10⁶ Pa\n(c) see the picture: horizontal AB, adiabat BC, vertical CD, adiabat DA\n(d) DA\n(e) W_net ≈ 1.4 × 10² J",
+      meaning: "In a diesel engine the fuel burns while the piston is already moving: heat goes in at constant pressure (AB), not in a flash at constant volume as in a petrol engine. The loop is fat at the top — that is where the useful work comes from.",
+      whatIf: "What if the isobaric step only increased the volume by half (to 45 cm³)? The loop would be thinner, and the net work smaller — less fuel burnt per cycle, less work out."
     },
   ]
 };
