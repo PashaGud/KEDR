@@ -91,6 +91,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .chip.dim{opacity:.28}
 .chip.booklet{background:#f6dc8f;border:2px solid #b07d18;color:#5a3d06}
 .chip.booklet::after{content:"B";position:absolute;bottom:-7px;right:-5px;width:15px;height:15px;border-radius:50%;background:#b07d18;color:#fff;font-size:9.5px;font-weight:700;line-height:15px;text-align:center}
+.chip sup.hl{font-size:9px;font-weight:700;color:#6b4fa0;margin-left:2px}
 .booklet-legend{display:inline-flex;align-items:center;gap:7px;margin-left:14px;font-family:var(--f-struct);font-size:13px;color:var(--ink-muted)}
 .booklet-legend i{width:14px;height:14px;border-radius:50%;background:#f6dc8f;border:2px solid #b07d18}
 .pp-mark{float:right;margin-left:12px;font-family:var(--f-struct);font-size:13px;font-weight:600;color:var(--ink-muted)}
@@ -332,7 +333,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 <section id="view"></section>
 <div class="tip" id="tip"></div>
 
-<script src="course.js?v=20261121a"></script>
+<script src="course.js?v=20261121b"></script>
 <script src="home.js?v=20261121a"></script>
 <script src="feedback.js?v=20261118b"></script>
 <script>
@@ -396,7 +397,7 @@ function chip(p){
   const dots = '<span class="d">' + '<i></i>'.repeat(p.difficulty||0) + '</span>';
   const st = solved[p.id] ? ' solved' : (seen[p.id] ? ' opened' : '');
   const bk = p.source === 'booklet' ? ' booklet' : '';
-  return `<a class="chip ${p.images && p.images.length ? 'styled' : 'draft'}${st}${bk}" href="#${p.id}" data-p="${p.id}"${bk ? ' title="From the school booklet"' : ''}>${lbl(p.id)}${dots}${solved[p.id]?'<span class="ok">✓</span>':''}</a>`;
+  return `<a class="chip ${p.images && p.images.length ? 'styled' : 'draft'}${st}${bk}" href="#${p.id}" data-p="${p.id}"${bk ? ' title="From the school booklet"' : ''}>${lbl(p.id)}${p.level==='HL'?'<sup class="hl">HL</sup>':''}${dots}${solved[p.id]?'<span class="ok">✓</span>':''}</a>`;
 }
 
 /* ---------- map ---------- */
@@ -623,7 +624,7 @@ function problemPage(p, pv, nx){
   const twin = fam.find(q => !solved[q.id]) || fam[0];
   const r = rating[p.id];
   return `<div class="pp">
-  <div class="pp-top"><span><b class="pp-num">${lbl(p.id)}</b>${p.source === 'booklet' ? '<span class="pp-bk">school booklet</span>' : ''}${card ? `<a href="#${card}">${esc(card)} · ${esc(atitle)}</a>` : ''}</span><span class="pp-dots" title="difficulty ${d} of 4">${'●'.repeat(d)}<i>${'●'.repeat(Math.max(0, 4 - d))}</i><span class="pp-uid">${esc(p.id)}</span></span></div>
+  <div class="pp-top"><span><b class="pp-num">${lbl(p.id)}</b>${p.source === 'booklet' ? '<span class="pp-bk">school booklet</span>' : ''}${p.level === 'HL' ? '<span class="pp-bk">HL only</span>' : ''}${card ? `<a href="#${card}">${esc(card)} · ${esc(atitle)}</a>` : ''}</span><span class="pp-dots" title="difficulty ${d} of 4">${'●'.repeat(d)}<i>${'●'.repeat(Math.max(0, 4 - d))}</i><span class="pp-uid">${esc(p.id)}</span></span></div>
   <div class="pp-st" id="xSt">${partsHtml(p.statement, p.figure ? `<figure class="pp-fig"><img src="${esc(p.figure)}" alt="figure for problem ${esc(p.id)}"></figure>` : '').replace(/(?:<p[^>]*>)?\[Figure (\d)\](?:<\/p>)?/g, (m, n) => p.figures && p.figures[n - 1] ? `<figure class="pp-fig"><img src="${esc(p.figures[n - 1])}" alt="figure ${n}"></figure>` : '')}</div>
   <div class="pp-btns">
     ${p.keyInfo ? '<button class="pp-btn g" id="bKey">Highlight what matters</button>' : ''}
