@@ -321,7 +321,7 @@ window.KedrHome = function(ctx){
         <div class="bar2"><i style="width:${Math.round(100*n/total)}%"></i></div>
         <div class="small">${n} of ${total} kinematics problems solved</div>
         <svg class="rings" viewBox="-60 -60 120 120" id="ringsSvg"></svg>
-        <div class="small" style="text-align:center;margin-top:-4px">each ring — the solved problems of one theory card (T01 inside → T05 outside)</div>
+        <div class="small" style="text-align:center;margin-top:-4px">each ring — the solved problems of one theory card (T01 inside → T04 outside)</div>
         <a class="cta" href="#${nextUp() || 'map'}">Continue → ${nextUp() || 'the map'}</a>
         <a class="cta ghost" href="#map">Open the kinematics map</a>
       </div>` : ''}
@@ -339,7 +339,7 @@ window.KedrHome = function(ctx){
     const TRAIL = PHONE ? 'M150 840 C 300 820, 360 790, 470 770 S 600 730, 650 700 S 760 630, 800 605 S 830 585, 845 578' : 'M170 842 C 450 838, 750 830, 1000 820 C 1085 816, 1090 762, 1000 760 C 780 756, 560 750, 340 742 C 255 739, 250 692, 340 690 C 560 683, 790 672, 1000 660 C 1080 656, 1085 614, 1000 612 C 880 610, 760 612, 650 614';
     const trail = el('path', { d: TRAIL, fill: 'none', stroke: '#efe3c8', 'stroke-width': 5, 'stroke-dasharray': '2 12', 'stroke-linecap': 'round' }, svg);
     const L = trail.getTotalLength();
-    const units = [{ n: 'Kinematics', ready: true, unit: 'Kinematics' }, { n: 'Forces & momentum' }, { n: 'Energy' }, { n: 'Thermodynamics', ready: true, unit: 'Thermodynamics' }, { n: 'Waves' }, { n: 'Fields' }, { n: 'Quantum & nuclear' }];
+    const units = [{ n: 'Kinematics', ready: true, unit: 'Kinematics' }, { n: 'Forces & momentum', ready: true, unit: 'Forces & momentum' }, { n: 'Energy' }, { n: 'Thermodynamics', ready: true, unit: 'Thermodynamics' }, { n: 'Waves' }, { n: 'Fields' }, { n: 'Quantum & nuclear' }];
     const UNIT_AT = PHONE ? [.15, .27, .39, .51, .63, .75, .87] : [.08, .24, .40, .55, .635, .78, .94];   // places along the trail, away from the bends
     units.forEach((u, i) => {
       const p = trail.getPointAtLength(L * UNIT_AT[i]), s = el('g', { transform: `translate(${p.x} ${p.y})`, opacity: u.ready ? 1 : .55, class: u.ready ? 'hot' : '' }, svg);

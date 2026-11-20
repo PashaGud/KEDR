@@ -8,7 +8,7 @@
 window.KEDR = {
 
   course: "Kinematics",
-  units: ["Kinematics", "Thermodynamics"],   // each theory card belongs to one unit; the map shows one unit at a time
+  units: ["Kinematics", "Forces & momentum", "Thermodynamics"],   // each theory card belongs to one unit; the map shows one unit at a time
 
   // ---------- THEORY CARDS (shown left → right on the map) ----------
   theory: [
@@ -67,8 +67,65 @@ window.KEDR = {
       ]
     },
     {
+      id: "A2.1",
+      unit: "Forces & momentum",
+      title: "Newton's Laws and Free-Body Diagrams",
+      file: "cards/A2.1/index.html",
+      after: ["T03"],
+      anchors: [
+        { id: "newtons-laws", title: "Newton's three laws" },
+        { id: "third-law-pairs", title: "Third-law pairs" },
+        { id: "free-body", title: "Free-body diagrams" },
+        { id: "resultant", title: "Resultant force" },
+        { id: "equilibrium", title: "Equilibrium" },
+        { id: "f-ma", title: "F = ma" },
+        { id: "connected-bodies", title: "Connected bodies" },
+        { id: "apparent-weight", title: "Lifts and apparent weight" },
+      ]
+    },
+    {
+      id: "A2.2",
+      unit: "Forces & momentum",
+      title: "The Forces",
+      file: "cards/A2.2/index.html",
+      after: ["A2.1"],
+      anchors: [
+        { id: "friction", title: "Friction" },
+        { id: "hooke", title: "Springs: Hooke's law" },
+        { id: "drag", title: "Viscous drag" },
+        { id: "buoyancy", title: "Buoyancy" },
+      ]
+    },
+    {
+      id: "A2.3",
+      unit: "Forces & momentum",
+      title: "Momentum and Impulse",
+      file: "cards/A2.3/index.html",
+      after: ["A2.1"],
+      anchors: [
+        { id: "momentum", title: "Momentum p = mv" },
+        { id: "impulse", title: "Impulse J = FΔt = Δp" },
+        { id: "force-time-area", title: "Area under F(t)" },
+        { id: "rate-of-momentum", title: "Force as rate of change of momentum" },
+        { id: "safety", title: "Longer impact, smaller force" },
+      ]
+    },
+    {
+      id: "A2.4",
+      unit: "Forces & momentum",
+      title: "Collisions and Explosions",
+      file: "cards/A2.4/index.html",
+      after: ["A2.3"],
+      anchors: [
+        { id: "conservation-1d", title: "Conservation of momentum" },
+        { id: "explosions", title: "Explosions and recoil" },
+        { id: "elastic-inelastic", title: "Elastic or inelastic" },
+        { id: "collisions-2d", title: "Collisions in 2D (HL)" },
+      ]
+    },
+    {
       id: "T05",
-      unit: "Kinematics",
+      unit: "Forces & momentum",
       title: "Circular Motion",
       file: "cards/T05/index.html",
       after: ["T03"],
@@ -79,6 +136,20 @@ window.KEDR = {
         { id: "centripetal-acceleration", title: "Centripetal acceleration" },
         { id: "tangential-acceleration", title: "Tangential acceleration" },
         { id: "shared-omega-vs-shared-v", title: "Same ω or same v" },
+      ]
+    },
+    {
+      id: "A2.5",
+      unit: "Forces & momentum",
+      title: "Centripetal Force",
+      file: "cards/A2.5/index.html",
+      after: ["T05", "A2.1"],
+      anchors: [
+        { id: "what-provides", title: "What provides it" },
+        { id: "f-mv2r", title: "F = mv²/r = mω²r" },
+        { id: "horizontal-circles", title: "Horizontal circles" },
+        { id: "vertical-circles", title: "Vertical circles: top and bottom" },
+        { id: "after-release", title: "When the string breaks" },
       ]
     },
     {
@@ -2715,6 +2786,234 @@ window.KEDR = {
       answer: "(a) p_C = p_B·(1/2)^(5/3) ≈ 1.26 × 10⁶ Pa\n(b) p_D = p_A·(1/4)^(5/3) ≈ 0.40 × 10⁶ Pa\n(c) see the picture: horizontal AB, adiabat BC, vertical CD, adiabat DA\n(d) DA\n(e) W_net ≈ 1.4 × 10² J",
       meaning: "In a diesel engine the fuel burns while the piston is already moving: heat goes in at constant pressure (AB), not in a flash at constant volume as in a petrol engine. The loop is fat at the top — that is where the useful work comes from.",
       whatIf: "What if the isobaric step only increased the volume by half (to 45 cm³)? The loop would be thinner, and the net work smaller — less fuel burnt per cycle, less work out."
+    },
+    {
+      id: "A2-P001", status: "draft", difficulty: 1, linkLevel: "point",
+      anchors: ["A2.1#newtons-laws"],
+      buildsOn: [], leadsTo: ["A2-P004"],
+      concept: "Newton's first law: no resultant force → velocity does not change",
+      images: [], keyInfo: "Which statement is Newton's first law of motion → find: the first law",
+      statement: "Which statement is Newton's first law of motion?\nA. The resultant force on a body equals the rate of change of its momentum.\nB. A body stays at rest, or keeps moving with constant velocity, unless a resultant force acts on it.\nC. When two bodies interact, they exert equal and opposite forces on each other.\nD. A body moving at constant speed has no forces acting on it.",
+      solution: "The first law is about what happens when the forces on a body cancel out (or there are none): the velocity — both its size and its direction — stays the same. A body at rest stays at rest; a moving body keeps moving in a straight line at constant speed.\nA — this is the second law (F = Δp/Δt).\nC — this is the third law.\nD — wrong: a body at constant speed can have many forces on it; they just add up to zero. (A car cruising on a motorway: engine force forward, air resistance and friction backward.)",
+      answer: "B",
+      meaning: "A force is not needed to keep something moving — it is needed to change the motion. That is the big idea that separates physics from everyday intuition.",
+      whatIf: "What if a hockey puck slides on perfectly smooth ice — what keeps it moving? Nothing needs to: with no resultant force its velocity just stays the same. In reality friction and air slowly stop it."
+    },
+    {
+      id: "A2-P002", status: "draft", difficulty: 2, linkLevel: "point",
+      anchors: ["A2.1#third-law-pairs"],
+      buildsOn: ["A2-P001"], leadsTo: [],
+      concept: "Third-law pair: same type of force, two different bodies, opposite directions",
+      images: [], keyInfo: "rests on a desk → laptop in equilibrium\nNewton's third law pair → same type of force, on two different bodies",
+      statement: "A laptop rests on a desk. Which pair of forces is a Newton's third law pair?\nA. The weight of the laptop and the upward push of the desk on the laptop.\nB. The gravitational pull of the Earth on the laptop and the gravitational pull of the laptop on the Earth.\nC. The weight of the laptop and the push of the laptop on the desk.\nD. The upward push of the desk on the laptop and the weight of the desk.",
+      solution: "A third-law pair: body X pushes on body Y, and Y pushes back on X. The two forces are of the SAME type, act on DIFFERENT bodies, are equal in size and opposite in direction.\nA — both forces act on the laptop, and they are of different types (gravity and contact). They are equal only because the laptop is at rest — that is the first law, not the third.\nB — the Earth pulls the laptop, the laptop pulls the Earth; both gravitational; two different bodies. ✓\nC — different types (gravity and contact) and the weight is not \"the laptop pushing on the desk\".\nD — the weight of the desk has nothing to do with the laptop.",
+      answer: "B",
+      meaning: "The pair of \"the push of the desk on the laptop\" is the push of the laptop on the desk — not the weight. Two forces on the same body can never be a third-law pair.",
+      whatIf: "What if someone lifts the laptop off the desk — what happens to the force in option A that balanced the weight? The desk stops pushing (it is no longer in contact). The pair in B is still there: the Earth and the laptop still pull each other."
+    },
+    {
+      id: "A2-P003", status: "draft", difficulty: 1, linkLevel: "point",
+      anchors: ["A2.1#free-body"],
+      buildsOn: [], leadsTo: ["A2-P015"],
+      concept: "Free-body diagram on a rough slope: weight, normal force, friction up the slope",
+      images: [], keyInfo: "slides down → moving: dynamic friction\na rough ramp → friction acts\nAir resistance is negligible → no drag\nDraw a free-body diagram → find: all forces on the box, drawn from the box",
+      statement: "A wooden box slides down a rough ramp. Air resistance is negligible.\n(a) Draw a free-body diagram for the box and name each force.\n(b) State the direction of each force.",
+      solution: "Ask: what touches the box, and what acts at a distance?\nAt a distance — only the Earth: the weight W = mg, straight down (vertically, not perpendicular to the ramp).\nTouching — only the ramp. A contact force has two parts:\n• the normal force N, perpendicular to the ramp surface, away from it;\n• friction F_f along the surface, against the sliding: the box slides down, so friction points UP the ramp. Here it is dynamic friction, F_f = μ_d·N.\nNothing else: there is no \"force of motion\" pulling the box down the ramp — that is the component of the weight.",
+      answer: "(a) three forces: weight W, normal force N, dynamic friction F_f\n(b) W — vertically down; N — perpendicular to the ramp, away from it; F_f — along the ramp, up the slope",
+      meaning: "Every force on a diagram must have a \"who exerts it\". If you cannot name the body that pushes or pulls, the force does not exist.",
+      whatIf: "What if the box is pushed UP the ramp instead (and is moving up)? Friction turns round: it now points DOWN the ramp, still against the motion. W and N do not change."
+    },
+    {
+      id: "A2-P004", status: "draft", difficulty: 1, linkLevel: "point",
+      anchors: ["A2.1#equilibrium"],
+      buildsOn: ["A2-P001"], leadsTo: ["A2-P007"],
+      concept: "Constant velocity → resultant force zero, whatever the mass",
+      images: [], keyInfo: "mass 82 kg → m (a distractor here)\nvertically → straight line\nconstant speed → a = 0\nWhat is the resultant force on the skydiver → find F_res",
+      statement: "A skydiver of mass 82 kg falls vertically at a constant speed of 4.5 m s⁻¹ with an open parachute.\nWhat is the resultant force on the skydiver?\nA. 0 N\nB. 82 N\nC. 369 N\nD. 804 N",
+      solution: "The skydiver moves in a straight line at constant speed: constant velocity, so a = 0.\nSecond law: F_res = m·a = 82 · 0 = 0 N.\nThe forces are still there — weight 82 · 9.81 ≈ 804 N down and air resistance up — but they cancel exactly.\nD is the weight, not the resultant. C = 82 · 4.5 — mass times speed is momentum (kg m s⁻¹), not a force.",
+      answer: "A (F_res = m·a = 0)",
+      meaning: "Constant velocity is the \"balanced\" state: air resistance has grown until it equals the weight. This is the terminal speed.",
+      whatIf: "What if the air resistance is now 950 N (just after the parachute opens)? F_res = 950 − 804 = 146 N upward: the skydiver slows down, a = 146/82 ≈ 1.8 m s⁻² upward, until the drag falls back to 804 N."
+    },
+    {
+      id: "A2-P005", status: "draft", difficulty: 2, linkLevel: "point",
+      anchors: ["A2.1#resultant"],
+      buildsOn: [], leadsTo: ["A2-P006"],
+      concept: "Two forces at any angle: the resultant lies between",
+      images: [], keyInfo: "9 N and 5 N → F₁, F₂\nThe angle between them can be anything → resultant from |F₁ − F₂| to F₁ + F₂\ncan NOT be the size of the resultant force → find the value outside the range",
+      statement: "Two forces of 9 N and 5 N act on the same object. The angle between them can be anything.\nWhich value can NOT be the size of the resultant force?\nA. 4 N\nB. 7 N\nC. 14 N\nD. 15 N",
+      solution: "The resultant is largest when the forces point the same way: 9 + 5 = 14 N.\nIt is smallest when they point in opposite directions: 9 − 5 = 4 N.\nAt any other angle it lies in between: 4 N ≤ F_res ≤ 14 N.\n4 N, 7 N and 14 N all fit. 15 N is more than 14 N — impossible.",
+      answer: "D (4 N ≤ F_res ≤ 14 N)",
+      meaning: "Forces add like arrows, not like numbers: the same two forces can give anything from their difference to their sum.",
+      whatIf: "What if the two forces are at 90° to each other? F_res = √(9² + 5²) = √106 ≈ 10.3 N — inside the range, as it must be."
+    },
+    {
+      id: "A2-P006", status: "draft", difficulty: 3, linkLevel: "point",
+      anchors: ["A2.1#resultant"],
+      buildsOn: ["A2-P005"], leadsTo: [],
+      concept: "Three forces: range of the resultant, then a = F/m",
+      images: [], keyInfo: "3 N, 6 N and 15 N → three forces\nmass 3.0 kg → m\nTheir directions can be anything → find the range of F_res\nNo other forces act → a = F_res/m\nWhich acceleration is NOT possible → find a outside the range",
+      statement: "Three forces of 3 N, 6 N and 15 N act together on an object of mass 3.0 kg. Their directions can be anything. No other forces act.\nWhich acceleration is NOT possible?\nA. 1 m s⁻²\nB. 3 m s⁻²\nC. 5 m s⁻²\nD. 8 m s⁻²",
+      solution: "Largest resultant: all three in one direction: 3 + 6 + 15 = 24 N.\nSmallest resultant: the two small forces together can give at most 3 + 6 = 9 N; they cannot cancel the 15 N force. Pointing both against it leaves 15 − 9 = 6 N.\nSo 6 N ≤ F_res ≤ 24 N.\na = F_res/m: 6/3.0 = 2 m s⁻² up to 24/3.0 = 8 m s⁻².\n1 m s⁻² is below 2 m s⁻² — impossible.",
+      answer: "A (2 m s⁻² ≤ a ≤ 8 m s⁻²)",
+      meaning: "With three forces the resultant can be zero only if no single force is bigger than the other two together. Here 15 N is \"too strong\" to be balanced.",
+      whatIf: "What if the largest force were 8 N instead of 15 N? Then 3 + 6 = 9 N > 8 N, the three forces can form a closed triangle, the resultant can be 0, and any acceleration from 0 to (3 + 6 + 8)/3.0 ≈ 5.7 m s⁻² is possible."
+    },
+    {
+      id: "A2-P007", status: "draft", difficulty: 2, linkLevel: "point",
+      anchors: ["A2.1#f-ma"],
+      buildsOn: ["A2-P004"], leadsTo: ["A2-P008"],
+      concept: "Resultant of forces along one line, then a = F/m",
+      images: [], keyInfo: "rises vertically → air resistance acts downward\nupward thrust of 12 MN → T (MN → N)\nweight of the rocket is 7.0 MN → W, downward\nair resistance on it is 400 kN → D, against the motion (kN → N)\nDetermine the resultant force → find F_res = T − W − D\n7.1 × 10⁵ kg → m\nCalculate its acceleration → find a = F_res/m",
+      statement: "A rocket rises vertically. Its engines give an upward thrust of 12 MN. The weight of the rocket is 7.0 MN and the air resistance on it is 400 kN.\n(a) Determine the resultant force on the rocket.\n(b) The mass of the rocket is 7.1 × 10⁵ kg. Calculate its acceleration.",
+      solution: "(a) Take upward as positive. The rocket moves up, so air resistance points down, together with the weight.\nF_res = T − W − D = 12·10⁶ − 7.0·10⁶ − 0.40·10⁶ = 4.6·10⁶ N (upward)\n(M = mega = 10⁶, k = kilo = 10³: 400 kN = 0.40 MN.)\n(b) a = F_res/m = 4.6·10⁶/(7.1·10⁵) ≈ 6.5 m s⁻² (upward)",
+      answer: "(a) F_res = T − W − D = 4.6·10⁶ N upward\n(b) a = F_res/m ≈ 6.5 m s⁻²",
+      meaning: "Less than half of the thrust goes into accelerating the rocket: most of it just holds the rocket up against its own weight.",
+      whatIf: "What if the rocket burns fuel and its mass drops to 5.0 × 10⁵ kg (same thrust and drag, weight now 4.9 MN)? F_res = 12 − 4.9 − 0.4 = 6.7 MN, a = 6.7·10⁶/5.0·10⁵ ≈ 13 m s⁻² — the rocket accelerates faster as it gets lighter."
+    },
+    {
+      id: "A2-P008", status: "draft", difficulty: 1, linkLevel: "point",
+      anchors: ["A2.1#f-ma"],
+      buildsOn: ["A2-P007"], leadsTo: [],
+      concept: "Acceleration from the kinematics, then m = F/a",
+      images: [], keyInfo: "from 2.0 m s⁻¹ → u\nto 5.0 m s⁻¹ → v\nin 3.0 s → Δt\nresultant force → F_res (already the net force)\n90 N → F_res\nCalculate the total mass → find m = F_res/a",
+      statement: "A cyclist speeds up from 2.0 m s⁻¹ to 5.0 m s⁻¹ in 3.0 s on a level road. The resultant force on the cyclist and the bicycle is 90 N.\nCalculate the total mass of the cyclist and the bicycle.",
+      solution: "First the acceleration (A.1): a = (v − u)/Δt = (5.0 − 2.0)/3.0 = 1.0 m s⁻²\nSecond law: F_res = m·a → m = F_res/a = 90/1.0 = 90 kg",
+      answer: "m = F_res·Δt/(v − u) = 90 kg",
+      meaning: "The force tells you nothing about the mass by itself — you need to know how quickly the velocity changes.",
+      whatIf: "What if the same 90 N acts on a cyclist carrying a 30 kg trailer? a = 90/120 = 0.75 m s⁻², and reaching 5.0 m s⁻¹ from 2.0 m s⁻¹ takes 4.0 s instead of 3.0 s."
+    },
+    {
+      id: "A2-P009", status: "draft", difficulty: 3, linkLevel: "point",
+      anchors: ["A2.1#equilibrium"],
+      buildsOn: ["A2-P004"], leadsTo: [],
+      concept: "Equilibrium with an angled cable: vertical and horizontal components",
+      images: [], keyInfo: "weight 40 N → W\nhorizontal rope → pull F, horizontal\n30° with the vertical → angle of the cable\nat rest → equilibrium: vertical forces cancel, horizontal forces cancel\nCalculate the tension in the cable → find T\nCalculate the pull of the horizontal rope → find F",
+      statement: "A lantern of weight 40 N hangs from a cable. A horizontal rope pulls the lantern to one side, so that the cable makes an angle of 30° with the vertical. The lantern is at rest.\n(a) Draw a free-body diagram for the lantern.\n(b) Calculate the tension in the cable.\n(c) Calculate the pull of the horizontal rope.",
+      solution: "(a) Three forces on the lantern: weight W straight down; rope pull F horizontally (to the side the rope goes); cable tension T along the cable, up and towards the other side, 30° from the vertical.\n(b) Split T into components: vertical T·cos 30°, horizontal T·sin 30°.\nAt rest the vertical forces cancel: T·cos 30° = W\nT = W/cos 30° = 40/0.866 ≈ 46 N\n(c) The horizontal forces cancel: F = T·sin 30° = 46.2 · 0.5 ≈ 23 N\n(Or at once: F = W·tan 30° = 40 · 0.577 ≈ 23 N.)",
+      answer: "(a) W down, F horizontal, T along the cable\n(b) T = W/cos 30° ≈ 46 N\n(c) F = W·tan 30° ≈ 23 N",
+      meaning: "The cable carries more than the weight (46 N > 40 N): it has to hold the lantern up AND balance the sideways rope.",
+      whatIf: "What if the rope pulls the lantern further, until the cable is at 60° to the vertical? T = 40/cos 60° = 80 N, F = 40·tan 60° ≈ 69 N. The closer the cable gets to horizontal, the faster both forces grow."
+    },
+    {
+      id: "A2-P010", status: "draft", difficulty: 2, linkLevel: "point",
+      anchors: ["A2.1#connected-bodies"],
+      buildsOn: ["A2-P008"], leadsTo: ["A2-P011"],
+      concept: "Two blocks pushed together: a for the whole system, then the contact force from the second block alone",
+      images: [], keyInfo: "smooth horizontal floor → no friction\nmass 3.0 kg → m_X\nmass 1.0 kg → m_Y\nforce of 12 N pushes on X → F on the whole system\nCalculate the acceleration of the blocks → find a: same for both blocks\nthe force that X exerts on Y → find F_XY: the only horizontal force on Y\npushes on Y instead → now X is in front\nthe force between the blocks now → find F_YX",
+      statement: "Two blocks stand in contact on a smooth horizontal floor: block X of mass 3.0 kg and block Y of mass 1.0 kg. A horizontal force of 12 N pushes on X, and X pushes Y in front of it.\n(a) Calculate the acceleration of the blocks.\n(b) Calculate the force that X exerts on Y.\n(c) The 12 N force now pushes on Y instead, so that Y pushes X. Calculate the force between the blocks now.",
+      solution: "(a) The blocks move together, so treat them as one body of mass 4.0 kg:\na = F/(m_X + m_Y) = 12/4.0 = 3.0 m s⁻²\n(b) Now look at Y alone. The only horizontal force on it is the push of X, and Y has a = 3.0 m s⁻²:\nF_XY = m_Y·a = 1.0 · 3.0 = 3.0 N\n(Check on X: 12 − 3.0 = 9.0 N = 3.0 kg · 3.0 m s⁻² ✓ — by the third law Y pushes back on X with 3.0 N.)\n(c) Same a = 3.0 m s⁻². Now the contact force has to accelerate the 3.0 kg block X:\nF_YX = m_X·a = 3.0 · 3.0 = 9.0 N",
+      answer: "(a) a = F/(m_X + m_Y) = 3.0 m s⁻²\n(b) F_XY = m_Y·a = 3.0 N\n(c) F_YX = m_X·a = 9.0 N",
+      meaning: "The force between the blocks is the force needed to accelerate the block in front. A light block in front needs a gentle push; a heavy one needs a big one.",
+      whatIf: "What if the blocks move at constant speed instead (12 N balanced by friction on each block in proportion to its mass)? a = 0 — and then the contact force just balances friction on the front block. In MCQ-style questions \"constant speed\" means the RESULTANT force on each block is zero."
+    },
+    {
+      id: "A2-P011", status: "draft", difficulty: 2, linkLevel: "point",
+      anchors: ["A2.1#connected-bodies"],
+      buildsOn: ["A2-P010"], leadsTo: ["A2-P012"],
+      concept: "Two blocks joined by a string: tension depends on which block is pulled",
+      images: [], keyInfo: "mass 3.0 kg and 5.0 kg → m₁, m₂\nlight string → same tension at both ends\nsmooth horizontal table → no friction\nforce of 64 N pulls the 5.0 kg block → F\nCalculate the acceleration of the blocks → find a: whole system\nCalculate the tension in the string → find T: look at the 3.0 kg block alone\napplied to the 3.0 kg block instead → now the string pulls the 5.0 kg block\nCalculate the new tension → find T′",
+      statement: "Two blocks of mass 3.0 kg and 5.0 kg are joined by a light string and lie on a smooth horizontal table. A horizontal force of 64 N pulls the 5.0 kg block, and the string pulls the 3.0 kg block behind it.\n(a) Calculate the acceleration of the blocks.\n(b) Calculate the tension in the string.\n(c) The 64 N force is now applied to the 3.0 kg block instead, pulling in the opposite direction. Calculate the new tension.",
+      solution: "(a) Both blocks together, 8.0 kg: a = F/(m₁ + m₂) = 64/8.0 = 8.0 m s⁻²\n(b) The 3.0 kg block is pulled only by the string: T = m₁·a = 3.0 · 8.0 = 24 N\n(c) Same a = 8.0 m s⁻²; now the string must pull the 5.0 kg block: T′ = m₂·a = 5.0 · 8.0 = 40 N",
+      answer: "(a) a = F/(m₁ + m₂) = 8.0 m s⁻²\n(b) T = m₁·a = 24 N\n(c) T′ = m₂·a = 40 N",
+      meaning: "The string only has to pull what is behind it. Pull the light block and the string must drag the heavy one — the tension is bigger.",
+      whatIf: "What if the string can hold at most 30 N? In case (c) it breaks (40 N > 30 N); in case (b) it survives. Which block you pull matters."
+    },
+    {
+      id: "A2-P012", status: "draft", difficulty: 3, linkLevel: "point",
+      anchors: ["A2.1#connected-bodies"],
+      buildsOn: ["A2-P011"], leadsTo: [],
+      concept: "Two masses over a pulley: a and T in letters",
+      images: [], keyInfo: "m and 3m → the heavier side goes down\nlight string → same T on both masses\nfrictionless pulley → nothing else acts on the string\nreleased from rest → both start moving with the same size of a\nWhat are the acceleration a → find a in letters\nthe tension T → find T in letters",
+      statement: "Two masses, m and 3m, hang on either side of a light string that passes over a frictionless pulley. The masses are released from rest.\nWhat are the acceleration a of the masses and the tension T in the string?\nA. a = g/2, T = 3mg/2\nB. a = g/2, T = mg\nC. a = g/3, T = 3mg/2\nD. a = 2g/3, T = 2mg",
+      solution: "The 3m mass goes down, m goes up, both with the same size of acceleration a.\nSecond law for each mass along its own direction of motion:\n3m: 3mg − T = 3m·a\nm: T − mg = m·a\nAdd the two equations — T cancels: 2mg = 4m·a → a = g/2\nThen T = mg + m·a = mg + mg/2 = 3mg/2\nCheck: T lies between mg and 3mg, as it must (the light mass is lifted, the heavy mass is held back).",
+      answer: "A (a = g/2, T = 3mg/2)",
+      meaning: "The string tension is not the weight of either mass: it is bigger than mg (it accelerates m upward) and smaller than 3mg (3m falls).",
+      whatIf: "What if the masses were equal? a = 0, T = mg — the system just stays where it is (or moves at constant speed). What if the heavy mass were huge? a → g, T → 2mg."
+    },
+    {
+      id: "A2-P013", status: "draft", difficulty: 3, linkLevel: "point",
+      anchors: ["A2.1#apparent-weight"],
+      buildsOn: ["A2-P008"], leadsTo: [],
+      concept: "Lift slowing down on the way up: normal force less than weight",
+      images: [], keyInfo: "mass 72 kg → m\nmoving upwards at 3.0 m s⁻¹ → u = +3.0 m s⁻¹ (up = +)\ncoming to rest → v = 0\nin 2.0 s → Δt\nCalculate the acceleration → find a (sign!)\nthe force of the lift floor on Mia → find N\nlighter or heavier → compare N with mg",
+      statement: "Mia, of mass 72 kg, stands in a lift. The lift is moving upwards at 3.0 m s⁻¹ and then slows down uniformly, coming to rest in 2.0 s.\n(a) Calculate the acceleration of the lift while it slows down.\n(b) Calculate the force of the lift floor on Mia while the lift slows down.\n(c) State whether Mia feels lighter or heavier than usual. Explain.",
+      solution: "(a) Up = positive. a = (v − u)/Δt = (0 − 3.0)/2.0 = −1.5 m s⁻² (downward)\n(b) Forces on Mia: N up, weight mg down. Second law: N − mg = m·a\nN = m·(g + a) = 72 · (9.81 − 1.5) ≈ 598 N ≈ 6.0·10² N\n(c) Lighter: the floor pushes less than her weight (598 N < 706 N). A bathroom scale under her feet would show about 61 kg.",
+      answer: "(a) a = −1.5 m s⁻² (downward)\n(b) N = m·(g + a) ≈ 6.0·10² N\n(c) lighter: N < mg",
+      meaning: "We feel the floor's push, not our weight. When the lift slows down on the way up, the floor \"lets go\" a little — that is the light feeling in your stomach at the top floor.",
+      whatIf: "What if the lift instead speeds up from rest to 3.0 m s⁻¹ upward in 2.0 s? a = +1.5 m s⁻², N = 72·(9.81 + 1.5) ≈ 814 N — Mia feels heavier."
+    },
+    {
+      id: "A2-P014", status: "draft", difficulty: 1, linkLevel: "point",
+      anchors: ["A2.2#friction"],
+      buildsOn: [], leadsTo: ["A2-P015"],
+      concept: "Friction: static vs dynamic, F_f ≤ μ_s·N, direction of friction",
+      images: [], keyInfo: "NOT correct → find the false statement\nStatic friction acts between two surfaces that do not slide → F_f ≤ μ_s·F_N\nDynamic friction on a sliding body → F_f = μ_d·F_N",
+      statement: "Which statement about friction is NOT correct?\nA. Static friction acts between two surfaces that do not slide over each other.\nB. Friction always acts in the direction opposite to the motion of the body.\nC. The static friction force can be anything from zero up to μ_s·F_N.\nD. Dynamic friction on a sliding body is μ_d·F_N, and μ_d is usually smaller than μ_s.",
+      solution: "A — true: \"static\" means no sliding between the surfaces.\nC — true: static friction only grows as much as needed to stop sliding, up to its maximum μ_s·F_N.\nD — true: once sliding starts, F_f = μ_d·F_N, and it is usually easier to keep a body sliding than to start it (μ_d < μ_s).\nB — false. Friction opposes SLIDING between the surfaces, not the motion of the body. When you walk, static friction on your shoe points FORWARD — in the direction you move. Without it you could not start walking (try on ice).",
+      answer: "B",
+      meaning: "Friction is not always the \"enemy\" of motion. Cars, walkers and bicycles are all pushed forward by friction.",
+      whatIf: "What if a box stands on the floor of a truck that speeds up? The box speeds up with the truck — so the force on it points forward, and the only horizontal force is static friction. Friction moves the box."
+    },
+    {
+      id: "A2-P015", status: "draft", difficulty: 2, linkLevel: "point",
+      anchors: ["A2.2#friction"],
+      buildsOn: ["A2-P003"], leadsTo: ["A2-P016"],
+      concept: "Block at rest on a slope: friction = mg sin θ, N = mg cos θ, minimum μ_s = tan θ",
+      images: [], keyInfo: "6.0 kg → m\nrough plank → friction acts\ntilted at 25° → θ\ndoes not move → equilibrium, static friction\nCalculate the friction force → find F_f = mg sin θ\nCalculate the normal force → find N = mg cos θ\nsmallest possible value of the coefficient of static friction → F_f ≤ μ_s·N → find μ_s min",
+      statement: "A 6.0 kg block rests on a rough plank that is tilted at 25° to the horizontal. The block does not move.\n(a) Calculate the friction force on the block.\n(b) Calculate the normal force on the block.\n(c) Determine the smallest possible value of the coefficient of static friction.",
+      solution: "Split the weight along the slope and perpendicular to it: along the slope mg·sin θ (pulls the block down the slope), perpendicular mg·cos θ (presses it into the plank).\n(a) The block is at rest, so friction balances the component along the slope:\nF_f = mg·sin θ = 6.0 · 9.81 · sin 25° ≈ 24.9 N ≈ 25 N (up the slope)\n(b) Perpendicular to the slope nothing moves: N = mg·cos θ = 6.0 · 9.81 · cos 25° ≈ 53 N\n(c) Static friction can be at most μ_s·N: F_f ≤ μ_s·N\nμ_s ≥ F_f/N = mg sin θ/(mg cos θ) = tan θ = tan 25° ≈ 0.47",
+      answer: "(a) F_f = mg·sin θ ≈ 25 N\n(b) N = mg·cos θ ≈ 53 N\n(c) μ_s ≥ tan θ ≈ 0.47",
+      meaning: "The answer to (c) does not depend on the mass: a heavy and a light block of the same material start to slide at the same angle. Measuring that angle is a quick way to find μ_s.",
+      whatIf: "What if the plank is tilted slowly until the block just starts to slide at 31°? Then μ_s = tan 31° ≈ 0.60."
+    },
+    {
+      id: "A2-P016", status: "draft", difficulty: 2, linkLevel: "point",
+      anchors: ["A2.2#friction"],
+      buildsOn: ["A2-P015"], leadsTo: [],
+      concept: "Constant speed → push = dynamic friction → μ_d; bigger push → acceleration",
+      images: [], keyInfo: "mass 1.5 kg → m\nhorizontal table → N = mg\nforce of 4.2 N → F\nconstant speed → a = 0: F = F_f\nState which type of friction → state: the block slides\ncoefficient of dynamic friction → find μ_d = F_f/N\nincreased to 6.0 N → F′, friction unchanged\nCalculate the acceleration → find a = (F′ − F_f)/m",
+      statement: "A wooden block of mass 1.5 kg lies on a horizontal table. A horizontal force of 4.2 N moves the block along the table at a constant speed.\n(a) State which type of friction acts on the block.\n(b) Calculate the coefficient of dynamic friction between the block and the table.\n(c) The horizontal force is increased to 6.0 N. Calculate the acceleration of the block.",
+      solution: "(a) The block slides over the table → dynamic friction.\n(b) Constant speed → resultant force zero → friction equals the push: F_f = 4.2 N.\nOn a horizontal table N = mg = 1.5 · 9.81 ≈ 14.7 N.\nμ_d = F_f/N = 4.2/14.7 ≈ 0.29\n(c) Dynamic friction does not depend on speed or on the push: still 4.2 N.\na = (F′ − F_f)/m = (6.0 − 4.2)/1.5 = 1.2 m s⁻²",
+      answer: "(a) dynamic friction\n(b) μ_d = F/(mg) ≈ 0.29\n(c) a = (F′ − F_f)/m = 1.2 m s⁻²",
+      meaning: "Pushing harder does not make friction grow once the block slides: all of the extra 1.8 N goes into acceleration.",
+      whatIf: "What if a 2.0 kg book is placed on the block? N becomes 3.5 · 9.81 ≈ 34 N, dynamic friction ≈ 0.29 · 34 ≈ 9.9 N — now the 6.0 N push cannot even keep it moving."
+    },
+    {
+      id: "A2-P017", status: "draft", difficulty: 1, linkLevel: "point",
+      anchors: ["A2.2#hooke"],
+      buildsOn: [], leadsTo: [],
+      concept: "Hooke's law: k from one load, then extension for another load",
+      images: [], keyInfo: "load of weight 2.0 N → F (at rest: spring force = weight)\nstretches by 4.0 cm → x (cm → m)\nobeys Hooke's law → F = kx\nCalculate the spring constant → find k\nthe extension when the load is 3.5 N → find x′",
+      statement: "A spring hangs from a hook. When a load of weight 2.0 N is hung from it, the spring stretches by 4.0 cm. The spring obeys Hooke's law.\n(a) Calculate the spring constant.\n(b) Calculate the extension when the load is 3.5 N.",
+      solution: "(a) At rest the spring pulls up with a force equal to the weight. Hooke's law: F = k·x\nk = F/x = 2.0/0.040 = 50 N m⁻¹ (4.0 cm = 0.040 m)\n(b) x′ = F′/k = 3.5/50 = 0.070 m = 7.0 cm\n(The minus sign in F_H = −kx only says the spring pulls back, against the stretch.)",
+      answer: "(a) k = F/x = 50 N m⁻¹\n(b) x′ = F′/k = 7.0 cm",
+      meaning: "Double the force — double the stretch. That is what \"obeys Hooke's law\" means, and it is why springs make good force meters.",
+      whatIf: "What if two such springs are hung one below the other, with the 2.0 N load at the bottom? Each spring feels the full 2.0 N and stretches 4.0 cm: total 8.0 cm. The pair behaves like one spring of k = 25 N m⁻¹."
+    },
+    {
+      id: "A2-P018", status: "draft", difficulty: 3, linkLevel: "point",
+      anchors: ["A2.2#drag", "A2.2#buoyancy"],
+      buildsOn: ["A2-P004"], leadsTo: [],
+      concept: "Terminal speed of a small sphere in a liquid: weight = buoyancy + Stokes drag",
+      images: [], keyInfo: "radius 1.0 mm → r (mm → m), V = 4/3·πr³\nfalls at a constant speed → a = 0: forces balance\n2500 kg m⁻³ → ρ of glass\n1260 kg m⁻³ → ρ of the fluid\n1.4 Pa s → η\nCalculate the weight of the bead → find W = ρ_glass·V·g\nCalculate the buoyancy force → find F_b = ρ_fluid·V·g\nDetermine the constant speed → W = F_b + 6πηrv → find v",
+      statement: "A small glass bead of radius 1.0 mm is dropped into a tall jar of glycerol and soon falls at a constant speed.\nDensity of glass = 2500 kg m⁻³\nDensity of glycerol = 1260 kg m⁻³\nViscosity of glycerol = 1.4 Pa s\n(a) Calculate the weight of the bead.\n(b) Calculate the buoyancy force on the bead.\n(c) Determine the constant speed of the bead.",
+      solution: "Volume: V = 4/3·πr³ = 4/3 · π · (1.0·10⁻³)³ ≈ 4.19·10⁻⁹ m³\n(a) W = ρ_glass·V·g = 2500 · 4.19·10⁻⁹ · 9.81 ≈ 1.03·10⁻⁴ N\n(b) Buoyancy uses the density of the LIQUID: F_b = ρ_fluid·V·g = 1260 · 4.19·10⁻⁹ · 9.81 ≈ 5.18·10⁻⁵ N\n(c) At constant speed the forces balance: up — buoyancy and drag; down — weight.\nW = F_b + 6πηrv → v = (W − F_b)/(6πηr)\nv = (1.03·10⁻⁴ − 5.18·10⁻⁵)/(6π · 1.4 · 1.0·10⁻³) = 5.1·10⁻⁵/0.0264 ≈ 1.9·10⁻³ m s⁻¹ (about 2 mm per second)",
+      answer: "(a) W = ρ_glass·(4/3)πr³·g ≈ 1.0·10⁻⁴ N\n(b) F_b = ρ_fluid·(4/3)πr³·g ≈ 5.2·10⁻⁵ N\n(c) v = (W − F_b)/(6πηr) ≈ 1.9·10⁻³ m s⁻¹",
+      meaning: "Glycerol is thick: half of the bead's weight is taken by buoyancy, and the rest is balanced by drag at a speed of only 2 mm/s. This is how viscosity is measured in a lab — time a falling ball.",
+      whatIf: "What if the bead's radius is doubled? W and F_b grow 8 times (∝ r³), the drag for a given speed only 2 times (∝ r): the terminal speed grows 4 times, to about 7.7 mm/s."
+    },
+    {
+      id: "A2-P019", status: "draft", difficulty: 2, linkLevel: "point",
+      anchors: ["A2.2#buoyancy"],
+      buildsOn: [], leadsTo: ["A2-P018"],
+      concept: "Floating body: buoyancy = weight → fraction under water = ρ_body/ρ_fluid",
+      images: [], keyInfo: "floats → at rest: buoyancy = weight\n520 kg m⁻³ → ρ of the wood\n1000 kg m⁻³ → ρ of the water\nWhat fraction of the volume of the block is above the water → find 1 − V_under/V",
+      statement: "A block of pine wood floats in fresh water.\nDensity of pine = 520 kg m⁻³\nDensity of water = 1000 kg m⁻³\nWhat fraction of the volume of the block is above the water?\nA. 0.35\nB. 0.48\nC. 0.52\nD. 0.65",
+      solution: "Floating at rest: buoyancy balances the weight. Buoyancy uses only the volume UNDER water:\nρ_water·V_under·g = ρ_wood·V·g → V_under/V = ρ_wood/ρ_water = 520/1000 = 0.52\nAbove the water: 1 − 0.52 = 0.48",
+      answer: "B (above: 1 − ρ_wood/ρ_water = 0.48)",
+      meaning: "A floating body sinks exactly as deep as needed to push aside its own weight of water. The lighter the material, the higher it floats.",
+      whatIf: "What if the block floats in sea water (1025 kg m⁻³)? V_under/V = 520/1025 ≈ 0.51, so a little more (0.49) sticks out: salt water holds things up better."
     },
   ]
 };
