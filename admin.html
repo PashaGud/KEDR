@@ -1,0 +1,64 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kedr — ученики</title>
+<style>
+body{font-family:-apple-system,system-ui,sans-serif;margin:24px;background:#f7f5ef;color:#222}
+table{border-collapse:collapse;width:100%;background:#fff}th,td{padding:7px 10px;border-bottom:1px solid #eee;text-align:left;font-size:14px}
+th{cursor:pointer;background:#ece8dc}tr.u:hover{background:#f3f7f4;cursor:pointer}
+.card{background:#fff;padding:14px;border-radius:10px;margin:14px 0}.muted{color:#888}button{padding:8px 14px}
+.kpi{display:inline-block;background:#fff;border-radius:10px;padding:10px 16px;margin:0 10px 10px 0}.kpi b{font-size:22px;display:block}
+</style>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="course.js"></script>
+</head><body>
+<h1>Kedr — ученики</h1><div id="app"><button id="in">Войти (Google)</button></div>
+<script>
+// Тот же конфиг, что в kedr-auth.js
+const FIREBASE_CONFIG = { apiKey:"AIzaSyDGqiZJC3tl0zFpvGCL7XfQMd_3btpPZZE", authDomain:"cedar-phy.firebaseapp.com", projectId:"cedar-phy", appId:"1:554571166525:web:d902825ed39c5b2a344b54" };
+firebase.initializeApp(FIREBASE_CONFIG);
+const auth = firebase.auth(), db = firebase.firestore(), app = document.getElementById('app');
+// Номера задач — так же, как на сайте (index.html: order / LBL)
+const K = window.KEDR, P = {}, T = {}; K.problems.forEach(p => P[p.id] = p); K.theory.forEach(t => T[t.id] = t);
+const home = p => { const a = p.anchors[0] || ''; const c = a.split('#')[0]; return { card: c, anchor: p.linkLevel === 'card' ? '__syn' : a.split('#')[1] }; };
+const byId = (a,b) => a.localeCompare(b, undefined, {numeric:true});
+const ladder = (a,b) => (P[a].difficulty||0)-(P[b].difficulty||0) || byId(a,b);
+const order = [];
+K.theory.forEach(t => { order.push(t.id); const mine = K.problems.filter(p => home(p).card === t.id);
+  (t.anchors||[]).forEach(a => mine.filter(p => home(p).anchor === a.id).sort((x,y)=>ladder(x.id,y.id)).forEach(p => order.push(p.id)));
+  mine.filter(p => home(p).anchor === '__syn').sort((x,y)=>ladder(x.id,y.id)).forEach(p => order.push(p.id)); });
+const LBL = {}; K.theory.forEach(t => { const n = /^T\d+$/.test(t.id) ? parseInt(t.id.slice(1), 10) : t.id; let k = 0; order.forEach(id => { if (P[id] && home(P[id]).card === t.id) LBL[id] = n + '.' + (++k); }); });
+const lbl = id => P[id] ? (LBL[id] || id) : T[id] ? 'Теория ' + (T[id].title || '') : id;
+const name = id => P[id] ? (P[id].concept || '') : '';
+const d = ts => ts && ts.toDate ? ts.toDate().toLocaleString('ru-RU',{dateStyle:'short',timeStyle:'short'}) : '—';
+const esc = s => String(s ?? '').replace(/[<&]/g, c => ({'<':'&lt;','&':'&amp;'})[c]);
+document.getElementById('in').onclick = () => auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+let users = [], sortKey = 'lastSeen';
+auth.onAuthStateChanged(async u => {
+  if (!u) return;
+  try { const s = await db.collection('users').get(); users = s.docs.map(x => ({ uid: x.id, ...x.data() })); render(); }
+  catch (e) { app.innerHTML = `<p>Нет доступа (${esc(e.code)}). Почта ${esc(u.email)} должна совпадать с почтой в правилах Firestore.</p>`; }
+});
+function render() {
+  const now = Date.now(), day = 864e5, ms = x => x && x.toMillis ? x.toMillis() : 0;
+  const act7 = users.filter(u => now - ms(u.lastSeen) < 7*day).length;
+  const sorted = [...users].sort((a, b) => sortKey === 'name' ? String(a.name).localeCompare(b.name) : (ms(b[sortKey]) || b[sortKey] || 0) - (ms(a[sortKey]) || a[sortKey] || 0));
+  app.innerHTML = `<div><span class="kpi"><b>${users.length}</b>всего</span><span class="kpi"><b>${act7}</b>заходили за 7 дней</span>
+    <span class="kpi"><b>${users.reduce((s,u)=>s+(u.nSolved||0),0)}</b>решённых задач всего</span></div>
+    <table><tr><th data-k="name">Имя</th><th>Почта</th><th data-k="createdAt">Регистрация</th><th data-k="lastSeen">Последний заход</th><th data-k="visits">Заходов</th><th data-k="nSeen">Открыл</th><th data-k="nSolved">Решил</th></tr>
+    ${sorted.map(u => `<tr class="u" data-u="${u.uid}"><td>${esc(u.name)||'<span class=muted>без имени</span>'}</td><td>${esc(u.email)}</td><td>${d(u.createdAt)}</td><td>${d(u.lastSeen)}</td><td>${u.visits||0}</td><td>${u.nSeen||0}</td><td>${u.nSolved||0}</td></tr>`).join('')}</table><div id="det"></div>`;
+  app.querySelectorAll('th[data-k]').forEach(th => th.onclick = () => { sortKey = th.dataset.k; render(); });
+  app.querySelectorAll('tr.u').forEach(tr => tr.onclick = () => detail(tr.dataset.u));
+}
+async function detail(uid) {
+  const u = users.find(x => x.uid === uid), pr = u.progress || {}, J = s => { try { return JSON.parse(s||'{}'); } catch(e){ return {}; } };
+  const solved = Object.keys(J(pr['kedr-solved'])), rating = J(pr['kedr-rating']);
+  const ev = await db.collection(`users/${uid}/events`).orderBy('t','desc').limit(100).get();
+  const box = document.getElementById('det');
+  box.innerHTML = `<div class="card"><h2>${esc(u.name)} <span class="muted">${esc(u.email)}</span></h2>
+    <p class="muted">Устройство: ${esc(u.device)}</p>
+    <h3>Решено (${solved.length})</h3><p>${solved.map(id => `<b>${esc(lbl(id))}</b> ${esc(name(id))}${rating[id]?` — оценка ${rating[id]}`:''}`).join('<br>') || '—'}</p>
+    <h3>Последние действия</h3><table>${ev.docs.map(x => { const e = x.data(); return `<tr><td>${d(e.t)}</td><td>${({open:'открыл',solved:'решил',rating:'оценил'})[e.type]||e.type}</td><td><b>${esc(lbl(e.id))}</b> ${esc(name(e.id))}</td><td>${e.type==='rating'?esc(e.v):''}</td></tr>`; }).join('') || '<tr><td>нет</td></tr>'}</table></div>`;
+  box.scrollIntoView({ behavior: 'smooth' });
+}
+</script></body></html>
