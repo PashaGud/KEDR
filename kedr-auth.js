@@ -52,7 +52,7 @@
     document.body ? mount() : document.addEventListener('DOMContentLoaded', mount);
     let reg = false; const $ = id => d.querySelector('#' + id);
     const err = e => { $('kl-err').textContent = ({'auth/invalid-credential':'Неверная почта или пароль','auth/email-already-in-use':'Эта почта уже зарегистрирована — войдите','auth/weak-password':'Пароль короче 6 символов','auth/invalid-email':'Неверная почта'})[e.code] || e.message; };
-    $('kl-g').onclick = () => auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch(err);
+    $('kl-g').onclick = () => { const g = new firebase.auth.GoogleAuthProvider(); auth.signInWithPopup(g).catch(e => (/popup-blocked|operation-not-supported/.test(e.code) ? auth.signInWithRedirect(g) : err(e))); };
     $('kl-sw').onclick = () => { reg = !reg; $('kl-name').style.display = reg ? '' : 'none'; $('kl-go').textContent = reg ? 'Зарегистрироваться' : 'Войти'; $('kl-sw').textContent = reg ? 'Уже есть аккаунт? Войти' : 'Нет аккаунта? Зарегистрироваться'; };
     $('kl-go').onclick = async () => {
       const m = $('kl-mail').value.trim(), p = $('kl-pass').value, n = $('kl-name').value.trim();
