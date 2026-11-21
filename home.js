@@ -306,11 +306,11 @@ window.KedrHome = function(ctx){
     const last = store.get('kedr-last', null), anySeen = Object.keys(seenMap()).length;
     const first = UNITS.map(u => inOrder.find(id => unitOfId(id) === u)).find(Boolean);
     if (!anySeen && !last) return { id: first, label: 'Start → ' + unitOfId(first) };
-    if (last && P[last] && !solvedMap()[last]) return { id: last, label: 'Back to ' + lbl(last) };
+    if (last && P[last] && !solvedMap()[last]) return { id: last, label: 'Back to ' + nm(last) };
     if (last && (P[last] || T[last])){
       const u = unitOfId(last), i = inOrder.indexOf(last);
       const same = inOrder.slice(i + 1).concat(inOrder.slice(0, i)).find(id => unitOfId(id) === u && !done(id));
-      if (same) return { id: same, label: 'Next → ' + lbl(same) };
+      if (same) return { id: same, label: 'Next → ' + nm(same) };
       for (let k = 1; k <= UNITS.length; k++){
         const U = UNITS[(unitIdx(last) + k) % UNITS.length], id = inOrder.find(x => unitOfId(x) === U && !done(x));
         if (id) return { id, label: 'Next unit → ' + U };
@@ -318,8 +318,9 @@ window.KedrHome = function(ctx){
       return null;
     }
     const id = inOrder.find(x => !done(x));
-    return id ? { id, label: 'Next → ' + lbl(id) } : null;
+    return id ? { id, label: 'Next → ' + nm(id) } : null;
   }
+  const nm = id => T[id] ? 'theory ' + (/^T\d+$/.test(id) ? parseInt(id.slice(1), 10) : id) : lbl(id);
   const goalText = id => P[id] ? (P[id].concept || '') : T[id] ? (T[id].title || '') : '';
 
   function render(animatePlant){
