@@ -8,7 +8,7 @@
 window.KEDR = {
 
   course: "Kinematics",
-  units: ["Kinematics", "Forces & momentum", "Thermodynamics"],   // each theory card belongs to one unit; the map shows one unit at a time
+  units: ["Kinematics", "Forces & momentum", "Energy", "Thermodynamics"],   // each theory card belongs to one unit; the map shows one unit at a time
 
   // ---------- THEORY CARDS (shown left → right on the map) ----------
   theory: [
@@ -150,6 +150,55 @@ window.KEDR = {
         { id: "horizontal-circles", title: "Horizontal circles" },
         { id: "vertical-circles", title: "Vertical circles: top and bottom" },
         { id: "after-release", title: "When the string breaks" },
+      ]
+    },
+    {
+      id: "A3.1",
+      unit: "Energy",
+      title: "Work",
+      file: "cards/A3.1/index.html",
+      after: ["A2.1"],
+      anchors: [
+        { id: "work-fs-cos", title: "Work W = Fs cos θ" },
+        { id: "work-area", title: "Work as an area" },
+        { id: "work-energy", title: "Work changes energy" },
+      ]
+    },
+    {
+      id: "A3.2",
+      unit: "Energy",
+      title: "Energy Stores",
+      file: "cards/A3.2/index.html",
+      after: ["A3.1"],
+      anchors: [
+        { id: "kinetic", title: "Kinetic energy" },
+        { id: "gravitational", title: "Gravitational potential energy" },
+        { id: "elastic", title: "Elastic potential energy" },
+      ]
+    },
+    {
+      id: "A3.3",
+      unit: "Energy",
+      title: "Conservation of Energy",
+      file: "cards/A3.3/index.html",
+      after: ["A3.2"],
+      anchors: [
+        { id: "conservation", title: "Mechanical energy conserved" },
+        { id: "with-losses", title: "With friction and drag" },
+      ]
+    },
+    {
+      id: "A3.4",
+      unit: "Energy",
+      title: "Power and Efficiency",
+      file: "cards/A3.4/index.html",
+      after: ["A3.1"],
+      anchors: [
+        { id: "power", title: "Power P = W/t" },
+        { id: "p-fv", title: "P = Fv" },
+        { id: "efficiency", title: "Efficiency" },
+        { id: "sankey", title: "Sankey diagrams" },
+        { id: "energy-density", title: "Energy density of fuels" },
       ]
     },
     {
@@ -3254,6 +3303,270 @@ window.KEDR = {
       answer: "C",
       meaning: "A body on a circle always \"wants\" to go straight on; the centripetal force keeps pulling it off that straight line.",
       whatIf: "What if the stone is swung faster before the string breaks? It still leaves along the tangent — only faster, so it lands further away."
+    },
+    {
+      id: "A3-P001", status: "draft", difficulty: 1, linkLevel: "point",
+      anchors: ["A3.1#work-fs-cos"],
+      buildsOn: [], leadsTo: ["A3-P002"],
+      concept: "Work needs displacement along the force: holding still or moving at 90° to the force does no work",
+      images: [], keyInfo: "do NO work → find: no displacement along the force\nholds a tray still → s = 0 → W = 0",
+      statement: "In which situation does the named force do NO work on the object?\nA. A weightlifter's arms lift a barbell from the floor to above her head.\nB. A shopper's push moves a trolley across a car park.\nC. A waiter's hand holds a tray still at shoulder height for a minute.\nD. Friction from the road slows down a skidding car.",
+      solution: "Work done by a force: W = F·s·cos θ, where s is the displacement and θ the angle between the force and the displacement.\nA — the force is up, the barbell moves up: W > 0.\nB — the push and the motion point the same way: W > 0.\nD — friction points backwards, the car moves forwards: θ = 180°, W < 0 (friction takes energy away) — still work.\nC — the tray does not move: s = 0, so W = 0, however tired the waiter's arm gets.",
+      answer: "C",
+      meaning: "In physics \"work\" means energy passed on by a force through a displacement. A force that moves nothing passes on no energy — the tiredness is the body's own chemistry.",
+      whatIf: "What if the waiter walks across the room at constant speed with the tray held level? The hand's force is up, the motion is horizontal: θ = 90°, cos 90° = 0 — still no work on the tray."
+    },
+    {
+      id: "A3-P002", status: "draft", difficulty: 2, linkLevel: "point",
+      anchors: ["A3.1#work-fs-cos"],
+      buildsOn: ["A3-P001"], leadsTo: ["A3-P003"],
+      concept: "W = Fs cos θ for a pull at an angle; negative work of friction; work of the resultant force",
+      images: [], keyInfo: "25 m → s\nalong level snow → weight and normal force do no work\n60 N → F\nat 35° above the horizontal → θ between F and s\nFriction on the sledge is a constant 40 N → F_f, opposite to s\nwork done by the rope → find W = Fs cos θ\nwork done by friction → find W_f = −F_f·s\ngain in kinetic energy → ΔE_k = total work",
+      statement: "A child pulls a sledge 25 m along level snow. The rope pulls with a force of 60 N at 35° above the horizontal. Friction on the sledge is a constant 40 N.\n(a) Calculate the work done by the rope.\n(b) Calculate the work done by friction.\n(c) Calculate the gain in kinetic energy of the sledge.",
+      solution: "(a) Only the horizontal component of the pull moves the sledge along: W = F·s·cos θ = 60 · 25 · cos 35° ≈ 1229 J ≈ 1.2·10³ J\n(b) Friction points against the motion (θ = 180°): W_f = 40 · 25 · cos 180° = −1000 J\n(c) The work done by the resultant force equals the change in kinetic energy (weight and normal force are vertical — no work):\nΔE_k = 1229 − 1000 ≈ 229 J ≈ 2.3·10² J",
+      answer: "(a) W = Fs cos θ ≈ 1.2·10³ J\n(b) W_f = −F_f·s = −1.0·10³ J\n(c) ΔE_k = W + W_f ≈ 2.3·10² J",
+      meaning: "Most of the child's work is eaten by friction and turns into heat in the snow; only about a fifth speeds the sledge up.",
+      whatIf: "What if the child pulls with the rope horizontal (same 60 N)? W = 60·25 = 1500 J, ΔE_k = 500 J — more than twice as much. (But a rope at an angle also lifts the sledge a little, which in real snow reduces friction.)"
+    },
+    {
+      id: "A3-P003", status: "draft", difficulty: 2, linkLevel: "point",
+      anchors: ["A3.1#work-energy"],
+      buildsOn: ["A3-P002"], leadsTo: [],
+      concept: "Pushing up a frictionless slope at constant speed: work = mgh, whatever the slope",
+      images: [], keyInfo: "weight 1800 N → mg\n6.0 m up → s along the ramp\nfrictionless → only weight, normal force and push\ninclined at 30° → θ\nparallel to the ramp → push along s: W = F·s\nconstant speed → F balances mg sin θ; E_k does not change\nCalculate the pushing force → find F\nwork done by the push → find W\ngain in gravitational potential energy → mgΔh, Δh = s sin θ",
+      statement: "A barrel of weight 1800 N is pushed 6.0 m up a frictionless ramp inclined at 30° to the horizontal. The push is parallel to the ramp and the barrel moves at constant speed.\n(a) Calculate the pushing force.\n(b) Calculate the work done by the push.\n(c) Show that this work equals the gain in gravitational potential energy of the barrel.",
+      solution: "(a) Constant speed → forces along the ramp balance: F = mg·sin θ = 1800 · sin 30° = 900 N\n(b) W = F·s = 900 · 6.0 = 5400 J = 5.4 kJ\n(c) The barrel rises Δh = s·sin θ = 6.0 · 0.5 = 3.0 m.\nΔE_p = mgΔh = 1800 · 3.0 = 5400 J ✓ — equal to the work, since E_k did not change and nothing was lost to friction.",
+      answer: "(a) F = mg sin θ = 900 N\n(b) W = Fs = 5.4·10³ J\n(c) ΔE_p = mg·s·sin θ = 5.4·10³ J = W",
+      meaning: "A ramp halves the force but doubles the distance — the work (energy) is the same as lifting the barrel straight up 3.0 m. Ramps save force, never energy.",
+      whatIf: "What if the ramp is at 15° and reaches the same height 3.0 m? Force = 1800·sin 15° ≈ 466 N, distance = 3.0/sin 15° ≈ 11.6 m, work still 5.4 kJ."
+    },
+    {
+      id: "A3-P004", status: "draft", difficulty: 3, linkLevel: "point",
+      anchors: ["A3.1#work-area"],
+      buildsOn: ["A3-P003"], leadsTo: ["A3-P008"],
+      concept: "Work = area under a force–extension graph; for a spring between two extensions",
+      images: [], keyInfo: "obeys Hooke's law → straight-line F–x graph\nforce of 40 N stretches it by 8.0 cm → k = F/x (cm → m)\nHow much work → find W = area under F–x\nfrom 4.0 cm to 6.0 cm → area between x₁ and x₂ (trapezium)",
+      statement: "A spring obeys Hooke's law. A force of 40 N stretches it by 8.0 cm.\nHow much work is needed to increase the extension of the spring from 4.0 cm to 6.0 cm?\nA. 0.20 J\nB. 0.50 J\nC. 1.0 J\nD. 10 J",
+      solution: "k = F/x = 40/0.080 = 500 N m⁻¹\nWork = area under the F–x graph between 4.0 and 6.0 cm — a trapezium:\nF at 4.0 cm = 500 · 0.040 = 20 N; F at 6.0 cm = 500 · 0.060 = 30 N\nW = ½ · (20 + 30) · 0.020 = 0.50 J\n(Same as ½k·x₂² − ½k·x₁² = 250 · (0.0036 − 0.0016) = 0.50 J.)",
+      answer: "B (W = ½k(x₂² − x₁²) = 0.50 J)",
+      meaning: "Stretching from 4 to 6 cm costs more than from 0 to 2 cm (0.10 J), because the spring already pulls back harder.",
+      whatIf: "What if a student uses W = F·s with F = 30 N? 30·0.020 = 0.60 J — too big: the force is not constant while stretching, so the area is needed."
+    },
+    {
+      id: "A3-P005", status: "draft", difficulty: 1, linkLevel: "point",
+      anchors: ["A3.2#kinetic"],
+      buildsOn: [], leadsTo: ["A3-P012"],
+      concept: "E_k ∝ v²: triple the speed → nine times the energy",
+      images: [], keyInfo: "10 m s⁻¹ → v₁\n4.5 kJ → E_k1 (kJ → J)\n30 m s⁻¹ → v₂ = 3v₁\nCalculate the mass → find m = 2E_k/v²\nnew kinetic energy → E_k ∝ v²",
+      statement: "A cyclist moving at 10 m s⁻¹ has a kinetic energy of 4.5 kJ. She speeds up to 30 m s⁻¹ going down a hill.\n(a) Calculate the mass of the cyclist and her bicycle.\n(b) Determine her new kinetic energy.",
+      solution: "(a) E_k = ½mv² → m = 2E_k/v² = 2 · 4500/10² = 90 kg\n(b) The speed is 3 times bigger, so E_k is 3² = 9 times bigger: 9 · 4.5 = 40.5 kJ ≈ 41 kJ\n(Check: ½ · 90 · 30² = 40 500 J.)",
+      answer: "(a) m = 2E_k/v² = 90 kg\n(b) E_k2 = E_k1·(v₂/v₁)² ≈ 41 kJ",
+      meaning: "Speed is \"expensive\": three times faster means nine times more energy to get rid of when braking — and nine times more damage in a crash.",
+      whatIf: "What if she only doubles her speed, to 20 m s⁻¹? E_k = 4 · 4.5 = 18 kJ."
+    },
+    {
+      id: "A3-P006", status: "draft", difficulty: 1, linkLevel: "point",
+      anchors: ["A3.2#gravitational"],
+      buildsOn: [], leadsTo: ["A3-P017"],
+      concept: "ΔE_p = mgΔh for climbing stairs",
+      images: [], keyInfo: "mass 68 kg → m\nfour floors → Δh = 4 × 3.2 m\n3.2 m high → height of one floor\ngain in her gravitational potential energy → find ΔE_p = mgΔh",
+      statement: "A student of mass 68 kg climbs four floors of a school building. Each floor is 3.2 m high.\nWhat is the approximate gain in her gravitational potential energy?\nA. 2.1 × 10² J\nB. 2.1 × 10³ J\nC. 8.5 × 10³ J\nD. 8.5 × 10⁴ J",
+      solution: "Δh = 4 · 3.2 = 12.8 m\nΔE_p = m·g·Δh = 68 · 9.81 · 12.8 ≈ 8.5·10³ J\nB — the gain for one floor only.",
+      answer: "C (ΔE_p = mgΔh ≈ 8.5·10³ J)",
+      meaning: "8.5 kJ is about the energy in two sugar cubes — but the body uses 4–5 times more food energy, because muscles are only 20–25 % efficient.",
+      whatIf: "What if she comes back down by the lift? Her E_p falls by the same 8.5 kJ: E_p depends only on the height, not on the path."
+    },
+    {
+      id: "A3-P007", status: "draft", difficulty: 3, linkLevel: "point",
+      anchors: ["A3.2#elastic"],
+      buildsOn: ["A3-P004"], leadsTo: [],
+      concept: "Energy in a compressed spring holding a load: x = mg/k → E = m²g²/(2k)",
+      images: [], keyInfo: "spring constant k → F = kx\nblock of mass m → weight mg\nrests there → spring force = mg\nWhat is the elastic potential energy → find E_H = ½kx² in letters",
+      statement: "A vertical spring of spring constant k stands on the floor. A block of mass m is placed on top of it and rests there, compressing the spring.\nWhat is the elastic potential energy stored in the spring?\nA. mg/(2k)\nB. m²g²/(2k)\nC. m²g²/k\nD. mgk/2",
+      solution: "At rest the spring pushes up with a force equal to the weight: k·x = mg → x = mg/k\nE_H = ½·k·x² = ½·k·(mg/k)² = m²g²/(2k)\nCheck units: (kg·m s⁻²)²/(N m⁻¹) = N²/(N m⁻¹) = N m = J ✓ (A has units of metres).",
+      answer: "B (E_H = m²g²/(2k))",
+      meaning: "A stiffer spring (bigger k) stores LESS energy under the same load: it is squeezed less.",
+      whatIf: "What if the block is put on the spring and let go suddenly instead of being lowered slowly? It drops further, to x = 2mg/k, and bounces — the slow lowering takes energy away through your hand."
+    },
+    {
+      id: "A3-P008", status: "draft", difficulty: 2, linkLevel: "point",
+      anchors: ["A3.2#elastic"],
+      buildsOn: ["A3-P004"], leadsTo: ["A3-P014"],
+      concept: "Spring launcher: ½kx² = ½mv²",
+      images: [], keyInfo: "spring constant 180 N m⁻¹ → k\ncompressed by 5.0 cm → x (cm → m)\nmass 20 g → m (g → kg)\nsmooth horizontal track → no losses, no change of height\nCalculate the elastic potential energy → find E_H = ½kx²\nthe speed of the ball when it leaves the spring → E_H = ½mv² → find v",
+      statement: "A toy launcher has a spring of spring constant 180 N m⁻¹. The spring is compressed by 5.0 cm and then released, pushing a ball of mass 20 g along a smooth horizontal track.\n(a) Calculate the elastic potential energy stored in the compressed spring.\n(b) Calculate the speed of the ball when it leaves the spring.",
+      solution: "(a) E_H = ½·k·x² = ½ · 180 · 0.050² = 0.225 J ≈ 0.23 J\n(b) All of it becomes kinetic energy: ½mv² = E_H → v = √(2E_H/m) = √(2 · 0.225/0.020) = √22.5 ≈ 4.7 m s⁻¹\n(In letters: v = x·√(k/m).)",
+      answer: "(a) E_H = ½kx² ≈ 0.23 J\n(b) v = x√(k/m) ≈ 4.7 m s⁻¹",
+      meaning: "v ∝ x: compress the spring twice as far and the ball leaves twice as fast (with four times the energy).",
+      whatIf: "What if the ball is shot straight up instead? It rises to h = E_H/(mg) = 0.225/(0.020·9.81) ≈ 1.1 m."
+    },
+    {
+      id: "A3-P009", status: "draft", difficulty: 2, linkLevel: "point",
+      anchors: ["A3.3#conservation"],
+      buildsOn: [], leadsTo: ["A3-P010"],
+      concept: "Chain of energy transformations: gravitational → kinetic → elastic → kinetic → gravitational",
+      images: [], keyInfo: "Starting at her highest point → v = 0: all gravitational\nsinks to her lowest point → v = 0: all elastic (and least gravitational)\nAir resistance is negligible → mechanical energy conserved\nWhich sequence of energy stores → find: order of stores",
+      statement: "A child jumps on a trampoline. Starting at her highest point, she falls, lands on the trampoline, sinks to her lowest point, and is thrown back up to her highest point. Air resistance is negligible.\nWhich sequence of energy stores describes this motion?\nA. gravitational → elastic → kinetic → elastic → gravitational\nB. gravitational → kinetic → elastic → kinetic → gravitational\nC. kinetic → gravitational → elastic → gravitational → kinetic\nD. gravitational → kinetic → gravitational → kinetic → elastic",
+      solution: "Top: she is momentarily at rest → energy is gravitational.\nFalling to the trampoline: gravitational → kinetic.\nSinking into the trampoline: she slows down to rest, stretching the springs → kinetic → elastic.\nThrown back up: elastic → kinetic as she leaves the trampoline, then kinetic → gravitational as she rises to the top.",
+      answer: "B",
+      meaning: "At the turning points (top and bottom) the speed is zero, so there is no kinetic energy there — that is the quickest way to check any such sequence.",
+      whatIf: "What if the trampoline springs warm up a little on each bounce? Some energy leaves as thermal energy each time, and she bounces a bit lower — unless she pushes with her legs to add energy."
+    },
+    {
+      id: "A3-P010", status: "draft", difficulty: 2, linkLevel: "point",
+      anchors: ["A3.3#conservation"],
+      buildsOn: ["A3-P009"], leadsTo: ["A3-P011"],
+      concept: "Free fall: E_p + E_k = const → ratio E_p/E_k at a given height",
+      images: [], keyInfo: "no atmosphere → mechanical energy conserved\nfalls from rest → E_k = 0 at the start\nfrom a height h → E_total = mgh\nzero at the surface → E_p = mg·(height)\nat a height of h/4 → E_p = mgh/4\nwhat is the ratio → find E_p/E_k",
+      statement: "On the Moon, which has no atmosphere, a rock falls from rest from a height h above the surface. Take the gravitational potential energy to be zero at the surface.\nWhen the rock is at a height of h/4, what is the ratio (gravitational potential energy)/(kinetic energy)?\nA. 1/4\nB. 1/3\nC. 3\nD. 4",
+      solution: "Total energy at the start: mgh (all gravitational).\nAt height h/4: E_p = mg·h/4.\nThe rest has turned into kinetic energy: E_k = mgh − mgh/4 = 3mgh/4.\nE_p/E_k = (1/4)/(3/4) = 1/3\nThe value of g on the Moon does not matter — it cancels.",
+      answer: "B (E_p/E_k = 1/3)",
+      meaning: "At three-quarters of the way down, three-quarters of the energy is already kinetic: energy changes in proportion to the height fallen.",
+      whatIf: "At which height are E_p and E_k equal? At h/2 — halfway down."
+    },
+    {
+      id: "A3-P011", status: "draft", difficulty: 2, linkLevel: "point",
+      anchors: ["A3.3#conservation"],
+      buildsOn: ["A3-P010"], leadsTo: ["A3-P012"],
+      concept: "Speed at a height from energy conservation: v = √(2g·Δh) where Δh is measured from the top",
+      images: [], keyInfo: "thrown straight up → vertical motion\nhighest point → v = 0\nheight 4h → top\nheight h → window\nAir resistance is negligible → mechanical energy conserved\nWhat is the speed of the ball as it passes the window → find v",
+      statement: "A ball is thrown straight up. Its highest point is at a height 4h above the ground. On the way down it passes a window at a height h above the ground. Air resistance is negligible.\nWhat is the speed of the ball as it passes the window?\nA. √(2gh)\nB. √(6gh)\nC. √(8gh)\nD. 3gh",
+      solution: "From the highest point (v = 0) to the window the ball falls 4h − h = 3h.\nThe lost gravitational energy becomes kinetic: mg·3h = ½mv² → v = √(6gh)\n(The way the ball got to the top does not matter — only the drop from the turning point.)\nD has the wrong units (m² s⁻², not m s⁻¹).",
+      answer: "B (v = √(2g·3h) = √(6gh))",
+      meaning: "Energy methods skip time entirely: no need to know when the ball passes the window to find how fast it goes.",
+      whatIf: "What was the launch speed from the ground? From 0 to 4h: v₀ = √(2g·4h) = √(8gh) — option C."
+    },
+    {
+      id: "A3-P012", status: "draft", difficulty: 1, linkLevel: "point",
+      anchors: ["A3.3#conservation"],
+      buildsOn: ["A3-P011"], leadsTo: ["A3-P013"],
+      concept: "Pendulum-like swing: v = √(2gh) at the bottom; why real speed is lower",
+      images: [], keyInfo: "60 cm above its lowest point → Δh (cm → m)\nreleased → starts from rest\nlowest point → all gravitational energy → kinetic\nCalculate the maximum speed → find v = √(2gΔh)\nExplain why, in reality → explain: energy losses",
+      statement: "In a sports lab, a hammer-like test head on a pivoted arm is raised so that its centre of mass is 60 cm above its lowest point. It is released and swings down to hit a ball at the lowest point.\n(a) Calculate the maximum speed of the test head.\n(b) Explain why, in reality, the speed just before the hit is a little smaller.",
+      solution: "(a) mgΔh = ½mv² → v = √(2gΔh) = √(2 · 9.81 · 0.60) ≈ 3.4 m s⁻¹\nThe mass cancels — any head released from 60 cm reaches the same speed.\n(b) Some energy is lost on the way down: air resistance and friction at the pivot do negative work, turning part of the energy into thermal energy (and sound). Also, the arm itself moves and takes some kinetic energy.",
+      answer: "(a) v = √(2gΔh) ≈ 3.4 m s⁻¹\n(b) air resistance and friction at the pivot transfer some energy to thermal energy",
+      meaning: "The height you lift it to sets the speed: to hit twice as fast you must raise it four times as high.",
+      whatIf: "What if the measured speed is 3.2 m s⁻¹? Then the fraction of energy kept is (3.2/3.4)² ≈ 0.89 — about 11 % lost."
+    },
+    {
+      id: "A3-P013", status: "draft", difficulty: 3, linkLevel: "point",
+      anchors: ["A3.3#with-losses"],
+      buildsOn: ["A3-P012"], leadsTo: [],
+      concept: "Energy with losses on a slope: only (1 − loss) of E_p becomes E_k",
+      images: [], keyInfo: "from rest → E_k = 0 at the start\n400 m down a straight slope → distance along the slope\ninclined at 20° → Δh = s·sin θ\n20 % of the gravitational potential energy → lost: E_k = 0.80·mgΔh\nCalculate the vertical drop → find Δh\nCalculate his speed at the bottom → find v",
+      statement: "A skier starts from rest and slides 400 m down a straight slope inclined at 20° to the horizontal. 20 % of the gravitational potential energy he loses is transferred to thermal energy by friction and air resistance.\n(a) Calculate the vertical drop of the skier.\n(b) Calculate his speed at the bottom of the slope.",
+      solution: "(a) Δh = s·sin θ = 400 · sin 20° ≈ 137 m\n(b) Only 80 % of the lost E_p becomes kinetic energy:\n½mv² = 0.80·mgΔh → v = √(2 · 0.80 · gΔh) = √(1.6 · 9.81 · 137) ≈ 46 m s⁻¹\nThe mass cancels.",
+      answer: "(a) Δh = s sin θ ≈ 1.4·10² m\n(b) v = √(1.6·gΔh) ≈ 46 m s⁻¹",
+      meaning: "Without losses the skier would reach √(2·9.81·137) ≈ 52 m s⁻¹. Losing 20 % of the energy costs only about 10 % of the speed, because v ∝ √E.",
+      whatIf: "What if the skier has mass 75 kg — how big is the average resistive force? Energy lost = 0.20·75·9.81·137 ≈ 2.0·10⁴ J over 400 m → F ≈ 50 N."
+    },
+    {
+      id: "A3-P014", status: "draft", difficulty: 3, linkLevel: "point",
+      anchors: ["A3.3#conservation"],
+      buildsOn: ["A3-P008"], leadsTo: [],
+      concept: "Box slides up a smooth slope into a spring: E_k → E_p + E_H",
+      images: [], keyInfo: "mass 4.0 kg → m\nat 6.0 m s⁻¹ → v\nsmooth ramp → no losses\nspring constant 250 N m⁻¹ → k\nbrought momentarily to rest → E_k = 0 at the end\n0.80 m higher → Δh\ninitial kinetic energy → find E_k = ½mv²\nenergy stored in the spring → E_H = E_k − mgΔh\ncompression of the spring → find x = √(2E_H/k)",
+      statement: "A box of mass 4.0 kg slides at 6.0 m s⁻¹ onto a smooth ramp. It moves up the ramp, hits a spring with spring constant 250 N m⁻¹ fixed near the top, and is brought momentarily to rest. At that moment the box is 0.80 m higher than where it started on the ramp.\n(a) Calculate the initial kinetic energy of the box.\n(b) Calculate the energy stored in the spring when the box stops.\n(c) Calculate the compression of the spring.",
+      solution: "(a) E_k = ½·m·v² = ½ · 4.0 · 6.0² = 72 J\n(b) Energy is conserved: E_k = mgΔh + E_H\nmgΔh = 4.0 · 9.81 · 0.80 ≈ 31.4 J\nE_H = 72 − 31.4 ≈ 40.6 J ≈ 41 J\n(c) E_H = ½·k·x² → x = √(2E_H/k) = √(2 · 40.6/250) ≈ 0.57 m",
+      answer: "(a) E_k = ½mv² = 72 J\n(b) E_H = ½mv² − mgΔh ≈ 41 J\n(c) x = √(2E_H/k) ≈ 0.57 m",
+      meaning: "The kinetic energy is shared out: a bit less than half lifts the box, the rest squeezes the spring. Then the spring gives it back and the box slides down at 6.0 m s⁻¹ again.",
+      whatIf: "What if the box starts at only 4.0 m s⁻¹? E_k = 32 J — not enough to reach 0.80 m (needs 31.4 J for the height alone), so the box barely touches the spring: E_H ≈ 0.6 J, x ≈ 7 cm."
+    },
+    {
+      id: "A3-P015", status: "draft", difficulty: 1, linkLevel: "point",
+      anchors: ["A3.4#power"],
+      buildsOn: ["A3-P006"], leadsTo: ["A3-P016"],
+      concept: "Power against gravity: P = mgh/t",
+      images: [], keyInfo: "mass 60 kg → m\n5.0 m high → Δh\nin 10 s → Δt\nsteady speed → E_k does not change\npower output against gravity → find P = mgΔh/Δt",
+      statement: "A firefighter of mass 60 kg climbs a vertical ladder 5.0 m high in 10 s at a steady speed.\nWhat is her power output against gravity?\nA. 30 W\nB. 60 W\nC. 2.9 × 10² W\nD. 2.9 × 10³ W",
+      solution: "Work against gravity: W = mgΔh = 60 · 9.81 · 5.0 ≈ 2943 J\nP = W/Δt = 2943/10 ≈ 2.9·10² W\nA — forgets g (60 · 5.0/10 = 30 W). D — forgets to divide by the time.",
+      answer: "C (P = mgΔh/Δt ≈ 2.9·10² W)",
+      meaning: "About 300 W — a fit person can keep it up only for a short climb. Power is how fast energy is transferred, not how much.",
+      whatIf: "What if she climbs the same ladder in 5.0 s? The work is the same, the power doubles to ≈ 590 W."
+    },
+    {
+      id: "A3-P016", status: "draft", difficulty: 1, linkLevel: "point",
+      anchors: ["A3.4#p-fv"],
+      buildsOn: ["A3-P015"], leadsTo: ["A3-P017"],
+      concept: "At constant velocity P = Fv, where F balances the resistive force",
+      images: [], keyInfo: "mass 58 kg → m\nconstant velocity → F_forward = F_resistive\n6.5 m s⁻¹ → v\nresistive force on her is 14 N → F\nCalculate her kinetic energy → find E_k = ½mv²\npower she must develop → find P = Fv",
+      statement: "A runner of mass 58 kg runs at a constant velocity of 6.5 m s⁻¹. The total resistive force on her is 14 N.\n(a) Calculate her kinetic energy.\n(b) Calculate the power she must develop to keep running at this speed.",
+      solution: "(a) E_k = ½ · 58 · 6.5² ≈ 1225 J ≈ 1.2·10³ J\n(b) At constant velocity her forward force equals the resistive force, 14 N. Each second she moves 6.5 m:\nP = F·v = 14 · 6.5 = 91 W",
+      answer: "(a) E_k = ½mv² ≈ 1.2·10³ J\n(b) P = Fv = 91 W",
+      meaning: "At constant speed the runner's work does not go into kinetic energy at all — it all goes into fighting resistance.",
+      whatIf: "What if the resistive force grows with speed so that at 8.0 m s⁻¹ it is 21 N? P = 21 · 8.0 = 168 W — almost double for 23 % more speed."
+    },
+    {
+      id: "A3-P017", status: "draft", difficulty: 3, linkLevel: "point",
+      anchors: ["A3.4#p-fv"],
+      buildsOn: ["A3-P016"], leadsTo: [],
+      concept: "Lorry up a hill at constant speed: P = mg sin θ · v",
+      images: [], keyInfo: "mass 3000 kg → m\ninclined at 12° → θ\nconstant speed → driving force = mg sin θ\n10 m s⁻¹ → v\nAir resistance and friction are negligible → only the weight component opposes\nCalculate the driving force → find F = mg sin θ\nuseful power output → find P = Fv",
+      statement: "A lorry of mass 3000 kg drives up a straight road inclined at 12° to the horizontal at a constant speed of 10 m s⁻¹. Air resistance and friction are negligible.\n(a) Calculate the driving force on the lorry.\n(b) Calculate the useful power output of the engine.",
+      solution: "(a) Constant speed → the driving force balances the component of the weight down the slope:\nF = mg·sin θ = 3000 · 9.81 · sin 12° ≈ 6.1·10³ N\n(b) P = F·v = 6.12·10³ · 10 ≈ 6.1·10⁴ W = 61 kW\n(Check by energy: each second the lorry rises v·sin θ = 2.08 m, gaining mg·2.08 ≈ 61 kJ.)",
+      answer: "(a) F = mg sin θ ≈ 6.1·10³ N\n(b) P = mg·sin θ·v ≈ 61 kW",
+      meaning: "On a level road this lorry would need almost no power (no air resistance); the hill alone takes 61 kW — the engine's work goes into lifting the lorry.",
+      whatIf: "What if the engine can give at most 80 kW? Then the top speed up this hill is v = 80 000/6120 ≈ 13 m s⁻¹."
+    },
+    {
+      id: "A3-P018", status: "draft", difficulty: 1, linkLevel: "point",
+      anchors: ["A3.4#efficiency"],
+      buildsOn: [], leadsTo: ["A3-P019"],
+      concept: "Efficiency in terms of power: wasted = total × (1 − η)",
+      images: [], keyInfo: "3.0 GW → total power in\nefficiency is 40 % → η = useful out/total in\nAt what rate is energy wasted → find P_wasted = P_in − P_useful",
+      statement: "The reactor of a power station supplies thermal energy at a rate of 3.0 GW. The station's efficiency is 40 %.\nAt what rate is energy wasted?\nA. 1.2 GW\nB. 1.8 GW\nC. 3.0 GW\nD. 7.5 GW",
+      solution: "Useful power out: P_useful = η·P_in = 0.40 · 3.0 = 1.2 GW (that is option A — the electrical output).\nWasted: 3.0 − 1.2 = 1.8 GW — dumped as heat into the cooling water and air.",
+      answer: "B (P_wasted = (1 − η)·P_in = 1.8 GW)",
+      meaning: "Most power stations throw away more energy than they deliver. The second law (B.4) says some waste is unavoidable.",
+      whatIf: "What if the station needs to deliver 1.5 GW of electricity with the same efficiency? P_in = 1.5/0.40 = 3.75 GW."
+    },
+    {
+      id: "A3-P019", status: "draft", difficulty: 2, linkLevel: "point",
+      anchors: ["A3.4#efficiency"],
+      buildsOn: ["A3-P018"], leadsTo: ["A3-P020"],
+      concept: "Motor lifting a load: useful power mgh/t, input power = useful/η",
+      images: [], keyInfo: "efficiency of 40 % → η\n8.0 kg → m\nat constant speed → no gain in E_k\nheight of 6.0 m → Δh\nin 4.0 s → Δt\nuseful power output → find P_out = mgΔh/Δt\nelectrical power input → find P_in = P_out/η\nminimum power → explain",
+      statement: "An electric motor with an efficiency of 40 % lifts an 8.0 kg load at constant speed through a height of 6.0 m in 4.0 s.\n(a) Calculate the useful power output of the motor.\n(b) Calculate the electrical power input to the motor.\n(c) Explain why the useful power calculated in (a) is the minimum power needed for this lift.",
+      solution: "(a) P_out = mgΔh/Δt = 8.0 · 9.81 · 6.0/4.0 ≈ 118 W ≈ 1.2·10² W\n(b) η = P_out/P_in → P_in = P_out/η = 118/0.40 ≈ 294 W ≈ 2.9·10² W\n(c) It counts only the gain in gravitational potential energy. In reality the motor must also give the load kinetic energy at the start and overcome friction in the pulleys and air resistance — so the real useful output must be at least this value.",
+      answer: "(a) P_out = mgΔh/Δt ≈ 1.2·10² W\n(b) P_in = P_out/η ≈ 2.9·10² W\n(c) it ignores the kinetic energy at the start and friction/air resistance",
+      meaning: "For every 100 J of electrical energy only 40 J lifts the load; 60 J warms the motor and the wires.",
+      whatIf: "What if the motor were 80 % efficient? P_in = 118/0.80 ≈ 147 W — half the electricity for the same job."
+    },
+    {
+      id: "A3-P020", status: "draft", difficulty: 3, linkLevel: "point",
+      anchors: ["A3.4#efficiency"],
+      buildsOn: ["A3-P019"], leadsTo: [],
+      concept: "Hydro turbine: power from a mass flow rate falling through a height, times efficiency",
+      images: [], keyInfo: "75 m below the lake → Δh\n2400 kg of water → mass per minute\nevery minute → per 60 s: Δm/Δt = 40 kg s⁻¹\nefficiency of 70 % → η\nChanges in the kinetic energy of the water can be ignored → only E_p matters\nWhat is the electrical power output → find P = η·(Δm/Δt)·g·Δh",
+      statement: "Water flows from a mountain lake down a pipe to a turbine 75 m below the lake. 2400 kg of water passes through the turbine every minute. The turbine and generator have an overall efficiency of 70 %. Changes in the kinetic energy of the water can be ignored.\nWhat is the electrical power output?\nA. 2.1 kW\nB. 21 kW\nC. 29 kW\nD. 1.2 MW",
+      solution: "Mass per second: 2400/60 = 40 kg s⁻¹.\nGravitational energy released per second: (Δm/Δt)·g·Δh = 40 · 9.81 · 75 ≈ 2.94·10⁴ W\nElectrical output: P = η · 2.94·10⁴ = 0.70 · 2.94·10⁴ ≈ 2.1·10⁴ W = 21 kW\nC — forgets the efficiency. D — forgets to convert minutes to seconds.",
+      answer: "B (P = η·(Δm/Δt)·gΔh ≈ 21 kW)",
+      meaning: "21 kW is enough for a few houses. Hydro power is \"height × flow\": doubling either doubles the power.",
+      whatIf: "What if a dry summer halves the flow? The power halves to about 10 kW — the reason small hydro plants need a reservoir."
+    },
+    {
+      id: "A3-P021", status: "draft", difficulty: 1, linkLevel: "point",
+      anchors: ["A3.4#sankey"],
+      buildsOn: ["A3-P018"], leadsTo: [],
+      concept: "Sankey diagram: efficiency = useful arrow / input arrow",
+      images: [], keyInfo: "input arrow of 60 J s⁻¹ → P_in\n6 J s⁻¹ of light → useful output\n54 J s⁻¹ of thermal energy → wasted\nState which arrow is the useful output → state: what the lamp is for\nCalculate the efficiency → find η = useful/total in\nefficiency of 40 % → η of the LED\nCalculate its electrical power input → find P_in = useful/η",
+      statement: "A Sankey diagram for an old filament lamp shows an input arrow of 60 J s⁻¹ of electrical energy splitting into two arrows: 6 J s⁻¹ of light and 54 J s⁻¹ of thermal energy to the room.\n(a) State which arrow is the useful output.\n(b) Calculate the efficiency of the lamp.\n(c) A new LED lamp gives the same 6 J s⁻¹ of light with an efficiency of 40 %. Calculate its electrical power input.",
+      solution: "(a) Light — that is what a lamp is for. The thermal energy is wasted (dissipated).\n(b) η = useful out/total in = 6/60 = 0.10 = 10 %\n(Check: the arrows add up, 6 + 54 = 60 — energy is conserved; in a Sankey diagram arrow widths are drawn to scale.)\n(c) P_in = useful/η = 6/0.40 = 15 W",
+      answer: "(a) light\n(b) η = 6/60 = 10 %\n(c) P_in = 6/0.40 = 15 W",
+      meaning: "The LED does the same job with a quarter of the electrical power — that is why filament lamps were phased out.",
+      whatIf: "What if, in winter, the thermal energy from the old lamp helps heat the room? Then part of the \"waste\" is useful — efficiency depends on what you call useful."
+    },
+    {
+      id: "A3-P022", status: "draft", difficulty: 2, linkLevel: "point",
+      anchors: ["A3.4#energy-density"],
+      buildsOn: ["A3-P019"], leadsTo: [],
+      concept: "Specific energy (J/kg) vs energy density (J/m³): energy density = specific energy × density",
+      images: [], keyInfo: "specific energy of 46 MJ kg⁻¹ → energy per kilogram\ndensity of 740 kg m⁻³ → ρ\nCalculate the energy density → find energy per m³ = specific energy × ρ\n50 litres → V (litres → m³)\nenergy stored in a full tank → find E = energy density × V\nefficiency of 25 % → η\nuseful work → find W = η·E",
+      statement: "Petrol has a specific energy of 46 MJ kg⁻¹ and a density of 740 kg m⁻³.\n(a) Calculate the energy density of petrol in J m⁻³.\n(b) A car's tank holds 50 litres of petrol (1 litre = 10⁻³ m³). Calculate the energy stored in a full tank.\n(c) The car's engine has an efficiency of 25 %. Calculate the useful work the engine can do with a full tank.",
+      solution: "(a) Energy density = specific energy × density = 46·10⁶ · 740 ≈ 3.4·10¹⁰ J m⁻³\n(Units: J kg⁻¹ × kg m⁻³ = J m⁻³.)\n(b) V = 50 · 10⁻³ = 0.050 m³\nE = 3.40·10¹⁰ · 0.050 ≈ 1.7·10⁹ J = 1.7 GJ\n(c) W = η·E = 0.25 · 1.7·10⁹ ≈ 4.3·10⁸ J",
+      answer: "(a) energy density ≈ 3.4·10¹⁰ J m⁻³\n(b) E ≈ 1.7·10⁹ J\n(c) W = ηE ≈ 4.3·10⁸ J",
+      meaning: "Specific energy matters when mass is the limit (aircraft, rockets); energy density matters when volume is the limit (a car's tank).",
+      whatIf: "What if the car needs a driving force of 600 N on the motorway? Distance = W/F = 4.3·10⁸/600 ≈ 7.1·10⁵ m ≈ 710 km on one tank."
     },
   ]
 };
