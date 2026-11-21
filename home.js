@@ -282,7 +282,7 @@ function landscape(svg){
     <linearGradient id="h-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e9e1cf"/><stop offset=".6" stop-color="#f4ead6"/><stop offset="1" stop-color="#efe3c8"/></linearGradient>
     <linearGradient id="h-mist" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#f4ecdc" stop-opacity="0"/><stop offset=".5" stop-color="#f4ecdc" stop-opacity=".95"/><stop offset="1" stop-color="#f4ecdc" stop-opacity="0"/></linearGradient></defs>
   <rect width="1400" height="860" fill="url(#h-sky)"/>
-  <circle cx="1160" cy="150" r="54" fill="#f2d9a3" opacity=".8"/>
+  <circle cx="980" cy="150" r="54" fill="#f2d9a3" opacity=".8"/>
   <path d="M0 470 L120 360 L210 410 L330 280 L450 390 L560 300 L700 420 L820 330 L960 410 L1080 300 L1200 380 L1300 320 L1400 380 L1400 860 L0 860Z" fill="#b9c2c7"/>
   <path d="M330 280 L365 312 L345 318 L380 340 L330 330Z M1080 300 L1110 330 L1092 334 L1120 352 L1078 344Z M560 300 L588 326 L570 330 Z" fill="#f4f1ea" opacity=".9"/>
   <path d="M0 540 L150 440 L300 500 L430 430 L600 520 L760 450 L900 510 L1050 440 L1220 520 L1400 460 L1400 860 L0 860Z" fill="#8fa09c"/>
@@ -293,18 +293,41 @@ function landscape(svg){
 
 /* ---------- home page ---------- */
 window.KedrHome = function(ctx){
-  const { K, order, seenMap, solvedMap } = ctx;
+  const { K, order, seenMap, solvedMap, P, T, lbl, UNITS, unitOfId, setUnit } = ctx;
   const root = document.getElementById('home');
   const probs = K.problems.map(p => p.id), total = probs.length;
   const solvedCount = () => probs.filter(id => solvedMap()[id]).length;
   const stageOf = n => STAGES.reduce((s, st, i) => (st.share === 'first' ? n >= 1 : n >= Math.ceil(st.share * total)) ? i : s, 0);
-  const nextUp = () => order.find(id => /^(P|B4-P)\d/.test(id) ? !solvedMap()[id] : !seenMap()[id]);
+  // Логика кнопок — КНОПКИ.md
+  const done = id => P[id] ? !!solvedMap()[id] : !!seenMap()[id];
+  const inOrder = order.filter(id => P[id] || T[id]);
+  const unitIdx = id => Math.max(0, UNITS.indexOf(unitOfId(id)));
+  function nextStep(){
+    const last = store.get('kedr-last', null), anySeen = Object.keys(seenMap()).length;
+    const first = UNITS.map(u => inOrder.find(id => unitOfId(id) === u)).find(Boolean);
+    if (!anySeen && !last) return { id: first, label: 'Start → ' + unitOfId(first) };
+    if (last && P[last] && !solvedMap()[last]) return { id: last, label: 'Back to ' + lbl(last) };
+    if (last && (P[last] || T[last])){
+      const u = unitOfId(last), i = inOrder.indexOf(last);
+      const same = inOrder.slice(i + 1).concat(inOrder.slice(0, i)).find(id => unitOfId(id) === u && !done(id));
+      if (same) return { id: same, label: 'Next → ' + lbl(same) };
+      for (let k = 1; k <= UNITS.length; k++){
+        const U = UNITS[(unitIdx(last) + k) % UNITS.length], id = inOrder.find(x => unitOfId(x) === U && !done(x));
+        if (id) return { id, label: 'Next unit → ' + U };
+      }
+      return null;
+    }
+    const id = inOrder.find(x => !done(x));
+    return id ? { id, label: 'Next → ' + lbl(id) } : null;
+  }
+  const goalText = id => P[id] ? (P[id].concept || '') : T[id] ? (T[id].title || '') : '';
 
   function render(animatePlant){
     const planted = store.get('kedr-planted', false);
     const n = solvedCount(), st = stageOf(n), S = STAGES[st];
     const last = store.get('kedr-last-stage', st);
     const heard = store.get('kedr-heard', {});
+    const step = nextStep(), mapUnit = (step && unitOfId(step.id)) || unitOfId(store.get('kedr-last', null)) || UNITS[0];
     const speech = planted && !animatePlant ? SPEECHES.find(sp => !heard[sp.id] && sp.when(n)) : null;
     root.innerHTML = `
       <svg id="homeSvg" viewBox="0 0 1400 860" preserveAspectRatio="xMidYMid slice"></svg>
@@ -319,15 +342,16 @@ window.KedrHome = function(ctx){
         <div class="stage">${S.name}</div>
         <div class="hand" style="font-size:20px;margin:-2px 0 10px">${S.note}</div>
         <div class="bar2"><i style="width:${Math.round(100*n/total)}%"></i></div>
-        <div class="small">${n} of ${total} kinematics problems solved</div>
+        <div class="small">${n} of ${total} problems solved</div>
         <svg class="rings" viewBox="-60 -60 120 120" id="ringsSvg"></svg>
-        <div class="small" style="text-align:center;margin-top:-4px">each ring — the solved problems of one theory card (T01 inside → T04 outside)</div>
-        <a class="cta" href="#${nextUp() || 'map'}">Continue → ${nextUp() || 'the map'}</a>
-        <a class="cta ghost" href="#map">Open the kinematics map</a>
+        <div class="small" style="text-align:center;margin-top:-4px">each ring — one unit: ${UNITS[0]} inside → ${UNITS[UNITS.length-1]} outside</div>
+        ${step ? `<a class="cta" href="#${step.id}">${step.label}</a><div class="goal">${goalText(step.id)}</div>` : `<a class="cta" href="#map">All solved — open the map</a>`}
+        <a class="cta ghost" href="#map" id="unitMapBtn">Map: ${mapUnit}</a>
       </div>` : ''}
       ${speech ? `<div class="say"><div class="hand">${speech.text}</div><button class="next">Got it</button></div>` : ''}
       ${st > last ? `<div class="toast">Your cedar grew! Now: <b>${S.name}</b></div>` : ''}`;
     store.set('kedr-last-stage', st);
+    { const mb = root.querySelector('#unitMapBtn'); if (mb) mb.onclick = () => setUnit(mapUnit); }
     const sayBtn = root.querySelector('.say .next'); if (sayBtn) sayBtn.onclick = () => { heard[speech.id] = true; store.set('kedr-heard', heard); root.querySelector('.say').remove(); };
     const svg = document.getElementById('homeSvg'); landscape(svg);
     const PHONE = innerWidth < 760;
@@ -373,13 +397,14 @@ window.KedrHome = function(ctx){
       const sol = solvedMap();
       el('circle', { r: 56, fill: '#6a4c38' }, rs); el('circle', { r: 52, fill: '#e8d3ae' }, rs);
       el('circle', { r: 9, fill: '#8a6a4e' }, rs);
-      K.theory.filter(t => !t.unit || t.unit === 'Kinematics').forEach((t, i) => {
-        const ids = K.problems.filter(p => (p.anchors[0] || '').split('#')[0] === t.id).map(p => p.id);
+      const step = Math.min(10, 40 / Math.max(1, UNITS.length));
+      UNITS.forEach((u, i) => {
+        const ids = K.problems.map(p => p.id).filter(id => unitOfId(id) === u);
         const f = ids.length ? ids.filter(id => sol[id]).length / ids.length : 0;
-        const r = 14 + i * 8;
+        const r = 14 + i * step;
         el('circle', { r, fill: 'none', stroke: '#c9ad82', 'stroke-width': 6 }, rs);
         if (f > 0){ const c = 2 * Math.PI * r; el('circle', { r, fill: 'none', stroke: '#d9a032', 'stroke-width': 6, 'stroke-dasharray': `${c*f} ${c}`, transform: 'rotate(-90)' }, rs); }
-        el('title', {}, rs, t.id);
+        el('title', {}, rs, u + ': ' + ids.filter(id => sol[id]).length + ' / ' + ids.length);
       });
     }
     if (!planted && !store.get('kedr-welcomed', false)) welcome();
