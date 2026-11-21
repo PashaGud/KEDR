@@ -32,7 +32,10 @@ const lbl = id => P[id] ? (LBL[id] || id) : T[id] ? 'Теория ' + (T[id].tit
 const name = id => P[id] ? (P[id].concept || '') : '';
 const d = ts => ts && ts.toDate ? ts.toDate().toLocaleString('ru-RU',{dateStyle:'short',timeStyle:'short'}) : '—';
 const esc = s => String(s ?? '').replace(/[<&]/g, c => ({'<':'&lt;','&':'&amp;'})[c]);
-document.getElementById('in').onclick = () => auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+const showErr = e => { app.insertAdjacentHTML('beforeend', `<p style="color:#b00">Вход не удался: ${esc(e.code || e.message)}</p>`); };
+document.getElementById('in').onclick = () => { const g = new firebase.auth.GoogleAuthProvider();
+  auth.signInWithPopup(g).catch(e => /popup-blocked|operation-not-supported|popup-closed/.test(e.code) && e.code !== 'auth/popup-closed-by-user' ? auth.signInWithRedirect(g) : showErr(e)); };
+auth.getRedirectResult().catch(showErr);
 let users = [], sortKey = 'lastSeen';
 auth.onAuthStateChanged(async u => {
   if (!u) return;

@@ -32,7 +32,8 @@
   #kedr-login .sw{background:none;color:#1f6f4a;font-size:13px} #kedr-login .err{color:#b00;font-size:13px;min-height:16px}
   #kedr-login .or{text-align:center;color:#999;font-size:12px;margin:12px 0}
   #kedr-chip{position:fixed;top:8px;right:10px;z-index:9999;font-size:12px;background:#fffd;border:1px solid #ddd;border-radius:14px;padding:3px 10px}
-  #kedr-chip a{color:#1f6f4a;cursor:pointer;margin-left:6px}`;
+  #kedr-chip a{color:#1f6f4a;cursor:pointer;margin-left:6px}
+  #kedr-chip.inbar{position:static;white-space:nowrap;max-width:220px;overflow:hidden;text-overflow:ellipsis;background:none;border:0;padding:0;font-size:13px;color:#666}`;
   document.head.appendChild(css);
   if (REQUIRE_LOGIN) document.documentElement.classList.add('kedr-locked');
 
@@ -69,7 +70,9 @@
     const l = document.getElementById('kedr-login'); if (l) l.remove();
     const chip = () => { if (document.getElementById('kedr-chip')) return; const c = document.createElement('div'); c.id = 'kedr-chip';
       c.innerHTML = `${(user.displayName || user.email || '').replace(/</g,'')} <a>выйти</a>`;
-      c.querySelector('a').onclick = () => auth.signOut().then(() => location.reload()); document.body.appendChild(c); };
+      c.querySelector('a').onclick = () => auth.signOut().then(() => location.reload());
+      const bar = document.querySelector('header.bar'), at = bar && bar.querySelector('.spacer');
+      if (at) { c.classList.add('inbar'); at.after(c); } else document.body.appendChild(c); };
     document.body ? chip() : document.addEventListener('DOMContentLoaded', chip);
   }
 
