@@ -386,7 +386,8 @@ window.KedrHome = function(ctx){
       el('text', { x: CX, y: CY + 34, 'text-anchor': 'middle', 'font-family': 'Caveat', 'font-size': 24, fill: '#f9f4e9' }, svg, 'a spot for your cedar');
     }
     // the student with a watering can, in front of Kinematics (desktop serpentine only)
-    if (!PHONE) student(svg, 312, 848, .56);
+    if (!PHONE){ const ui = Math.max(0, units.findIndex(u => u.unit === mapUnit)), k0 = trail.getPointAtLength(L * UNIT_AT[0]), q = trail.getPointAtLength(L * UNIT_AT[ui]);
+      student(svg, 312 + (q.x - k0.x), 848 + (q.y - k0.y), .56); }   // 24.11: stands at the unit the student is working on now
     // forester at the start of the trail
     const fg = el('g', { class: 'hot' }, svg);
     forester(fg, 90, 735, planted ? 'wave' : 'offer', .72); archik(fg, 175, 770, .62);
