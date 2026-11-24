@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script>/* ЕГЭ-режим (24.11): класс на <html> сразу, чтобы не мигало */ try{ if(localStorage.getItem('kedr-mode')==='ege') document.documentElement.classList.add('ege'); }catch(e){}</script>
+<style>
+html.ege{ --page:#e6eeec; --card:#f6faf8; --card-inner:#fbfdfc; --border:#cddcd6; --border-inner:#c2d3cc; --shadow:0 2px 24px rgba(30,70,70,.10); --ink:#1d3036; --ink-muted:#476068; --ink-faint:#86a0a2; --marigold:#c8553d; --apricot:#f0b8a6; --cream:#f3f8f6; --cocoa:#1f4e5a; }
+html.ege body{ background:var(--page); }
+html.ege #homeSvg{ filter:hue-rotate(14deg) saturate(1.12) brightness(1.03); }
+/* ЕГЭ: активна только T04 (баллистика); всё остальное видно, но не нажимается */
+html.ege #map a:not([href="#T04"]), html.ege #mathsRow a, html.ege #view .side a[href^="#"]:not([href="#T04"]):not([href="#map"]):not([href="#home"]){ pointer-events:none; opacity:.35; filter:grayscale(1); }
+html.ege #unitTabs, html.ege #prevBtn, html.ege #nextBtn{ display:none !important; }
+</style>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Kedr Physics</title>
@@ -158,6 +167,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .home-title{position:absolute;left:56px;top:14px;pointer-events:none}
 .home-title h1{font-family:var(--f-struct);font-size:84px;font-weight:700;letter-spacing:-.02em;margin:0;line-height:1}
 .home-title .hand{font-size:28px;margin-top:8px}
+#home.night .home-title, #home.night .home-title .kicker, #home.night .home-title .hand{color:#f4ecdc} #home.dusk .home-title h1{text-shadow:0 1px 12px rgba(255,230,200,.6)}
 .ycard{position:absolute;right:32px;top:28px;width:290px;background:rgba(249,244,233,.95);border:1px solid var(--border);
   border-radius:18px;padding:18px 20px 18px;box-shadow:0 8px 30px rgba(90,70,40,.15)}
 .ycard .stage{font-family:var(--f-struct);font-size:24px;font-weight:600;margin:6px 0 0}
@@ -172,7 +182,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .toast{position:absolute;left:50%;top:22px;transform:translateX(-50%);background:var(--qty-time);color:#fff;border-radius:999px;
   padding:9px 18px;font-family:var(--f-struct);font-size:14px;box-shadow:0 6px 20px rgba(0,0,0,.18);animation:toast 4s forwards}
 @keyframes toast{0%{opacity:0;transform:translate(-50%,-10px)}10%,80%{opacity:1;transform:translate(-50%,0)}100%{opacity:0}}
-.say{position:absolute;left:24px;bottom:250px;max-width:340px;background:#fff;border:2.5px solid var(--ink);border-radius:20px;padding:14px 18px;
+.say{position:absolute;left:24px;bottom:300px;max-width:410px;background:#fff;border:2.5px solid var(--ink);border-radius:20px;padding:14px 18px;
   box-shadow:0 10px 30px rgba(0,0,0,.18);z-index:5}
 .say .hand{font-family:var(--f-hand);font-size:23px;line-height:1.25;color:var(--ink);margin-bottom:10px}
 .say::after{content:"";position:absolute;left:46px;bottom:-22px;border:11px solid transparent;border-top:18px solid var(--ink)}
@@ -337,11 +347,11 @@ button{font:inherit;color:inherit;cursor:pointer}
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="kedr-auth.js?v=20261122e"></script>
+<script src="kedr-auth.js?v=20261124a"></script>
 <script src="course.js?v=20261121g"></script>
-<script src="home.js?v=20261124a"></script>
+<script src="home.js?v=20261124c"></script>
 <script src="feedback.js?v=20261118b"></script>
-<script src="kedr-lang.js?v=20261124a"></script>
+<script src="kedr-lang.js?v=20261124b"></script>
 <script>
 (function(){
 const K = window.KEDR;
@@ -350,6 +360,8 @@ const esc = s => String(s==null?'':s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':
 const BUST = '';  // site copy uses ?v=… to defeat caching; not needed for the local file
 
 /* ---------- index ---------- */
+const EGE = document.documentElement.classList.contains('ege');   // 24.11: ЕГЭ — только T04, по-русски
+if (EGE){ const t4 = K.theory.find(t => t.id === 'T04'); if (t4){ t4.title = 'Баллистика'; const RA = { 'vertical-motion':'Вверх и вниз по вертикали', 'independent-motions':'Два независимых движения', 'velocity-components':'Составляющие скорости в полёте', 'time-height-range':'Время, высота и дальность', 'horizontal-launch':'Бросок горизонтально' }; (t4.anchors||[]).forEach(a => { if (RA[a.id]) a.title = RA[a.id]; }); } try { localStorage.setItem('kedr-unit', 'Kinematics'); } catch(e) {} }
 const T = {}; K.theory.forEach(t => T[t.id] = t);
 const M = {}; (K.maths||[]).forEach(m => M[m.id] = m);
 /* ---------- units (Kinematics, Thermodynamics…): the map shows one unit at a time ---------- */
@@ -672,6 +684,7 @@ function bindProblemPage(p){
 }
 function show(id){
   const item = T[id] || M[id] || P[id];
+  if (EGE && item && id !== 'T04'){ location.replace('#T04'); return; }
   const tip = $('#tip'); tip.style.display = 'none';
   if ($('#map').style.display !== 'none') window._mapY = window.scrollY;
   ['#home','#map','#view'].forEach(s => $(s).style.display = 'none');
@@ -694,7 +707,7 @@ function show(id){
   let crumbs, stage, side;
   if (T[id] || M[id]) {
     crumbs = `<a href="#map">${esc(U)}</a><span>›</span><b>${id} · ${esc(item.title)}</b>`;
-    stage = `<iframe src="${esc(item.file)}" title="${esc(item.title)}"></iframe>`;
+    stage = `<iframe src="${esc(EGE && id === 'T04' ? 'cards/T04/index.ru.html' : item.file)}" title="${esc(item.title)}"></iframe>`;
     side = T[id] ? sideTheory(item) : `<h4>Maths card</h4><div class="big">${esc(item.title)}</div><div class="small">The maths machinery behind every theory card — come back here whenever an equation gets in the way.</div><h4>Theory cards</h4>` + K.theory.map(x => `<a class="link" href="#${x.id}"><span class="tg">${x.id}</span>${esc(x.title)}</a>`).join('');
   } else {
     const c = item.anchors[0] ? item.anchors[0].split('#')[0] : '';

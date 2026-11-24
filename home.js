@@ -100,23 +100,31 @@ function forester(g, x, y, pose, s){
   // legs + boots
   el('path', { d: 'M-18 -58 L-30 -8 M14 -58 L22 -8', stroke: '#3b3f35', 'stroke-width': 15, 'stroke-linecap': 'round' }, f);
   el('ellipse', { cx: -34, cy: -3, rx: 14, ry: 7, fill: '#2a2018' }, f); el('ellipse', { cx: 26, cy: -3, rx: 14, ry: 7, fill: '#2a2018' }, f);
-  // body (jacket)
-  el('path', { d: 'M-30 -60 Q-34 -128 0 -136 Q34 -128 30 -60 Z', fill: '#4f6a45' }, f);
-  el('path', { d: 'M0 -134 L0 -62', stroke: '#3c5235', 'stroke-width': 2 }, f);
-  el('rect', { x: -24, y: -104, width: 14, height: 10, rx: 2, fill: '#3c5235' }, f);
+  // body (jacket; зимой — пуховик)
+  const JK = ENV.winter ? '#8a3b2c' : '#4f6a45', JD = ENV.winter ? '#6b2b20' : '#3c5235';
+  el('path', { d: ENV.winter ? 'M-36 -58 Q-40 -130 0 -138 Q40 -130 36 -58 Z' : 'M-30 -60 Q-34 -128 0 -136 Q34 -128 30 -60 Z', fill: JK }, f);
+  if (ENV.winter) [-118, -100, -82].forEach(y => el('path', { d: `M-34 ${y} Q0 ${y + 6} 34 ${y}`, stroke: JD, 'stroke-width': 1.6, fill: 'none' }, f));
+  el('path', { d: 'M0 -134 L0 -62', stroke: JD, 'stroke-width': 2 }, f);
+  if (!ENV.winter) el('rect', { x: -24, y: -104, width: 14, height: 10, rx: 2, fill: JD }, f);
   // arms
   const armR = { wave: 'M22 -124 Q48 -150 54 -180', offer: 'M22 -122 Q56 -110 76 -112', think: 'M22 -122 Q34 -100 14 -150', point: 'M22 -124 Q60 -140 86 -150' }[pose] || 'M22 -122 Q40 -96 46 -86';
-  el('path', { d: 'M-22 -122 Q-40 -96 -30 -78', stroke: '#4f6a45', 'stroke-width': 13, fill: 'none', 'stroke-linecap': 'round' }, f);
-  el('path', { d: armR, stroke: '#4f6a45', 'stroke-width': 13, fill: 'none', 'stroke-linecap': 'round' }, f);
+  el('path', { d: 'M-22 -122 Q-40 -96 -30 -78', stroke: JK, 'stroke-width': ENV.winter ? 16 : 13, fill: 'none', 'stroke-linecap': 'round' }, f);
+  el('path', { d: armR, stroke: JK, 'stroke-width': ENV.winter ? 16 : 13, fill: 'none', 'stroke-linecap': 'round' }, f);
   const hand = { wave: [54, -182], offer: [78, -112], think: [14, -152], point: [88, -151] }[pose] || [46, -84];
-  el('circle', { cx: hand[0], cy: hand[1], r: 7, fill: '#e2b48c' }, f);
+  el('circle', { cx: hand[0], cy: hand[1], r: ENV.winter ? 8 : 7, fill: ENV.winter ? '#4a3424' : '#e2b48c' }, f);   // зимой — рукавица
   // head, beard, hat
   el('circle', { cx: 0, cy: -158, r: 20, fill: '#e2b48c' }, f);
   el('path', { d: 'M-17 -154 Q-16 -128 0 -126 Q16 -128 17 -154 Q8 -146 0 -147 Q-8 -146 -17 -154 Z', fill: '#7b5a3e' }, f);
   el('circle', { cx: -7, cy: -162, r: 2, fill: '#2a2018' }, f); el('circle', { cx: 7, cy: -162, r: 2, fill: '#2a2018' }, f);
+  if (ENV.winter){   // ушанка
+    el('path', { d: 'M-22 -168 Q-24 -196 0 -198 Q24 -196 22 -168 Z', fill: '#6b5442' }, f);
+    el('path', { d: 'M-24 -172 L-27 -146 Q-21 -142 -17 -150 L-16 -170 Z M24 -172 L27 -146 Q21 -142 17 -150 L16 -170 Z', fill: '#8c735e' }, f);
+    el('path', { d: 'M-23 -176 Q0 -186 23 -176 L23 -168 Q0 -176 -23 -168 Z', fill: '#a58c74' }, f);
+  } else {
   el('ellipse', { cx: 0, cy: -174, rx: 36, ry: 7, fill: '#5b4030' }, f);
   el('path', { d: 'M-20 -175 Q-18 -200 0 -200 Q18 -200 20 -175 Z', fill: '#6a4c38' }, f);
   el('rect', { x: -20, y: -182, width: 40, height: 5, fill: '#3b2a1e' }, f);
+  }
   // what's in the hand
   if (pose === 'offer'){
     const sx = hand[0] + 4, sy = hand[1] - 4;
@@ -249,10 +257,14 @@ function student(g, x, y, s){
   el('rect', { x: -33, y: -112, width: 14, height: 40, rx: 5, fill: '#6a4c38' }, st);                     // backpack
   el('path', { d: 'M-8 -60 L-11 -6 M8 -60 L11 -6', stroke: '#3f5a7a', 'stroke-width': 12, 'stroke-linecap': 'round' }, st);   // jeans
   el('ellipse', { cx: -9, cy: -2, rx: 10, ry: 4.5, fill: '#3b2e24' }, st); el('ellipse', { cx: 14, cy: -2, rx: 10, ry: 4.5, fill: '#3b2e24' }, st);
-  el('path', { d: 'M-21 -112 Q0 -124 21 -112 L25 -58 Q0 -51 -25 -58 Z', fill: '#c0712e' }, st);         // hoodie
+  const HC = ENV.winter ? '#3d6fa3' : '#c0712e';
+  el('path', { d: ENV.winter ? 'M-25 -114 Q0 -126 25 -114 L28 -56 Q0 -49 -28 -56 Z' : 'M-21 -112 Q0 -124 21 -112 L25 -58 Q0 -51 -25 -58 Z', fill: HC }, st);         // hoodie / зимой пуховик
+  if (ENV.winter) [-100, -86, -72].forEach(y => el('path', { d: `M-26 ${y} Q0 ${y + 5} 26 ${y}`, stroke: '#2f5884', 'stroke-width': 1.4, fill: 'none' }, st));
+  if (!ENV.winter){
   el('path', { d: 'M-12 -118 Q0 -110 12 -118', stroke: '#9c5a24', 'stroke-width': 3, fill: 'none' }, st);  // hood edge
   el('path', { d: 'M-6 -112 L-6 -96 M6 -112 L6 -96', stroke: '#f4ecdc', 'stroke-width': 1.6, 'stroke-linecap': 'round' }, st);  // strings
-  el('path', { d: 'M-19 -108 Q-26 -90 -25 -72', stroke: '#c0712e', 'stroke-width': 10, fill: 'none', 'stroke-linecap': 'round' }, st);  // left arm
+  }
+  el('path', { d: 'M-19 -108 Q-26 -90 -25 -72', stroke: HC, 'stroke-width': ENV.winter ? 12 : 10, fill: 'none', 'stroke-linecap': 'round' }, st);  // left arm
   el('circle', { cx: -25, cy: -67, r: 5, fill: '#e8c39e' }, st);
   // watering can
   const can = el('g', {}, st);
@@ -266,29 +278,86 @@ function student(g, x, y, s){
     el('animate', { attributeName: 'cy', from: -98, to: -62, dur: '1.4s', begin: d + 's', repeatCount: 'indefinite' }, c);
     el('animate', { attributeName: 'opacity', values: '0;1;0', dur: '1.4s', begin: d + 's', repeatCount: 'indefinite' }, c);
   });
-  el('path', { d: 'M19 -108 Q36 -112 52 -110', stroke: '#c0712e', 'stroke-width': 10, fill: 'none', 'stroke-linecap': 'round' }, st);  // right arm to the handle
+  el('path', { d: 'M19 -108 Q36 -112 52 -110', stroke: HC, 'stroke-width': ENV.winter ? 12 : 10, fill: 'none', 'stroke-linecap': 'round' }, st);  // right arm to the handle
   el('circle', { cx: 54, cy: -110, r: 5, fill: '#e8c39e' }, st);                                                         // hand on the handle
   el('rect', { x: -4, y: -128, width: 8, height: 9, fill: '#e8c39e' }, st);                                              // neck
   el('circle', { cx: 0, cy: -140, r: 15, fill: '#edc9a0' }, st);                                                        // head
   el('path', { d: 'M-15 -141 Q-15 -160 2 -158 Q17 -157 15 -140 Q10 -150 0 -148 Q-9 -148 -15 -141 Z', fill: '#4a3424' }, st);  // hair
   el('circle', { cx: 5, cy: -140, r: 1.7, fill: '#33291f' }, st); el('circle', { cx: 11, cy: -140, r: 1.7, fill: '#33291f' }, st);
   el('path', { d: 'M5 -133 Q8.5 -130 12 -133', stroke: '#8a5a3e', 'stroke-width': 1.6, fill: 'none', 'stroke-linecap': 'round' }, st);  // smile
-  el('circle', { cx: 13, cy: -136, r: 2.6, fill: '#e9a98b', opacity: .6 }, st);                                         // cheek
+  el('circle', { cx: 13, cy: -136, r: 2.6, fill: '#e9a98b', opacity: ENV.winter ? .95 : .6 }, st);                     // cheek (зимой румянее)
+  if (ENV.winter){
+    el('path', { d: 'M-12 -125 Q0 -118 13 -125 L13 -119 Q0 -112 -12 -119 Z', fill: '#c8553d' }, st);                    // шарф
+    el('path', { d: 'M8 -120 L12 -100 L17 -101 L14 -121 Z', fill: '#c8553d' }, st);
+    el('path', { d: 'M-16 -143 Q-16 -164 0 -164 Q16 -164 16 -143 Z', fill: '#c8553d' }, st);                             // шапка
+    el('rect', { x: -17, y: -147, width: 34, height: 6, rx: 3, fill: '#f4ecdc' }, st);
+    el('circle', { cx: 0, cy: -166, r: 5, fill: '#f4ecdc' }, st);                                                        // помпон
+  }
   return st;
 }
 
+/* ---------- живое небо и времена года (24.11.2026) ----------
+   Время суток — по часам ученика; восход/закат — примерно для 52° с. ш. (Алтай/Москва),
+   полдень 12:30. Зима (снег, пуховики) — с 15 ноября по 20 марта.
+   Проверка: index.html?sky=dawn|day|dusk|night&season=winter|summer */
+function skyEnv(){
+  const q = new URLSearchParams(location.search), now = new Date();
+  const doy = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 864e5);
+  const dayLen = 12 + 4.2 * Math.cos(2 * Math.PI * (doy - 172) / 365), noon = 12.5;
+  const rise = noon - dayLen / 2, set = noon + dayLen / 2, h = now.getHours() + now.getMinutes() / 60;
+  let phase = h < rise - .6 || h > set + .6 ? 'night' : h < rise + .6 ? 'dawn' : h > set - .6 ? 'dusk' : 'day';
+  const m = now.getMonth() + 1, d = now.getDate();
+  let winter = (m === 11 && d >= 15) || m === 12 || m <= 2 || (m === 3 && d <= 20);
+  if (q.get('sky')) phase = q.get('sky');
+  if (q.get('season')) winter = q.get('season') === 'winter';
+  const sunT = Math.min(1, Math.max(0, (h - rise) / (set - rise)));     // 0 восход … 1 закат
+  return { phase, winter, sunT: phase === 'dawn' ? .04 : phase === 'dusk' ? .96 : sunT };
+}
+const ENV = skyEnv();
+const SKY = {
+  dawn:  { sky: ['#9fb3d1', '#f3c6b3', '#f9dcb8'], far: '#a7aebf', mid: '#8d98a3', tint: ['#ffb38a', .14] },
+  day:   { sky: ['#e9e1cf', '#f4ead6', '#efe3c8'], far: '#b9c2c7', mid: '#8fa09c', tint: null },
+  dusk:  { sky: ['#5f6f9e', '#e48f7a', '#f6c48e'], far: '#8f8aa6', mid: '#6f7790', tint: ['#ff7a50', .18] },
+  night: { sky: ['#0f1730', '#1f2c52', '#33416a'], far: '#3d4766', mid: '#2e3854', tint: ['#0d1430', .45] }
+};
 function landscape(svg){
+  const E = ENV, S = SKY[E.phase] || SKY.day, W = E.winter;
+  const g1 = W ? '#e8edf1' : '#6f8a63', g2 = W ? '#dbe3ea' : '#5e7853', caps = W ? 1 : .9;
+  const sx = 120 + E.sunT * 1160, sy = 360 - Math.sin(Math.PI * E.sunT) * 250;
+  let celestial = '';
+  if (E.phase === 'night'){
+    let st = ''; for (let i = 0; i < 90; i++){ const x = (i * 157.3) % 1400, y = (i * 61.7) % 380, r = (i % 7 === 0) ? 1.8 : 1; st += `<circle cx="${x.toFixed(0)}" cy="${y.toFixed(0)}" r="${r}" fill="#fff" opacity="${(.4 + (i % 5) * .12).toFixed(2)}"/>`; }
+    celestial = st + `<circle cx="1010" cy="140" r="36" fill="#f4f0dc"/><circle cx="1024" cy="130" r="32" fill="${S.sky[0]}"/>`;
+  } else if (E.phase === 'day'){
+    celestial = `<circle cx="${sx}" cy="${sy}" r="54" fill="#f2d9a3" opacity=".8"/>`;
+  } else {
+    celestial = `<circle cx="${sx}" cy="${Math.max(sy, 330)}" r="80" fill="#ffd9a0" opacity=".35"/><circle cx="${sx}" cy="${Math.max(sy, 330)}" r="46" fill="#ffc27a" opacity=".95"/>`;
+  }
+  const farCaps = W ? 'M120 360 L160 397 L135 400 L100 380Z M820 330 L858 365 L835 368 L790 360Z M1300 320 L1335 352 L1310 356 L1270 348Z ' : '';
   svg.innerHTML = `<defs>
-    <linearGradient id="h-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e9e1cf"/><stop offset=".6" stop-color="#f4ead6"/><stop offset="1" stop-color="#efe3c8"/></linearGradient>
-    <linearGradient id="h-mist" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#f4ecdc" stop-opacity="0"/><stop offset=".5" stop-color="#f4ecdc" stop-opacity=".95"/><stop offset="1" stop-color="#f4ecdc" stop-opacity="0"/></linearGradient></defs>
+    <linearGradient id="h-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${S.sky[0]}"/><stop offset=".6" stop-color="${S.sky[1]}"/><stop offset="1" stop-color="${S.sky[2]}"/></linearGradient>
+    <linearGradient id="h-mist" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="${S.sky[2]}" stop-opacity="0"/><stop offset=".5" stop-color="${S.sky[2]}" stop-opacity="${E.phase === 'night' ? .25 : .9}"/><stop offset="1" stop-color="${S.sky[2]}" stop-opacity="0"/></linearGradient></defs>
   <rect width="1400" height="860" fill="url(#h-sky)"/>
-  <circle cx="980" cy="150" r="54" fill="#f2d9a3" opacity=".8"/>
-  <path d="M0 470 L120 360 L210 410 L330 280 L450 390 L560 300 L700 420 L820 330 L960 410 L1080 300 L1200 380 L1300 320 L1400 380 L1400 860 L0 860Z" fill="#b9c2c7"/>
-  <path d="M330 280 L365 312 L345 318 L380 340 L330 330Z M1080 300 L1110 330 L1092 334 L1120 352 L1078 344Z M560 300 L588 326 L570 330 Z" fill="#f4f1ea" opacity=".9"/>
-  <path d="M0 540 L150 440 L300 500 L430 430 L600 520 L760 450 L900 510 L1050 440 L1220 520 L1400 460 L1400 860 L0 860Z" fill="#8fa09c"/>
+  ${celestial}
+  <path d="M0 470 L120 360 L210 410 L330 280 L450 390 L560 300 L700 420 L820 330 L960 410 L1080 300 L1200 380 L1300 320 L1400 380 L1400 860 L0 860Z" fill="${S.far}"/>
+  <path d="${farCaps}M330 280 L365 312 L345 318 L380 340 L330 330Z M1080 300 L1110 330 L1092 334 L1120 352 L1078 344Z M560 300 L588 326 L570 330 Z" fill="#f4f1ea" opacity="${caps}"/>
+  <path d="M0 540 L150 440 L300 500 L430 430 L600 520 L760 450 L900 510 L1050 440 L1220 520 L1400 460 L1400 860 L0 860Z" fill="${S.mid}"/>
+  ${W ? '<path d="M150 440 L185 463 L120 460Z M430 430 L470 456 L395 452Z M760 450 L800 470 L725 468Z M1050 440 L1090 462 L1012 460Z M1400 460 L1360 474 L1400 480Z" fill="#eef1f4" opacity=".85"/>' : ''}
   <rect class="mist" x="-100" y="430" width="1700" height="120" fill="url(#h-mist)"/>
-  <path d="M0 860 L0 700 C 260 680, 520 640, 760 580 C 900 545, 1000 520, 1080 520 C 1200 520, 1320 545, 1400 560 L1400 860Z" fill="#6f8a63"/>
-  <path d="M0 860 L0 770 C 300 735, 600 715, 900 690 C 1100 670, 1300 662, 1400 668 L1400 860Z" fill="#5e7853"/>`;
+  <path d="M0 860 L0 700 C 260 680, 520 640, 760 580 C 900 545, 1000 520, 1080 520 C 1200 520, 1320 545, 1400 560 L1400 860Z" fill="${g1}"/>
+  <path d="M0 860 L0 770 C 300 735, 600 715, 900 690 C 1100 670, 1300 662, 1400 668 L1400 860Z" fill="${g2}"/>
+  ${S.tint ? `<rect width="1400" height="860" fill="${S.tint[0]}" opacity="${S.tint[1]}" style="mix-blend-mode:multiply" pointer-events="none"/>` : ''}`;
+}
+// снегопад — поверх всего, рисуется в конце
+function snowfall(svg){
+  if (!ENV.winter) return;
+  const g = el('g', { 'pointer-events': 'none', opacity: ENV.phase === 'night' ? .7 : .9 }, svg);
+  for (let i = 0; i < 70; i++){
+    const x = (i * 193.7) % 1400, r = 1.4 + (i % 4) * .7, dur = 7 + (i % 6) * 1.6, beg = -((i * 1.37) % dur);
+    const c = el('circle', { cx: x, cy: -10, r, fill: '#fff' }, g);
+    el('animate', { attributeName: 'cy', from: -10, to: 870, dur: dur + 's', begin: beg + 's', repeatCount: 'indefinite' }, c);
+    el('animate', { attributeName: 'cx', values: `${x};${x + 18};${x - 6};${x}`, dur: (dur * .7).toFixed(1) + 's', begin: beg + 's', repeatCount: 'indefinite' }, c);
+  }
 }
 
 /* ---------- home page ---------- */
@@ -303,6 +372,7 @@ window.KedrHome = function(ctx){
   const inOrder = order.filter(id => P[id] || T[id]);
   const unitIdx = id => Math.max(0, UNITS.indexOf(unitOfId(id)));
   function nextStep(){
+    if (document.documentElement.classList.contains('ege')) return { id: 'T04', label: 'Открыть: Баллистика' };   // 24.11: в ЕГЭ пока только T04
     const last = store.get('kedr-last', null), anySeen = Object.keys(seenMap()).length;
     const first = UNITS.map(u => inOrder.find(id => unitOfId(id) === u)).find(Boolean);
     if (!anySeen && !last) return { id: first, label: 'Start → ' + unitOfId(first) };
@@ -366,6 +436,7 @@ window.KedrHome = function(ctx){
     const L = trail.getTotalLength();
     const units = [{ n: 'Kinematics', ready: true, unit: 'Kinematics' }, { n: 'Forces & momentum', ready: true, unit: 'Forces & momentum' }, { n: 'Energy', ready: true, unit: 'Energy' }, { n: 'Thermodynamics', ready: true, unit: 'Thermodynamics' }, { n: 'Waves' }, { n: 'Fields' }, { n: 'Quantum & nuclear' }];
     const UNIT_AT = PHONE ? [.15, .27, .39, .51, .63, .75, .87] : [.08, .24, .40, .55, .635, .78, .94];   // places along the trail, away from the bends
+    if (document.documentElement.classList.contains('ege')) units.forEach(u => { if (u.unit !== 'Kinematics') u.ready = false; });
     units.forEach((u, i) => {
       const p = trail.getPointAtLength(L * UNIT_AT[i]), s = el('g', { transform: `translate(${p.x} ${p.y})`, opacity: u.ready ? 1 : .55, class: u.ready ? 'hot' : '' }, svg);
       el('line', { x1: 0, y1: 0, x2: 0, y2: -34, stroke: '#33291f', 'stroke-width': 2 }, s);
@@ -393,6 +464,12 @@ window.KedrHome = function(ctx){
     forester(fg, 90, 735, planted ? 'wave' : 'offer', .72); archik(fg, 175, 770, .62);
     el('text', { x: 40, y: 575, 'font-family': 'Caveat', 'font-size': 22, fill: '#f9f4e9' }, fg, planted ? 'need a hint? ask the forester' : '');
     fg.addEventListener('click', () => welcome());
+    if (ENV.winter){   // на снегу светлые надписи и тропа не видны — делаем их тёмными
+      trail.setAttribute('stroke', '#8e9bab');
+      svg.querySelectorAll('text').forEach(t => { const f = t.getAttribute('fill'); if (f === '#f9f4e9' || f === '#f4ecdc'){ t.setAttribute('fill', '#3d4c5c'); if (t.getAttribute('stroke')) t.setAttribute('stroke', '#eef2f5'); } });
+    }
+    if (ENV.phase === 'night') svg.querySelectorAll('text').forEach(t => { if (+t.getAttribute('y') < 600) t.setAttribute('fill', '#e8edf3'); });   // подпись над горами ночью — светлая
+    snowfall(svg); root.classList.toggle('night', ENV.phase === 'night'); root.classList.toggle('dusk', ENV.phase === 'dusk');
     // rings
     const rs = document.getElementById('ringsSvg');
     if (rs){

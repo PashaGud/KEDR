@@ -11,6 +11,7 @@
   const SYNC_KEYS = ['kedr-seen','kedr-solved','kedr-rating','kedr-planted','kedr-welcomed','kedr-last-stage','kedr-heard','kedr-unit','kedr-last'];
   const LOG_KEYS = { 'kedr-seen': 'open', 'kedr-solved': 'solved', 'kedr-rating': 'rating' };
 
+  if (location.protocol === 'file:') return;   // 24.11: открыт с Мака двойным щелчком — без входа, прогресс только в браузере, как раньше
   if (!window.firebase || !FIREBASE_CONFIG.apiKey) return;
   firebase.initializeApp(FIREBASE_CONFIG);
   const auth = firebase.auth(), db = firebase.firestore();
