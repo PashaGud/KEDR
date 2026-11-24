@@ -33,16 +33,25 @@ const RU = {
  'start on the left — every card leads somewhere ·':'начни слева — каждая карточка куда-то ведёт ·','✓ opened':'✓ открыта','stuck on the maths? start here':'застрял на математике? начни здесь',
  'Hover a problem to see what it builds on and where it leads. Click anything to open it.':'Наведи на задачу — увидишь, на что она опирается и куда ведёт. Нажми, чтобы открыть.',
  'Physics Course · Kinematics':'Курс физики · Кинематика','HL':'HL',
- "Hello, my dear friend. You came here for the loveliest reason: curiosity about how this world works. (Or maybe a physics exam is stepping on your toes. That's fine too.)":"Привет, мой дорогой друг. Ты пришёл сюда по самой прекрасной причине — из любопытства, как устроен этот мир. (А может, тебе на пятки наступает экзамен по физике. Это тоже нормально.)",
- "Don't take me for a teacher or a tutor. I'm not one. Think of me as a friendly neighbour, or an older brother who can give you some advice.":"Не принимай меня за учителя или репетитора. Я не они. Считай меня добрым соседом или старшим братом, который может дать совет.",
- "I know a bit of physics and maths, and a few tips on how to start and what to watch out for. I live up in the Russian mountains, with my lovely dog, Archik.":"Я немного знаю физику и математику и пару советов — с чего начать и чего остерегаться. Живу в горах Алтая с моим любимым псом Арчиком.",
- "Do you trust me, kid? I've walked this road myself. The hardest part is that you don't see progress quickly. It comes after months, sometimes years.":"Доверяешь мне, малыш? Я сам прошёл эту дорогу. Самое трудное — прогресс не виден сразу. Он приходит через месяцы, иногда годы.",
- "But when it comes, it puts a smile on your face. It means you were patient enough to see it. Oh, so many got scared and left before that moment. So patience is our key.":"Но когда приходит — ты улыбаешься. Значит, тебе хватило терпения его дождаться. Ох, сколько людей испугались и ушли раньше. Так что терпение — наш ключ.",
- "Whenever you feel your patience getting weak, or even lost, come to me and we'll find it again. Keys are my thing.":"Если почувствуешь, что терпение слабеет или совсем потерялось, — приходи, найдём его вместе. Ключи — это по моей части.",
- "In Russia we say: chase two rabbits, and you'll catch neither. Meaning: focus on one thing.":"У нас говорят: за двумя зайцами погонишься — ни одного не поймаешь. То есть сосредоточься на одном.",
- "We'll do the opposite. Alongside your learning, I'll ask you to do one more thing.":"А мы сделаем наоборот. Вместе с учёбой я попрошу тебя делать ещё одно дело.",
- "Here's a seedling of the most majestic tree there is, if you ask me: a cedar. You, me and Archik will plant it together, and you'll look after it.":"Вот саженец самого величественного дерева, по-моему, — кедра. Мы с тобой и Арчиком посадим его вместе, а ты будешь за ним ухаживать.",
- "Here's how we look after it. Read a theory card, solve a problem, tick it. Every problem you truly solve helps your cedar grow.":"Вот как за ним ухаживать. Прочитай карточку теории, реши задачу, отметь её. Каждая по-настоящему решённая задача помогает кедру расти."
+ 'Spotted a mistake? Drag me onto it':'Нашёл ошибку? Перетащи меня на неё','Spotted a mistake? Drag me onto it, or click to write':'Нашёл ошибку? Перетащи меня на неё или нажми, чтобы написать',
+ 'Cancel':'Отмена','Send':'Отправить','Thank you! Pavel will see it and fix it.':'Спасибо! Павел увидит и исправит.','What is wrong here?':'Что здесь не так?',
+ 'A mistake, something unclear, a typo… Write it in any language.':'Ошибка, непонятное место, опечатка… Пиши на любом языке.','Your name (optional)':'Твоё имя (необязательно)','Sending…':'Отправляю…','Place: ':'Место: ',
+ 'Hide':'Скрыть',
+ 'so-so':'так себе','Hide answer':'Скрыть ответ','Hide solution':'Скрыть решение','Hide highlights':'Убрать выделение','Hide my sketch':'Скрыть мой рисунок',
+ 'How well did you understand it?':'Насколько хорошо ты понял?','not at all':'совсем не понял','poorly':'плохо','well':'хорошо','perfectly':'отлично',
+ 'Compare it with yours: is the start and the end there? what is given, what is asked? and what did you draw that isn’t needed?':'Сравни со своим: есть ли начало и конец? что дано, что нужно найти? и что ты нарисовал лишнего?',
+
+
+ "Hello, my dear friend. You came here for the loveliest reason: curiosity about how this world works. (Or maybe a physics exam is stepping on your toes. That's fine too.)":"Привет, дружище! Ты пришёл сюда по самой лучшей причине — тебе интересно, как устроен мир. (Ну, или на пятки наступает экзамен по физике. Это тоже нормально.)",
+ "Don't take me for a teacher or a tutor. I'm not one. Think of me as a friendly neighbour, or an older brother who can give you some advice.":"Только не принимай меня за учителя или репетитора — я не из них. Считай меня соседом или старшим братом, который может что-то подсказать.",
+ "I know a bit of physics and maths, and a few tips on how to start and what to watch out for. I live up in the Russian mountains, with my lovely dog, Archik.":"Я немного разбираюсь в физике и математике и знаю, с чего начать и где обычно спотыкаются. Живу в горах, на Алтае, с моим псом Арчиком.",
+ "Do you trust me, kid? I've walked this road myself. The hardest part is that you don't see progress quickly. It comes after months, sometimes years.":"Веришь мне? Я сам прошёл эту дорогу. Самое трудное в ней — результат виден не сразу. Он приходит через месяцы, а иногда и через годы.",
+ "But when it comes, it puts a smile on your face. It means you were patient enough to see it. Oh, so many got scared and left before that moment. So patience is our key.":"Зато когда приходит — ты улыбаешься. Значит, тебе хватило терпения. А сколько людей испугались и сошли с дороги раньше… Так что терпение — наш главный ключ.",
+ "Whenever you feel your patience getting weak, or even lost, come to me and we'll find it again. Keys are my thing.":"Если почувствуешь, что терпение кончается или совсем пропало, — приходи. Найдём. Ключи — это по моей части.",
+ "In Russia we say: chase two rabbits, and you'll catch neither. Meaning: focus on one thing.":"У нас говорят: за двумя зайцами погонишься — ни одного не поймаешь. То есть занимайся чем-то одним.",
+ "We'll do the opposite. Alongside your learning, I'll ask you to do one more thing.":"А мы сделаем наоборот. Кроме учёбы, я попрошу тебя ещё об одном деле.",
+ "Here's a seedling of the most majestic tree there is, if you ask me: a cedar. You, me and Archik will plant it together, and you'll look after it.":"Вот саженец самого красивого дерева на свете — по-моему, конечно. Это кедр. Мы с тобой и Арчиком посадим его вместе, а ухаживать за ним будешь ты.",
+ "Here's how we look after it. Read a theory card, solve a problem, tick it. Every problem you truly solve helps your cedar grow.":"Ухаживать за ним просто: прочитай карточку теории, реши задачу и отметь её. Каждая задача, которую ты решил по-настоящему, помогает кедру расти."
 };
 const UNIT = '(Kinematics|Forces & momentum|Energy|Thermodynamics|Waves|Fields|Quantum & nuclear)';
 const u = x => RU[x] || x;
@@ -52,6 +61,7 @@ const RULES = [
  [new RegExp('^Map: '+UNIT+'$'), (m,a)=>'Карта: '+u(a)],
  [new RegExp('^Start → '+UNIT+'$'), (m,a)=>'Начать → '+u(a)],
  [new RegExp('^Next unit → '+UNIT+'$'), (m,a)=>'Следующий раздел → '+u(a)],
+ [/^Problem (.+)$/, (m,a)=>'Задача '+a],
  [/^Back to (.+)$/, (m,a)=>'Вернуться к '+a.replace(/^theory /,'теории ')],
  [/^Next → (.+)$/, (m,a)=>'Дальше → '+a.replace(/^theory /,'теория ')],
  [new RegExp('^'+UNIT+' · soon$'), (m,a)=>u(a)+' · скоро'],

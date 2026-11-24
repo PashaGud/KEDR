@@ -7,7 +7,7 @@ html.ege{ --page:#e6eeec; --card:#f6faf8; --card-inner:#fbfdfc; --border:#cddcd6
 html.ege body{ background:var(--page); }
 html.ege #homeSvg{ filter:hue-rotate(14deg) saturate(1.12) brightness(1.03); }
 /* ЕГЭ: активна только T04 (баллистика); всё остальное видно, но не нажимается */
-html.ege #map a:not([href="#T04"]), html.ege #mathsRow a, html.ege #view .side a[href^="#"]:not([href="#T04"]):not([href="#map"]):not([href="#home"]){ pointer-events:none; opacity:.35; filter:grayscale(1); }
+html.ege #map a:not(.ege-ok), html.ege #mathsRow a, html.ege #view .side a[href^="#"]:not(.ege-ok):not([href="#map"]):not([href="#home"]){ pointer-events:none; opacity:.35; filter:grayscale(1); }
 html.ege #unitTabs, html.ege #prevBtn, html.ege #nextBtn{ display:none !important; }
 </style>
 <meta charset="utf-8">
@@ -349,9 +349,10 @@ button{font:inherit;color:inherit;cursor:pointer}
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="kedr-auth.js?v=20261124a"></script>
 <script src="course.js?v=20261121g"></script>
-<script src="home.js?v=20261124c"></script>
+<script src="cards/ru/T04_problems.js?v=20261124c"></script>
+<script src="home.js?v=20261124g"></script>
 <script src="feedback.js?v=20261118b"></script>
-<script src="kedr-lang.js?v=20261124b"></script>
+<script src="kedr-lang.js?v=20261124d"></script>
 <script>
 (function(){
 const K = window.KEDR;
@@ -361,6 +362,8 @@ const BUST = '';  // site copy uses ?v=… to defeat caching; not needed for the
 
 /* ---------- index ---------- */
 const EGE = document.documentElement.classList.contains('ege');   // 24.11: ЕГЭ — только T04, по-русски
+const EGE_OK = id => id === 'T04' || !!(window.KEDR_RU && window.KEDR_RU[id]);   // ЕГЭ: доступны T04 и переведённые задачи
+if (EGE) K.problems.forEach(p => { const r = window.KEDR_RU && window.KEDR_RU[p.id]; if (!r) return; Object.assign(p, r); ['sketch', 'solutionFig', 'figure'].forEach(k => { if (p[k]) p[k] = p[k].replace(/^cards\//, 'cards/ru/'); }); });   // рисунки ЕГЭ — cards/ru/…
 if (EGE){ const t4 = K.theory.find(t => t.id === 'T04'); if (t4){ t4.title = 'Баллистика'; const RA = { 'vertical-motion':'Вверх и вниз по вертикали', 'independent-motions':'Два независимых движения', 'velocity-components':'Составляющие скорости в полёте', 'time-height-range':'Время, высота и дальность', 'horizontal-launch':'Бросок горизонтально' }; (t4.anchors||[]).forEach(a => { if (RA[a.id]) a.title = RA[a.id]; }); } try { localStorage.setItem('kedr-unit', 'Kinematics'); } catch(e) {} }
 const T = {}; K.theory.forEach(t => T[t.id] = t);
 const M = {}; (K.maths||[]).forEach(m => M[m.id] = m);
@@ -411,6 +414,7 @@ const lbl = id => LBL[id] || id;
 const BYLBL = {}; Object.keys(LBL).forEach(id => BYLBL[LBL[id]] = id);
 
 /* ---------- chips ---------- */
+function egeMark(root){ if (!EGE || !root) return; root.querySelectorAll('a[href^="#"]').forEach(a => { if (EGE_OK(a.getAttribute('href').slice(1))) a.classList.add('ege-ok'); }); }
 function chip(p){
   const dots = '<span class="d">' + '<i></i>'.repeat(p.difficulty||0) + '</span>';
   const st = solved[p.id] ? ' solved' : (seen[p.id] ? ' opened' : '');
@@ -451,7 +455,7 @@ function renderMap(){
       <div class="anchors">${groups.join('')}</div>
     </div>`;
   }).join('');
-  bindChips(cols);
+  bindChips(cols); egeMark($('#map'));
   requestAnimationFrame(drawSpine);
 }
 
@@ -612,9 +616,9 @@ function whatIfHtml(w, fig){
    Database field "Key info": one line per phrase — exact words from the statement → symbol, e.g.  dropped → u = 0 */
 /* v_A → v with subscript A, v_avg → v with subscript avg; a/b → a stacked fraction (Pavel, 04.11.2026).
    Database text stays plain. Units like m/s, km/h, m/s² stay as they are. */
-const UNIT_NUM = /^(m|km|cm|mm|rad|rev)$/, UNIT_DEN = /^(s|h|min|s²|s\^2)$/;
+const UNIT_NUM = /^(m|km|cm|mm|rad|rev|м|км|см|мм|рад|об)$/, UNIT_DEN = /^(s|h|min|s²|s\^2|с|ч|мин|с²)$/;
 function fracs(h){
-  const tok = '(\\([^()]*\\)|(?:[A-Za-z0-9πωθ√²³ₓ_·Δ|]|\\.(?=[0-9]))+)';
+  const tok = '(\\([^()]*\\)[²³]?|(?:[A-Za-z0-9πωθυαβ√²³ₓ_·Δ|\'А-яЁё]|[.,](?=[0-9]))+)';   // 24.11: υ, кириллица в индексах и десятичная запятая (ЕГЭ)
   const re = new RegExp(tok + '\\s?/\\s?' + tok, 'g');
   return String(h).replace(re, (all, a, b) => {
     if (UNIT_NUM.test(a) && UNIT_DEN.test(b)) return all;
@@ -624,7 +628,7 @@ function fracs(h){
     return `<span class="frac"><span>${strip(a)}</span><span>${strip(b)}</span></span>`;
   });
 }
-function subs(h){ return fracs(String(h).replace(/\^\(([^()]+)\)/g, (m, x) => '<sup>' + x.replace(/\//g, '\u2044') + '</sup>')).replace(/(\d)·(?=\d)/g, '$1\u2009×\u2009').replace(/([A-Za-zΑ-Ωα-ω])_([A-Za-z0-9]{1,3})(?![A-Za-z0-9])/g, '$1<sub>$2</sub>').replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹⁻]*⁰[⁰¹²³⁴⁵⁶⁷⁸⁹⁻]*/g, m => '<sup>' + [...m].map(c => '0123456789−'['⁰¹²³⁴⁵⁶⁷⁸⁹⁻'.indexOf(c)]).join('') + '</sup>'); } // ⁰ has no good glyph in the page fonts (05.11.2026)
+function subs(h){ return fracs(String(h).replace(/\^\(([^()]+)\)/g, (m, x) => '<sup>' + x.replace(/\//g, '\u2044') + '</sup>')).replace(/(\d)·(?=\d)/g, '$1\u2009×\u2009').replace(/([A-Za-zΑ-Ωα-ω])_([A-Za-z0-9А-яЁё]{1,3})(?![A-Za-z0-9А-яЁё])/g, '$1<sub>$2</sub>').replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹⁻]*⁰[⁰¹²³⁴⁵⁶⁷⁸⁹⁻]*/g, m => '<sup>' + [...m].map(c => '0123456789−'['⁰¹²³⁴⁵⁶⁷⁸⁹⁻'.indexOf(c)]).join('') + '</sup>'); } // ⁰ has no good glyph in the page fonts (05.11.2026)
 function markKeys(html, spec){
   String(spec || '').split('\n').forEach(line => {
     const k = line.indexOf('→'); if (k < 0) return;
@@ -684,7 +688,7 @@ function bindProblemPage(p){
 }
 function show(id){
   const item = T[id] || M[id] || P[id];
-  if (EGE && item && id !== 'T04'){ location.replace('#T04'); return; }
+  if (EGE && item && !EGE_OK(id)){ location.replace('#T04'); return; }
   const tip = $('#tip'); tip.style.display = 'none';
   if ($('#map').style.display !== 'none') window._mapY = window.scrollY;
   ['#home','#map','#view'].forEach(s => $(s).style.display = 'none');
@@ -713,10 +717,11 @@ function show(id){
     const c = item.anchors[0] ? item.anchors[0].split('#')[0] : '';
     $('#crumbs').innerHTML = `<a href="#map">${esc(U)}</a><span>›</span>${c?`<a href="#${c}">${c}</a><span>›</span>`:''}<b>Problem ${lbl(id)}</b>`;
     v.innerHTML = `<div class="pview">${problemPage(item, pv, nx)}</div>`;
-    bindProblemPage(item); window.scrollTo(0,0); return;
+    egeMark(v); bindProblemPage(item); window.scrollTo(0,0); return;
   }
   $('#crumbs').innerHTML = crumbs;
   v.innerHTML = `<div class="view"><div class="stage">${stage}</div><aside class="side">${side}</aside></div>`;
+  egeMark(v);
   bindChips(v);
   const r = $('#reveal'); if (r) r.onclick = () => { $('#sol').classList.remove('hidden'); r.remove(); };
   const clip = $('#clip');

@@ -117,6 +117,8 @@ th{font-family:var(--font-structure);font-size:13px;letter-spacing:.06em;
   h1{font-size:29px} .h1sub{font-size:18px} h2{font-size:21px}
   body{font-size:17px}
 }
+.vec{position:relative;display:inline-block}
+.vec::before{content:"→";position:absolute;left:50%;transform:translateX(-50%);top:-.42em;font-size:.85em;margin-left:.08em;font-style:normal;line-height:1}
 </style>
 </head>
 <body>
@@ -527,7 +529,7 @@ th{font-family:var(--font-structure);font-size:13px;letter-spacing:.06em;
 
 <div class="formula">
   <span class="lbl">в любой момент</span>
-  <var class="v">υ</var>&#8407; = <var class="v">υ<sub>x</sub></var>&#8407; + <var class="v">υ<sub>y</sub></var>&#8407;,&nbsp;&nbsp;&nbsp; поэтому&nbsp;&nbsp;&nbsp; <var class="v">υ</var>² = <var class="v">υ<sub>x</sub></var>² + <var class="v">υ<sub>y</sub></var>²
+  <var class="v"><span class="vec">υ</span></var> = <var class="v"><span class="vec">υ</span><sub>x</sub></var> + <var class="v"><span class="vec">υ</span><sub>y</sub></var>,&nbsp;&nbsp;&nbsp; поэтому&nbsp;&nbsp;&nbsp; <var class="v">υ</var>² = <var class="v">υ<sub>x</sub></var>² + <var class="v">υ<sub>y</sub></var>²
 </div>
 
 <p>Вторая формула — теорема Пифагора: составляющие перпендикулярны, и модуль скорости — гипотенуза. Из рисунка сразу видно три вещи:</p>

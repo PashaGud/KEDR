@@ -458,7 +458,8 @@ window.KedrHome = function(ctx){
     }
     // the student with a watering can, in front of Kinematics (desktop serpentine only)
     if (!PHONE){ const ui = Math.max(0, units.findIndex(u => u.unit === mapUnit)), k0 = trail.getPointAtLength(L * UNIT_AT[0]), q = trail.getPointAtLength(L * UNIT_AT[ui]);
-      student(svg, 312 + (q.x - k0.x), 848 + (q.y - k0.y), .56); }   // 24.11: stands at the unit the student is working on now
+      const sx = 312 + (q.x - k0.x), sy = 848 + (q.y - k0.y); student(svg, sx, sy, .56);
+      if (document.documentElement.classList.contains('ege')) el('text', { x: sx, y: sy - 100, 'text-anchor': 'middle', 'font-family': 'Caveat', 'font-size': 24, fill: ENV.phase === 'night' ? '#ffb38a' : '#c8553d', stroke: ENV.phase === 'night' ? '#2e3854' : '#fff7ee', 'stroke-width': 4, 'paint-order': 'stroke', 'font-weight': 600 }, svg, 'Виталик'); }   // имя — цветом шапки и шарфа;   // 24.11: подпись ученика на ЕГЭ-сайте   // 24.11: stands at the unit the student is working on now
     // forester at the start of the trail
     const fg = el('g', { class: 'hot' }, svg);
     forester(fg, 90, 735, planted ? 'wave' : 'offer', .72); archik(fg, 175, 770, .62);
@@ -466,9 +467,9 @@ window.KedrHome = function(ctx){
     fg.addEventListener('click', () => welcome());
     if (ENV.winter){   // на снегу светлые надписи и тропа не видны — делаем их тёмными
       trail.setAttribute('stroke', '#8e9bab');
-      svg.querySelectorAll('text').forEach(t => { const f = t.getAttribute('fill'); if (f === '#f9f4e9' || f === '#f4ecdc'){ t.setAttribute('fill', '#3d4c5c'); if (t.getAttribute('stroke')) t.setAttribute('stroke', '#eef2f5'); } });
+      svg.querySelectorAll('text').forEach(t => { const f = t.getAttribute('fill'); if (f === '#f9f4e9' || f === '#f4ecdc'){ const N = ENV.phase === 'night'; t.setAttribute('fill', N ? '#eef2f5' : '#3d4c5c'); if (t.getAttribute('stroke')) t.setAttribute('stroke', N ? '#2e3854' : '#eef2f5'); } });
     }
-    if (ENV.phase === 'night') svg.querySelectorAll('text').forEach(t => { if (+t.getAttribute('y') < 600) t.setAttribute('fill', '#e8edf3'); });   // подпись над горами ночью — светлая
+    if (ENV.phase === 'night') fg.querySelectorAll('text').forEach(t => t.setAttribute('fill', '#e8edf3'));   // только подпись лесника над горами; флажки не трогаем (24.11)   // подпись над горами ночью — светлая
     snowfall(svg); root.classList.toggle('night', ENV.phase === 'night'); root.classList.toggle('dusk', ENV.phase === 'dusk');
     // rings
     const rs = document.getElementById('ringsSvg');
