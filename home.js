@@ -264,8 +264,25 @@ function student(g, x, y, s){
   el('path', { d: 'M-12 -118 Q0 -110 12 -118', stroke: '#9c5a24', 'stroke-width': 3, fill: 'none' }, st);  // hood edge
   el('path', { d: 'M-6 -112 L-6 -96 M6 -112 L6 -96', stroke: '#f4ecdc', 'stroke-width': 1.6, 'stroke-linecap': 'round' }, st);  // strings
   }
+  const BALL = document.documentElement.classList.contains('ege');   // 24.11: на ЕГЭ Виталик держит под мышкой жёлто-синий волейбольный мяч
+  if (BALL){
+    const bx = -36, by = -83, br = 18, cid = 'vball' + Math.round(Math.random() * 1e6), AW = ENV.winter ? 12 : 10;
+    const cp = el('clipPath', { id: cid }, st); el('circle', { cx: bx, cy: by, r: br }, cp);
+    el('circle', { cx: bx, cy: by, r: br, fill: '#f2c230' }, st);
+    const pn = el('g', { 'clip-path': `url(#${cid})` }, st), B = '#1e4fa8';
+    // синяя волна через верх и узкий синий край справа (жёлто-синий волейбольный мяч, без надписей)
+    el('path', { d: `M${bx - 20} ${by - 3} C${bx - 10} ${by - 14} ${bx + 6} ${by - 14} ${bx + 20} ${by - 9} L${bx + 20} ${by - 3} C${bx + 6} ${by - 8} ${bx - 8} ${by - 6} ${bx - 20} ${by + 4} Z`, fill: B }, pn);
+    el('path', { d: `M${bx + 12} ${by - 5} C${bx + 9} ${by + 3} ${bx + 9} ${by + 11} ${bx + 12} ${by + 20} L${bx + 20} ${by + 20} L${bx + 20} ${by - 6} Z`, fill: B }, pn);
+    el('path', { d: `M${bx - 12} ${by + 4} C${bx - 4} ${by + 11} ${bx + 4} ${by + 11} ${bx + 9} ${by + 8}`, fill: 'none', stroke: '#c99a1c', 'stroke-width': 0.8 }, pn);
+    el('ellipse', { cx: bx - 4, cy: by - 9, rx: 5, ry: 2.2, fill: '#fff', opacity: .3, transform: `rotate(-20 ${bx - 4} ${by - 9})` }, pn);
+    el('circle', { cx: bx, cy: by, r: br, fill: 'none', stroke: '#33291f', 'stroke-width': 1 }, st);
+    // рука прижимает мяч к боку: плечо идёт по внешнему краю мяча, кисть снизу
+    el('path', { d: 'M-21 -106 C-36 -105 -54 -98 -55 -82 C-56 -68 -46 -62 -34 -64', stroke: HC, 'stroke-width': AW, fill: 'none', 'stroke-linecap': 'round' }, st);
+    el('circle', { cx: -31, cy: -65, r: 5.5, fill: ENV.winter ? '#4a3424' : '#e8c39e' }, st);
+  } else {
   el('path', { d: 'M-19 -108 Q-26 -90 -25 -72', stroke: HC, 'stroke-width': ENV.winter ? 12 : 10, fill: 'none', 'stroke-linecap': 'round' }, st);  // left arm
   el('circle', { cx: -25, cy: -67, r: 5, fill: '#e8c39e' }, st);
+  }
   // watering can
   const can = el('g', {}, st);
   el('path', { d: 'M44 -100 Q55 -116 66 -100', stroke: '#5f7480', 'stroke-width': 4, fill: 'none' }, can);           // handle
@@ -297,21 +314,41 @@ function student(g, x, y, s){
 }
 
 /* ---------- живое небо и времена года (24.11.2026) ----------
-   Время суток — по часам ученика; восход/закат — примерно для 52° с. ш. (Алтай/Москва),
-   полдень 12:30. Зима (снег, пуховики) — с 15 ноября по 20 марта.
+   Время суток — по часам ученика; восход/закат — для его часового пояса (skyPlace). Зима (снег, пуховики) — с 15 ноября по 20 марта.
    Проверка: index.html?sky=dawn|day|dusk|night&season=winter|summer */
+// 24.11: солнце считается для места ученика — по его часовому поясу (город-столица пояса), без запроса геолокации
+const TZ_PLACE = { 'Europe/Moscow':[55.75,37.6], 'Europe/Kaliningrad':[54.7,20.5], 'Europe/Samara':[53.2,50.1], 'Europe/Volgograd':[48.7,44.5], 'Europe/Saratov':[51.5,46], 'Europe/Ulyanovsk':[54.3,48.4], 'Europe/Astrakhan':[46.3,48],
+  'Asia/Yekaterinburg':[56.8,60.6], 'Asia/Omsk':[55,73.4], 'Asia/Novosibirsk':[55,82.9], 'Asia/Barnaul':[53.35,83.8], 'Asia/Tomsk':[56.5,85], 'Asia/Novokuznetsk':[53.75,87.1], 'Asia/Krasnoyarsk':[56,92.9], 'Asia/Irkutsk':[52.3,104.3], 'Asia/Chita':[52,113.5], 'Asia/Yakutsk':[62,129.7], 'Asia/Vladivostok':[43.1,131.9], 'Asia/Sakhalin':[47,142.7], 'Asia/Magadan':[59.6,150.8], 'Asia/Kamchatka':[53,158.6],
+  'Europe/Riga':[56.95,24.1], 'Europe/Tallinn':[59.4,24.75], 'Europe/Vilnius':[54.7,25.3], 'Europe/Minsk':[53.9,27.6], 'Europe/Kyiv':[50.45,30.5], 'Europe/Kiev':[50.45,30.5], 'Europe/Chisinau':[47,28.8],
+  'Europe/Madrid':[40.4,-3.7], 'Atlantic/Canary':[28.1,-15.4], 'Europe/Lisbon':[38.7,-9.1], 'Europe/London':[51.5,-0.1], 'Europe/Dublin':[53.35,-6.3], 'Europe/Paris':[48.9,2.35], 'Europe/Brussels':[50.85,4.35], 'Europe/Amsterdam':[52.4,4.9], 'Europe/Zurich':[47.4,8.5], 'Europe/Berlin':[52.5,13.4], 'Europe/Copenhagen':[55.7,12.6], 'Europe/Oslo':[59.9,10.75], 'Europe/Stockholm':[59.3,18.1], 'Europe/Helsinki':[60.2,24.9], 'Europe/Vienna':[48.2,16.4], 'Europe/Prague':[50.1,14.4], 'Europe/Warsaw':[52.2,21], 'Europe/Rome':[41.9,12.5], 'Europe/Athens':[38,23.7], 'Europe/Istanbul':[41,29], 'Europe/Belgrade':[44.8,20.5], 'Europe/Budapest':[47.5,19],
+  'Asia/Tbilisi':[41.7,44.8], 'Asia/Yerevan':[40.2,44.5], 'Asia/Baku':[40.4,49.9], 'Asia/Almaty':[43.2,76.9], 'Asia/Tashkent':[41.3,69.2], 'Asia/Bishkek':[42.9,74.6], 'Asia/Dubai':[25.2,55.3], 'Asia/Jerusalem':[31.8,35.2], 'Asia/Shanghai':[31.2,121.5], 'Asia/Tokyo':[35.7,139.7], 'Asia/Singapore':[1.35,103.8],
+  'America/New_York':[40.7,-74], 'America/Chicago':[41.9,-87.6], 'America/Denver':[39.7,-105], 'America/Los_Angeles':[34,-118.2], 'America/Toronto':[43.65,-79.4], 'Australia/Sydney':[-33.9,151.2] };
+function skyPlace(){
+  let tz = ''; try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch(e) {}
+  if (TZ_PLACE[tz]) return TZ_PLACE[tz];
+  const jan = new Date(new Date().getFullYear(), 0, 1).getTimezoneOffset();   // поясное время без летнего сдвига
+  const lat = /^(Australia|Pacific\/Auckland|America\/(Argentina|Santiago|Sao_Paulo))/.test(tz) ? -35 : 50;
+  return [lat, -jan / 60 * 15];
+}
 function skyEnv(){
-  const q = new URLSearchParams(location.search), now = new Date();
+  const q = new URLSearchParams(location.search), now = new Date(), [lat, lon] = skyPlace(), rad = Math.PI / 180;
   const doy = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 864e5);
-  const dayLen = 12 + 4.2 * Math.cos(2 * Math.PI * (doy - 172) / 365), noon = 12.5;
-  const rise = noon - dayLen / 2, set = noon + dayLen / 2, h = now.getHours() + now.getMinutes() / 60;
+  // восход/закат (упрощённая формула NOAA): склонение солнца и уравнение времени
+  const dec = 23.44 * Math.sin(2 * Math.PI * (284 + doy) / 365) * rad, B = 2 * Math.PI * (doy - 81) / 364;
+  const eqt = 9.87 * Math.sin(2 * B) - 7.53 * Math.cos(B) - 1.5 * Math.sin(B);
+  let cosH = (Math.sin(-0.833 * rad) - Math.sin(lat * rad) * Math.sin(dec)) / (Math.cos(lat * rad) * Math.cos(dec));
+  cosH = Math.max(-1, Math.min(1, cosH));
+  const Hh = Math.acos(cosH) / rad / 15, noonUTC = (720 - 4 * lon - eqt) / 60, tzh = -now.getTimezoneOffset() / 60;
+  const noon = noonUTC + tzh, rise = noon - Hh, set = noon + Hh, h = now.getHours() + now.getMinutes() / 60;
   let phase = h < rise - .6 || h > set + .6 ? 'night' : h < rise + .6 ? 'dawn' : h > set - .6 ? 'dusk' : 'day';
+  if (Hh >= 11.9) phase = 'day'; if (Hh <= .1) phase = 'night';   // полярный день / ночь
   const m = now.getMonth() + 1, d = now.getDate();
   let winter = (m === 11 && d >= 15) || m === 12 || m <= 2 || (m === 3 && d <= 20);
+  if (lat < 0) winter = (m === 5 && d >= 15) || (m >= 6 && m <= 8) || (m === 9 && d <= 20);   // южное полушарие
   if (q.get('sky')) phase = q.get('sky');
   if (q.get('season')) winter = q.get('season') === 'winter';
   const sunT = Math.min(1, Math.max(0, (h - rise) / (set - rise)));     // 0 восход … 1 закат
-  return { phase, winter, sunT: phase === 'dawn' ? .04 : phase === 'dusk' ? .96 : sunT };
+  return { phase, winter, sunT: phase === 'dawn' ? .04 : phase === 'dusk' ? .96 : sunT, rise, set };
 }
 const ENV = skyEnv();
 const SKY = {
