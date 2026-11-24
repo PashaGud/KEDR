@@ -31,6 +31,7 @@
   #kedr-login button{width:100%;padding:11px;border:0;border-radius:8px;font-size:15px;cursor:pointer;margin-top:4px}
   #kedr-login .g{background:#1f6f4a;color:#fff} #kedr-login .e{background:#e8e4d8}
   #kedr-login .sw{background:none;color:#1f6f4a;font-size:13px} #kedr-login .err{color:#b00;font-size:13px;min-height:16px}
+  #kedr-login .ex{display:none;margin:2px 0 10px;font-size:14px;color:#555} #kedr-login .ex label{margin-right:14px;cursor:pointer} #kedr-login .ex input{width:auto;margin:0 5px 0 0}
   #kedr-login .or{text-align:center;color:#999;font-size:12px;margin:12px 0}
   #kedr-chip{position:fixed;top:8px;right:10px;z-index:9999;font-size:12px;background:#fffd;border:1px solid #ddd;border-radius:14px;padding:3px 10px}
   #kedr-chip a{color:#1f6f4a;cursor:pointer;margin-left:6px}
@@ -47,6 +48,7 @@
       <input id="kl-name" placeholder="Имя и фамилия" style="display:none">
       <input id="kl-mail" type="email" placeholder="Почта">
       <input id="kl-pass" type="password" placeholder="Пароль (от 6 символов)">
+      <div class="ex" id="kl-ex">Готовлюсь к экзамену: <label><input type="radio" name="kl-exam" value="ib">IB</label><label><input type="radio" name="kl-exam" value="ege">ЕГЭ</label></div>
       <div class="err" id="kl-err"></div>
       <button class="e" id="kl-go">Войти</button>
       <button class="sw" id="kl-sw">Нет аккаунта? Зарегистрироваться</button></div>`;
@@ -55,16 +57,28 @@
     let reg = false; const $ = id => d.querySelector('#' + id);
     const err = e => { $('kl-err').textContent = ({'auth/invalid-credential':'Неверная почта или пароль','auth/email-already-in-use':'Эта почта уже зарегистрирована — войдите','auth/weak-password':'Пароль короче 6 символов','auth/invalid-email':'Неверная почта'})[e.code] || e.message; };
     $('kl-g').onclick = () => { const g = new firebase.auth.GoogleAuthProvider(); auth.signInWithPopup(g).catch(e => (/popup-blocked|operation-not-supported/.test(e.code) ? auth.signInWithRedirect(g) : err(e))); };
-    $('kl-sw').onclick = () => { reg = !reg; $('kl-name').style.display = reg ? '' : 'none'; $('kl-go').textContent = reg ? 'Зарегистрироваться' : 'Войти'; $('kl-sw').textContent = reg ? 'Уже есть аккаунт? Войти' : 'Нет аккаунта? Зарегистрироваться'; };
+    $('kl-sw').onclick = () => { reg = !reg; $('kl-name').style.display = reg ? '' : 'none'; $('kl-ex').style.display = reg ? 'block' : 'none'; $('kl-go').textContent = reg ? 'Зарегистрироваться' : 'Войти'; $('kl-sw').textContent = reg ? 'Уже есть аккаунт? Войти' : 'Нет аккаунта? Зарегистрироваться'; };
     $('kl-go').onclick = async () => {
       const m = $('kl-mail').value.trim(), p = $('kl-pass').value, n = $('kl-name').value.trim();
       try {
         if (reg) { if (!n) return $('kl-err').textContent = 'Напишите имя';
+          const ex = d.querySelector('input[name=kl-exam]:checked'); if (!ex) return $('kl-err').textContent = 'Выберите экзамен: IB или ЕГЭ';
+          rawSet.call(localStorage, 'kedr-mode', ex.value);
           const c = await auth.createUserWithEmailAndPassword(m, p); await c.user.updateProfile({ displayName: n });
-          await db.doc('users/' + c.user.uid).set({ name: n }, { merge: true }); }
+          await db.doc('users/' + c.user.uid).set({ name: n, exam: ex.value }, { merge: true }); }
         else await auth.signInWithEmailAndPassword(m, p);
       } catch (e) { err(e); }
     };
+  }
+  // экзамен (24.11): спрашиваем, если в аккаунте его ещё нет (вход через Google, старые аккаунты)
+  function askExam() {
+    return new Promise(res => {
+      const d = document.createElement('div'); d.id = 'kedr-login';
+      d.innerHTML = `<div class="box"><h2>Ещё один вопрос</h2><p>К какому экзамену ты готовишься?</p>
+        <button class="g" data-x="ib">IB</button><button class="g" data-x="ege" style="margin-top:8px">ЕГЭ</button></div>`;
+      d.querySelectorAll('button').forEach(b => b.onclick = () => { d.remove(); res(b.dataset.x); });
+      const mount = () => document.body.appendChild(d); document.body ? mount() : document.addEventListener('DOMContentLoaded', mount);
+    });
   }
   function unlock(user) {
     document.documentElement.classList.remove('kedr-locked');
@@ -125,6 +139,12 @@
         createdAt: data.createdAt || FV.serverTimestamp(), lastSeen: FV.serverTimestamp(),
         visits: FV.increment(first ? 1 : 0), device: navigator.userAgent.slice(0, 120) }, { merge: true });
       sessionStorage.setItem('kedr-visit', '1');
+      // экзамен: выбор на этом устройстве (кнопка IB/ЕГЭ) важнее; на новом устройстве берём из аккаунта
+      let mode = rawGet.call(localStorage, 'kedr-mode');
+      if (!mode && data.exam) { mode = data.exam; rawSet.call(localStorage, 'kedr-mode', mode); if (mode !== (window.KEDR_MODE || 'ib')) { location.reload(); return; } }
+      if (!mode) { const l = document.getElementById('kedr-login'); if (l) l.remove(); mode = await askExam(); rawSet.call(localStorage, 'kedr-mode', mode); if (mode !== (window.KEDR_MODE || 'ib')) { await ref.set({ exam: mode }, { merge: true }); location.reload(); return; } }
+      if (data.exam !== mode) await ref.set({ exam: mode }, { merge: true });
+      if (mode !== (document.documentElement.classList.contains('ege') ? 'ege' : 'ib')) { location.reload(); return; }   // только что выбрали экзамен при регистрации
       uid = user.uid; push();
       if (changed && !sessionStorage.getItem('kedr-synced')) { sessionStorage.setItem('kedr-synced', '1'); location.reload(); return; }
     } catch (e) { console.warn('Kedr sync', e); uid = user.uid; }

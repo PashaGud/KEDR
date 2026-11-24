@@ -48,8 +48,8 @@ function render() {
   const sorted = [...users].sort((a, b) => sortKey === 'name' ? String(a.name).localeCompare(b.name) : (ms(b[sortKey]) || b[sortKey] || 0) - (ms(a[sortKey]) || a[sortKey] || 0));
   app.innerHTML = `<div><span class="kpi"><b>${users.length}</b>всего</span><span class="kpi"><b>${act7}</b>заходили за 7 дней</span>
     <span class="kpi"><b>${users.reduce((s,u)=>s+(u.nSolved||0),0)}</b>решённых задач всего</span></div>
-    <table><tr><th data-k="name">Имя</th><th>Почта</th><th data-k="createdAt">Регистрация</th><th data-k="lastSeen">Последний заход</th><th data-k="visits">Заходов</th><th data-k="nSeen">Открыл</th><th data-k="nSolved">Решил</th></tr>
-    ${sorted.map(u => `<tr class="u" data-u="${u.uid}"><td>${esc(u.name)||'<span class=muted>без имени</span>'}</td><td>${esc(u.email)}</td><td>${d(u.createdAt)}</td><td>${d(u.lastSeen)}</td><td>${u.visits||0}</td><td>${u.nSeen||0}</td><td>${u.nSolved||0}</td></tr>`).join('')}</table><div id="det"></div>`;
+    <table><tr><th data-k="name">Имя</th><th>Почта</th><th data-k="exam">Экзамен</th><th data-k="createdAt">Регистрация</th><th data-k="lastSeen">Последний заход</th><th data-k="visits">Заходов</th><th data-k="nSeen">Открыл</th><th data-k="nSolved">Решил</th></tr>
+    ${sorted.map(u => `<tr class="u" data-u="${u.uid}"><td>${esc(u.name)||'<span class=muted>без имени</span>'}</td><td>${esc(u.email)}</td><td>${u.exam === 'ege' ? 'ЕГЭ' : u.exam === 'ib' ? 'IB' : '—'}</td><td>${d(u.createdAt)}</td><td>${d(u.lastSeen)}</td><td>${u.visits||0}</td><td>${u.nSeen||0}</td><td>${u.nSolved||0}</td></tr>`).join('')}</table><div id="det"></div>`;
   app.querySelectorAll('th[data-k]').forEach(th => th.onclick = () => { sortKey = th.dataset.k; render(); });
   app.querySelectorAll('tr.u').forEach(tr => tr.onclick = () => detail(tr.dataset.u));
 }
