@@ -487,7 +487,8 @@ window.KedrHome = function(ctx){
         el('title', {}, rs, u + ': ' + ids.filter(id => sol[id]).length + ' / ' + ids.length);
       });
     }
-    if (!planted && !store.get('kedr-welcomed', false)) welcome();
+    const EGEW = document.documentElement.classList.contains('ege');   // 24.11: на ЕГЭ-сайте лесник встречает отдельно, даже если в IB уже встречал
+    if ((!planted && !store.get('kedr-welcomed', false)) || (EGEW && !store.get('kedr-welcomed-ege', false))) welcome();
   }
 
   /* ---------- the comic welcome ---------- */
@@ -526,7 +527,7 @@ window.KedrHome = function(ctx){
       ov.querySelector('.next').onclick = () => { if (last) close(true); else { i++; draw(); } };
     };
     const close = plant => {
-      store.set('kedr-welcomed', true);
+      store.set('kedr-welcomed', true); if (document.documentElement.classList.contains('ege')) store.set('kedr-welcomed-ege', true);
       const first = !store.get('kedr-planted', false);
       if (plant) store.set('kedr-planted', true);
       ov.remove(); render(plant && first);

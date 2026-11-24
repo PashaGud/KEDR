@@ -347,12 +347,12 @@ button{font:inherit;color:inherit;cursor:pointer}
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="kedr-auth.js?v=20261124b"></script>
+<script src="kedr-auth.js?v=20261124c"></script>
 <script src="course.js?v=20261121g"></script>
 <script src="cards/ru/T04_problems.js?v=20261124c"></script>
-<script src="home.js?v=20261124g"></script>
+<script src="home.js?v=20261124h"></script>
 <script src="feedback.js?v=20261118b"></script>
-<script src="kedr-lang.js?v=20261124d"></script>
+<script src="kedr-lang.js?v=20261124e"></script>
 <script>
 (function(){
 const K = window.KEDR;
@@ -737,7 +737,7 @@ function show(id){
 }
 const HOME = window.KedrHome({ K, order, seenMap: () => seen, solvedMap: () => solved, P, T, lbl, UNITS, unitOfId: id => T[id] ? unitOf(T[id]) : P[id] ? unitOf(T[home(P[id]).card]) : null, setUnit });
 const route = () => { let id = (location.hash.replace(/^#\/?/,'') || '').toUpperCase(); if (BYLBL[id]) id = BYLBL[id];
-  if (id === 'RESET') { try { ['kedr-seen','kedr-solved','kedr-planted','kedr-welcomed','kedr-last-stage','kedr-heard','kedr-rating','kedr-last'].forEach(k => localStorage.removeItem(k)); } catch(e) {}
+  if (id === 'RESET') { try { ['kedr-seen','kedr-solved','kedr-planted','kedr-welcomed','kedr-welcomed-ege','kedr-last-stage','kedr-heard','kedr-rating','kedr-last'].forEach(k => localStorage.removeItem(k)); } catch(e) {}
     seen = {}; solved = {}; location.hash = '#home'; return; }
   show(id); };
 addEventListener('hashchange', route);

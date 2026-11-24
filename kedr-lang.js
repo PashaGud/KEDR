@@ -37,6 +37,7 @@ const RU = {
  'Cancel':'Отмена','Send':'Отправить','Thank you! Pavel will see it and fix it.':'Спасибо! Павел увидит и исправит.','What is wrong here?':'Что здесь не так?',
  'A mistake, something unclear, a typo… Write it in any language.':'Ошибка, непонятное место, опечатка… Пиши на любом языке.','Your name (optional)':'Твоё имя (необязательно)','Sending…':'Отправляю…','Place: ':'Место: ',
  'Hide':'Скрыть',
+ 'Skip':'Пропустить','Back':'Назад','Next':'Дальше','Plant it':'Посадить','Back to my cedar':'К моему кедру',
  'so-so':'так себе','Hide answer':'Скрыть ответ','Hide solution':'Скрыть решение','Hide highlights':'Убрать выделение','Hide my sketch':'Скрыть мой рисунок',
  'How well did you understand it?':'Насколько хорошо ты понял?','not at all':'совсем не понял','poorly':'плохо','well':'хорошо','perfectly':'отлично',
  'Compare it with yours: is the start and the end there? what is given, what is asked? and what did you draw that isn’t needed?':'Сравни со своим: есть ли начало и конец? что дано, что нужно найти? и что ты нарисовал лишнего?',

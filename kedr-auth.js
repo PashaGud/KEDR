@@ -8,7 +8,7 @@
     appId:"1:554571166525:web:d902825ed39c5b2a344b54"
   };
   const REQUIRE_LOGIN = true;              // false — вход по желанию
-  const SYNC_KEYS = ['kedr-seen','kedr-solved','kedr-rating','kedr-planted','kedr-welcomed','kedr-last-stage','kedr-heard','kedr-unit','kedr-last'];
+  const SYNC_KEYS = ['kedr-seen','kedr-solved','kedr-rating','kedr-planted','kedr-welcomed','kedr-last-stage','kedr-heard','kedr-unit','kedr-last','kedr-welcomed-ege'];
   const LOG_KEYS = { 'kedr-seen': 'open', 'kedr-solved': 'solved', 'kedr-rating': 'rating' };
 
   if (location.protocol === 'file:') return;   // 24.11: открыт с Мака двойным щелчком — без входа, прогресс только в браузере, как раньше
