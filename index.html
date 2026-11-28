@@ -348,7 +348,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="kedr-auth.js?v=20261124c"></script>
-<script src="course.js?v=20261121g"></script>
+<script src="course.js?v=20261128a"></script>
 <script src="cards/ru/T04_problems.js?v=20261124c"></script>
 <script src="home.js?v=20261124j"></script>
 <script src="feedback.js?v=20261118b"></script>
@@ -657,7 +657,7 @@ function problemPage(p, pv, nx){
   ${p.sketch ? `<div class="pp-block pp-sketch" id="xSketch" hidden><div class="pp-h">How I would sketch it</div><img src="${esc(p.sketch)}" alt="sketch"><div class="pp-check">Compare it with yours: is the start and the end there? what is given, what is asked? and what did you draw that isn’t needed?</div></div>` : ''}
   <div class="pp-block" id="xAns" hidden><div class="pp-h">Answer</div><div class="pp-ans">${md(p.answer)}</div></div>
   <div class="pp-block" id="xSol" hidden><div class="pp-h">Solution</div>${p.solutionFig ? `<figure class="pp-fig"><img src="${esc(p.solutionFig + BUST)}" alt="solution picture for problem ${esc(p.id)}"></figure>` : ''}<div class="pp-sol">${partsHtml(p.solution)}</div>
-    ${p.meaning ? `<details><summary>Think further</summary>${md(p.meaning)}</details>` : ''}
+    ${p.meaning ? `<details><summary>Think further</summary>${md(p.meaning)}${p.meaningFig ? `<figure class="pp-fig"><img src="${esc(p.meaningFig + BUST)}" alt="picture for problem ${esc(p.id)}"></figure>` : ''}</details>` : ''}
     ${whatIfHtml(p.whatIf, p.whatFig)}
   </div>
   <div class="pp-block pp-rate" id="xRate" ${r == null ? 'hidden' : ''}>How well did you understand it?
